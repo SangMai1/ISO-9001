@@ -32,6 +32,7 @@ const layoutAction = {
                     break;
                 !closestUlTag.hasClass('show') && closestUlTag.closest('li').find('.nav-link')[0].click();
             }
+            setTimeout(() => { });
         };
         layoutAction.activeMenu(menu);
     }

@@ -30,6 +30,8 @@ const layoutAction = {
                 if (closestUlTag[0] === navBar[0] || !closestUlTag[0]) break
                 !closestUlTag.hasClass('show') && closestUlTag.closest('li').find('.nav-link')[0].click()
             }
+
+            setTimeout(()=>{})
         }
         layoutAction.activeMenu(menu)
     }
