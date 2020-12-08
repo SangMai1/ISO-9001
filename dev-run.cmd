@@ -1,0 +1,1 @@
+npm run concurrently -- "npm run tsc -- -w" "npm run sass -- --watch --no-source-map ./resources/public/sass/:./public/css" "php artisan serve" "node live-reload.js"

@@ -1,0 +1,34 @@
+.sidebar::before {
+    background-color: white !important;
+}
+
+ul {
+    li {
+        i {
+            font-size: 20px !important;
+        }
+        .dropdown-toggle {
+            &::after {
+                margin-left: 8px;
+            }
+            &[aria-expanded="false"]::after {
+                transform: rotate(-180deg);
+            }
+            &[aria-expanded="true"] {
+                background-color: rgba(200, 200, 200, 0.4) !important;
+                &::after {
+                    transform: rotate(0deg);
+                }
+            }
+        }
+
+        .nav-link {
+            font-size: 14px !important;
+            display: flex;
+            align-items: center;
+        }
+    }
+    ul {
+        margin-left: 15px;
+    }
+}

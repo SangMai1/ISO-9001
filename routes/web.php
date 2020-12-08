@@ -19,6 +19,7 @@ Route::get('/', function () {
 
 Auth::routes(['register' => false]);
 
+<<<<<<< HEAD
 Route::get('/list', function(){
     return view('/layouts/default-form/demo');
 });
@@ -27,5 +28,8 @@ Route::get('/input', function(){
     return view('/layouts/default-form/demo1');
 });
 
+=======
+Route::get('/sc', function(){ return view('sc'); });
+>>>>>>> 793ac84c5a28ff8873a1c43fb12dae93c21ac000
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
