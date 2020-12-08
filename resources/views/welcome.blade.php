@@ -22,7 +22,7 @@
             <div class="card">
                 <div class="card-header card-header-primary">
                     <h4 class="card-title ">Simple Table</h4>
-                    <p class="card-category">Here is a subtitle for this table</p>
+                    <p class="card-category"> Here is a subtitle for this table</p>
                 </div>
                 <div class="card-body">
                     <nav aria-label="Page navigation example">
@@ -47,6 +47,12 @@
                         title="<em>Tooltip</em> <u>with</u> <b>HTML</b>" id="example">
                         Tooltip with HTML
                     </button>
+                    <script>
+                        $('.popover-dismiss').popover({
+                            trigger: 'focus'
+                        })
+
+                    </script>
                     <div class="table-responsive">
                         <table class="table table-hover">
                             <thead class=" text-primary">

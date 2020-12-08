@@ -1,5 +1,11 @@
 export const Utils = {
-    showMessage(message = 'no message') {
+    rebuildTooltip() {
+        $(() => {
+            $('[data-toggle="tooltip"]').tooltip()
+            $('[data-toggle="popover"]').popover()
+        })
+    },
+    showMessage(message = 'no message'){
         console.log(message)
     }
 }
