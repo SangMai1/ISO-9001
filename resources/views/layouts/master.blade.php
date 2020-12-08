@@ -9,13 +9,12 @@
     <title> @yield('title')</title>
     @include('includes.lib')
     <link href="/css/layout.css" rel="stylesheet">
-    <script data-main="js/require.config" src="/js/require.js"></script>
+    <script data-main="js/layout.js" src="/js/require.js"></script>
     @if (View::hasSection('module'))
         <script>
             requirejs(["html/@yield('module')"])
         </script>
     @endif
-    <script src="/js/layout.js"></script>
     <meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport' />
 </head>
 

@@ -1,73 +1,85 @@
-@extends('layouts.app')
+<!DOCTYPE html>
+<html lang="en">
 
-@section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Login') }}</div>
+<head>
+    <meta charset="utf-8" />
+    <link rel="apple-touch-icon" sizes="76x76" href="/assets/img/apple-icon.png">
+    <link rel="icon" type="image/png" href="/assets/img/favicon.png">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <title> Đăng nhập</title>
+    @include('includes.lib')
+    <link href="/css/layout.css" rel="stylesheet">
+    <meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport' />
+</head>
 
-                <div class="card-body">
-                    <form method="POST" action="{{ route('login') }}">
-                        @csrf
-
-                        <div class="form-group row">
-                            <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
-
-                                @error('email')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
-
-                                @error('password')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <div class="col-md-6 offset-md-4">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
-
-                                    <label class="form-check-label" for="remember">
-                                        {{ __('Remember Me') }}
-                                    </label>
+<body class="">
+    <div class="wrapper ">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-8 mt-4">
+                    <x-card>
+                        @slot('title') {{ __('lang.Login') }} @endslot
+                        @slot('subTitle') Hệ thống quản lí ISO 9001 @endslot
+                        @slot('body')
+                            <form method="POST" action="{{ route('login') }}">
+                                @csrf
+                                <div class="row">
+                                    <div class="col-md-8 offset-md-2">
+                                        <x-inputs.input title="{{ __('lang.Email') }}" type="email"
+                                            :error="$errors->has('email') ? $error->first('email') : null"
+                                            :class="$errors->has('email') ? 'is-invalid' : ''" name="email"
+                                            value="{{ old('email') }}" required autocomplete="email" autofocus>
+                                        </x-inputs.input>
+                                    </div>
+                                    <x-inputs.checkbox name="name" name>
+                                        @slot('content')  name="name" @endslot
+                                    </x-inputs.checkbox>
                                 </div>
-                            </div>
-                        </div>
+                                <div class="row">
+                                    <div class="col-md-8 offset-md-2">
+                                        <x-inputs.input type="password" title="{{ __('lang.Password') }}"
+                                            :error="$errors->has('password') ? $error->first('password') : null"
+                                            :class="$errors->has('password') ? 'is-invalid' : ''" name="password" required
+                                            autocomplete="current-password">
+                                        </x-inputs.input>
 
-                        <div class="form-group row mb-0">
-                            <div class="col-md-8 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
-                                    {{ __('Login') }}
-                                </button>
+                                    </div>
+                                </div>
 
-                                @if (Route::has('password.request'))
-                                    <a class="btn btn-link" href="{{ route('password.request') }}">
-                                        {{ __('Forgot Your Password?') }}
-                                    </a>
-                                @endif
-                            </div>
-                        </div>
-                    </form>
+
+                                <div class="form-group row">
+                                    <div class="col-md-6 offset-md-4">
+                                        <x-inputs.checkbox name="remember" id="remember"
+                                            :checked="old('remember') ? 'true' : ''">
+                                            @slot('content') <em>{{ __('lang.RememberMe') }}</em> @endslot
+                                        </x-inputs.checkbox>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row mb-0">
+                                    <div class="col-md-8 offset-md-3">
+                                        <button type="submit" class="btn btn-primary">
+                                            {{ __('lang.Login') }}
+                                        </button>
+
+                                        @if (Route::has('password.request'))
+                                            <a class="btn btn-link" href="{{ route('password.request') }}">
+                                                {{ __('lang.ForgotYourPassword') }}
+                                            </a>
+                                        @endif
+                                    </div>
+                                </div>
+                            </form>
+                        @endslot
+                    </x-card>
                 </div>
             </div>
         </div>
     </div>
-</div>
-@endsection
+    <script src="/assets/js/material-dashboard.js?v=2.1.2" type="text/javascript"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
+        integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA=="
+        crossorigin="anonymous" />
+</body>
+
+</html>

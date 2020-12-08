@@ -39,5 +39,22 @@
 		"description": "Tooltip attributes",
 		"prefix": "%tooltipAttributes"
 	},
-	
+	"Active MenuTag": {
+		"scope": "blade",
+		"body": "<div id=\"active-menu\" ${2:href=\"${4}\"} ${1:active=\"${3}\"}><\/div>",
+		"description": "Active menu tag",
+		"prefix": "@activeMenu"
+	},
+	"Input checkbox Component": {
+		"scope": "blade",
+		"body": "<x-inputs.checkbox${1: name=\"${2:name}\"} ${3::checked=\"true\"}>\r\n    @slot('content') ${4:<em>This is check box<\/em>} @endslot\r\n<\/x-inputs.checkbox>",
+		"description": "Input checkbox Component",
+		"prefix": "@inputCheckboxComponent"
+	},
+	"Input Component": {
+		"scope": "blade",
+		"body": "<x-inputs.input title=\"${1:title}\" type=\"${2:text}\"${3: name=\"${4:name}\" }${5: value=\"${6:value}\"}></x-inputs.input>",
+		"description": "Input Component",
+		"prefix": "@inputComponent"
+	},
 }

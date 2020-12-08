@@ -8,6 +8,8 @@ Tip 2: you can also add an image using data-image tag
             ISO-9001
         </span></div>
     <div class="sidebar-wrapper">
+
+        {{-- sidebar group --}}
         <ul class="nav">
             <li class="nav-item ">
                 <a data-toggle="collapse" class="nav-link dropdown-toggle">
@@ -35,16 +37,16 @@ Tip 2: you can also add an image using data-image tag
                         <a href="#" class="nav-link"><i class="fas fa-shield-alt"></i>Chức năng</a>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="nav-link">Nhóm chức năng</a>
+                        <a href="#" class="nav-link"><i class="fas fa-list"></i><span>Nhóm chức năng</span></a>
                     </li>
                 </ul>
             </li>
 
             <li class="nav-item ">
-                <a href="#quan-li-xe-sidebar-item" data-toggle="collapse" class="nav-link dropdown-toggle">
+                <a data-toggle="collapse" class="nav-link dropdown-toggle">
                     <i class="fas fa-car"></i>Quản lí xe
                 </a>
-                <ul class="collapse list-unstyled" id="quan-li-xe-sidebar-item">
+                <ul class="collapse list-unstyled">
                     <li class="nav-item">
                         <a href="#" class="nav-link">
                             <i class="fas fa-list"></i>
@@ -52,10 +54,16 @@ Tip 2: you can also add an image using data-image tag
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="nav-link">Lịch xuất xe</a>
+                        <a href="#" class="nav-link">
+                            <i class="fa fa-history"></i>
+                            Lịch xuất xe
+                        </a>
                     </li>
                     <li class="nav-item">
-                        <a href="/quan-li-xe/lich-sua-xe" active="lichSuaXe" class="nav-link">Lịch sử sửa chữa xe</a>
+                        <a href="/quan-li-xe/lich-sua-xe" active="lichSuaXe" class="nav-link">
+                            <i class="fa fa-history"></i>
+                            Lịch sử sửa chữa xe
+                        </a>
                     </li>
                 </ul>
             </li>
@@ -63,15 +71,17 @@ Tip 2: you can also add an image using data-image tag
             <li class="nav-item">
                 <a class="nav-link" href="/quan-li-cuoc-hop">
                     <i class="material-icons">content_paste</i>
-                    <p>Quản lí cuộc họp</p>
+                    <span>Quản lí cuộc họp</span>
                 </a>
             </li>
+
             <li class="nav-item drop-down">
                 <a class="nav-link" href="/tai-san">
                     <i class="material-icons">library_books</i>
-                    <p>Quản lí tài sản</p>
+                    <span>Quản lí tài sản</span>
                 </a>
             </li>
+
         </ul>
     </div>
 </div>

@@ -1,13 +1,14 @@
 .sidebar::before {
+    cursor: pointer;
+    user-select: none;
     background-color: white !important;
 }
-
-ul {
-    cursor: pointer;
-    user-select: none;    
+ul:not(.navbar-nav) {
+    margin-top: 10px !important;
     li {
         i {
-            font-size: 20px !important;
+            font-size: 18px !important;
+            margin-right: 8px !important;
         }
         .dropdown-toggle {
             &::after {
@@ -28,10 +29,29 @@ ul {
             font-size: 14px !important;
             display: flex;
             align-items: center;
+            padding: 4px 8px !important;
+        }
+        img.icon {
+            width: 18px;
+            height: 18px;
+            object-fit: contain;
         }
     }
     ul {
         margin-top: 5px;
         margin-left: 15px;
+    }
+}
+
+@media (max-width: 991px) {
+    ul.nav {
+        li {
+            .nav-link {
+                font-size: 14px !important;
+                display: flex;
+                align-items: center;
+                padding: 3px 4px !important;
+            }
+        }
     }
 }
