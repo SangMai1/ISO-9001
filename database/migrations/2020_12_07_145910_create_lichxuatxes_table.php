@@ -15,15 +15,15 @@ class CreateLichxuatxesTable extends Migration
     {
         Schema::create('lichxuatxes', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->dateTime('ngaytao');
-            $table->dateTime('ngaysua');
+            $table->timestamp('ngaytao');
+            $table->timestamp('ngaysua')->nullable()->default(null);
             $table->bigInteger('xeid');
             $table->bigInteger('nhanvienid');
             $table->bigInteger('cuochopid');
-            $table->dateTime('thoigiandidukien');
-            $table->dateTime('thoigianvedukien');
-            $table->dateTime('thoigiandithucte');
-            $table->dateTime('thoigianvethucte');
+            $table->timestamp('thoigiandidukien')->nullable()->default(null);
+            $table->timestamp('thoigianvedukien')->nullable()->default(null);
+            $table->timestamp('thoigiandithucte')->nullable()->default(null);
+            $table->timestamp('thoigianvethucte')->nullable()->default(null);
             $table->bigInteger('sokmtruockhidi');
             $table->bigInteger('sokmsaukhidi');
             $table->string('diadiemdi');

@@ -15,8 +15,8 @@ class CreateNguoingoaisTable extends Migration
     {
         Schema::create('nguoingoais', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->dateTime('ngaytao');
-            $table->dateTime('ngaysua');
+            $table->timestamp('ngaytao');
+            $table->timestamp('ngaysua')->nullable()->default(null);
             $table->string('ten');
             $table->string('email');
             $table->smallInteger('gioitinh');

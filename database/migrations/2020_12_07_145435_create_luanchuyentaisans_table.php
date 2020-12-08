@@ -15,12 +15,12 @@ class CreateLuanchuyentaisansTable extends Migration
     {
         Schema::create('luanchuyentaisans', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->dateTime('ngaytao');
-            $table->dateTime('ngaysua');
+            $table->timestamp('ngaytao');
+            $table->timestamp('ngaysua')->nullable()->default(null);
             $table->bigInteger('taisanid');
             $table->bigInteger('nguoichuyen');
             $table->bigInteger('nguoinhan');
-            $table->dateTime('thoigian');
+            $table->timestamp('thoigian')->nullable()->default(null);
             $table->string('nguoitao');
             $table->string('ngoisua');
             $table->smallInteger('daxoa');
