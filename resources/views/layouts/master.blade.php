@@ -9,12 +9,13 @@
     <title> @yield('title')</title>
     @include('includes.lib')
     <link href="/css/layout.css" rel="stylesheet">
+    <script data-main="js/require.config" src="/js/require.js"></script>
     @if (View::hasSection('module'))
-        <script data-main="js/require.config" src="/js/require.js"></script>
         <script>
             requirejs(["html/@yield('module')"])
         </script>
     @endif
+    <script src="/js/layout.js"></script>
     <meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport' />
 </head>
 
@@ -59,7 +60,9 @@
     </div>
     <!-- Control Center for Material Dashboard: parallax effects, scripts for the example pages etc -->
     <script src="/assets/js/material-dashboard.js?v=2.1.2" type="text/javascript"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA==" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
+        integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA=="
+        crossorigin="anonymous" />
     <script>
         $(document).ready(function() {
             $().ready(function() {

@@ -2,11 +2,16 @@
   background-color: white !important;
 }
 
+ul {
+  cursor: pointer;
+  user-select: none;
+}
 ul li i {
   font-size: 20px !important;
 }
 ul li .dropdown-toggle::after {
   margin-left: 8px;
+  transform: rotate(-180deg);
 }
 ul li .dropdown-toggle[aria-expanded=false]::after {
   transform: rotate(-180deg);
@@ -23,5 +28,6 @@ ul li .nav-link {
   align-items: center;
 }
 ul ul {
+  margin-top: 5px;
   margin-left: 15px;
 }

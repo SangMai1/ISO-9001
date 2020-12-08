@@ -3,6 +3,8 @@
 }
 
 ul {
+    cursor: pointer;
+    user-select: none;    
     li {
         i {
             font-size: 20px !important;
@@ -10,6 +12,7 @@ ul {
         .dropdown-toggle {
             &::after {
                 margin-left: 8px;
+                transform: rotate(-180deg);
             }
             &[aria-expanded="false"]::after {
                 transform: rotate(-180deg);
@@ -21,7 +24,6 @@ ul {
                 }
             }
         }
-
         .nav-link {
             font-size: 14px !important;
             display: flex;
@@ -29,6 +31,7 @@ ul {
         }
     }
     ul {
+        margin-top: 5px;
         margin-left: 15px;
     }
 }
