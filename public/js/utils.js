@@ -3,29 +3,21 @@ define(["require", "exports"], function (require, exports) {
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.Utils = void 0;
     exports.Utils = {
-        rebuildTooltip() {
-            $(() => {
-                $('[data-toggle="tooltip"]').tooltip();
-                $('[data-toggle="popover"]').popover();
-            });
-        },
         showMessage(message = 'no message') {
             console.log(message);
         },
-        rebuildPagination() {
-            $('.pagination').each((i, e) => {
-                const [ page, limit, offset]
-            })
-        },
-
-        /**
-         * 
-         * @param {*} attributes 
-         * @param {HTMLElement} element
-         */
-        getHTMLAttributes(attributes = [], element) {
-            !(attributes instanceof Array) && (attributes = [])
-            return attributes.map((attr) => element.getAttribute(attr))
+        randomString(length = 10) {
+            const characters = 'abcdefghijklmnopqrstuvwxyz';
+            const charactersLength = characters.length;
+            exports.Utils.randomString = function () {
+                let result = '';
+                let charactersLength = characters.length;
+                for (let i = 0; i < length; i++) {
+                    result += characters.charAt(Math.floor(Math.random() * charactersLength));
+                }
+                return result;
+            };
+            return exports.Utils.randomString();
         }
     };
 });

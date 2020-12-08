@@ -1,4 +1,13 @@
 "use strict";
+window.module = require.s.contexts._.defined;
+window.getModule = function (moduleName) {
+    const moduleConfig = {
+        utils: 'utils.Utils'
+    };
+    if (moduleConfig[moduleName])
+        return eval(`window.module.${moduleConfig[moduleName]}`);
+    return window.module[module];
+};
 const layoutAction = {
     rebuildAll() {
         $('[data-toggle="tooltip"]').tooltip().unbind('focusin');
@@ -9,10 +18,6 @@ const layoutAction = {
             next.collapse('toggle');
         });
     },
-    /**
-     * Kích hoạt menu bên của sidebar
-     * @param {string| {href: string}} menu
-     */
     activeMenu(menu) {
         const navBar = $('.nav');
         layoutAction.activeMenu = function (menu) {
