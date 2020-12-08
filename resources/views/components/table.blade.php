@@ -1,13 +1,13 @@
-@props(['titles', 'pagination', 'autoIndex'])
+@props(['titles', 'pagination'])
 <div {{ $attributes->merge(['class' => 'table-responsive']) }}>
-    <table class="table table-hover" @php if(isset($autoIndex) && $autoIndex === true) echo('auto-index="true"') @endphp> 
+    <table class="table table-hover"> 
         <thead class=" text-primary">
             @foreach ($titles as $title)
                 <th>{{ $title }}</th>
             @endforeach
         </thead>
         <tbody>
-            {{ $body }}
+            {{ $body }} 
         </tbody>
     </table>
 </div>
