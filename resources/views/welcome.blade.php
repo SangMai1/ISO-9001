@@ -4,12 +4,25 @@
 @section('module', 'index')
 
 @section('content')
+    <button type="button" class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Tooltip on top">
+        Tooltip on top
+    </button>
+    <button type="button" class="btn btn-secondary" data-toggle="tooltip" data-placement="right" title="Tooltip on right">
+        Tooltip on right
+    </button>
+    <button type="button" class="btn btn-secondary" data-toggle="tooltip" data-placement="bottom" title="Tooltip on bottom">
+        Tooltip on bottom
+    </button>
+    <button type="button" class="btn btn-secondary" data-toggle="tooltip" data-placement="left" title="Tooltip on left">
+        Tooltip on left
+    </button>
     <div class="row">
         <div class="col-md-12">
+            
             <div class="card">
                 <div class="card-header card-header-primary">
                     <h4 class="card-title ">Simple Table</h4>
-                    <p class="card-category"> Here is a subtitle for this table</p>
+                    <p class="card-category">Here is a subtitle for this table</p>
                 </div>
                 <div class="card-body">
                     <nav aria-label="Page navigation example">
@@ -34,12 +47,6 @@
                         title="<em>Tooltip</em> <u>with</u> <b>HTML</b>" id="example">
                         Tooltip with HTML
                     </button>
-                    <script>
-                        $('.popover-dismiss').popover({
-                            trigger: 'focus'
-                        })
-
-                    </script>
                     <div class="table-responsive">
                         <table class="table table-hover">
                             <thead class=" text-primary">

@@ -19,6 +19,8 @@ Route::get('/', function () {
 
 Auth::routes(['register' => false]);
 
-Route::get('/sc', function(){ return view('sc'); });
+Route::get('/example', function () {
+    return view('example', ['titles' => ['name', 'age']]);
+});
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
