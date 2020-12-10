@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Cauhinhs;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
+use Session;
 
 class CauhinhsController extends Controller
 {
@@ -14,7 +17,8 @@ class CauhinhsController extends Controller
      */
     public function index()
     {
-        //
+        $cauhinh = Cauhinhs::all()->toArray();
+        return view('cau-hinh/danh-sach')->with('cauhinh',$cauhinh);
     }
 
     /**
@@ -24,7 +28,8 @@ class CauhinhsController extends Controller
      */
     public function create()
     {
-        //
+        //Hiển thị trang thêm cấu hình
+	    return view('/cau-hinh/them-moi');
     }
 
     /**
@@ -35,7 +40,46 @@ class CauhinhsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+    date_default_timezone_set("Asia/Ho_Chi_Minh");     
+    
+    $request->validate([
+        'ma' => 'required',
+        'ten' => 'required',
+        'giatri' => 'required',
+        'nguoitao' => 'required'
+    ]);
+
+	$allRequest  = $request->all();
+    $ma = $allRequest['ma'];
+    $ten = $allRequest['ten'];
+    $giatri = $allRequest['giatri'];
+    $nguoitao = $allRequest['nguoitao'];
+   // $nguoisua = $allRequest['nguoisua'];
+	
+	//Gán giá trị vào array
+	$dataInsertToDatabase = array(
+		'ma'  => $ma,
+        'ten' => $ten,
+        'giatri' => $giatri,
+        'nguoitao' => $nguoitao,
+        'nguoisua' => 'Chưa trải qua cập nhật',
+		'ngaytao' => Carbon::now(),
+        'ngaysua' => Carbon::now(),
+        'daxoa'=>'0'
+	);
+	
+	//Insert vào bảng 
+	$insertData = DB::table('cauhinhs')->insert($dataInsertToDatabase);
+	
+	//Kiểm tra Insert để trả về một thông báo
+	if ($insertData) {
+		Session::flash('success', 'Thêm mới cấu hình thành công!');
+	}else {                        
+		Session::flash('error', 'Thêm thất bại!');
+	}
+	
+	//Thực hiện chuyển trang
+	return redirect('/cau-hinh/them-moi');
     }
 
     /**
@@ -55,9 +99,10 @@ class CauhinhsController extends Controller
      * @param  \App\Models\Cauhinhs  $cauhinhs
      * @return \Illuminate\Http\Response
      */
-    public function edit(Cauhinhs $cauhinhs)
+    public function edit($id)
     {
-        //
+        $cauhinh = Cauhinhs::find($id)->toArray();
+        return view('/cau-hinh/chinh-sua', compact('cauhinh'));
     }
 
     /**
@@ -69,7 +114,26 @@ class CauhinhsController extends Controller
      */
     public function update(Request $request, Cauhinhs $cauhinhs)
     {
-        //
+    date_default_timezone_set("Asia/Ho_Chi_Minh");
+ 
+	//Thực hiện câu lệnh update với các giá trị $request trả về
+	$cauhinhs = DB::table('cauhinhs')->where('id', $request->id)->update([
+		'ma' => $request->ma,
+        'ten' => $request->ten,
+        'giatri' => $request->giatri,
+        'nguoisua' => $request->nguoisua,
+		'ngaysua' => Carbon::now()
+    ]);
+	
+	//Kiểm tra lệnh update để trả về một thông báo
+	if ($cauhinhs) {
+		Session::flash('success', 'Cập nhật cấu hình thành công!');
+	}else {                        
+		Session::flash('error', 'Cập nhật thất bại!');
+	}
+	
+	//Thực hiện chuyển trang
+	return  redirect()->Route('cauhinh');
     }
 
     /**
@@ -78,8 +142,20 @@ class CauhinhsController extends Controller
      * @param  \App\Models\Cauhinhs  $cauhinhs
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Cauhinhs $cauhinhs)
+    public function destroy($id)
     {
-        //
+        
+	//Thực hiện câu lệnh xóa với giá trị id = $id trả về
+	$deleteData = Cauhinhs::find($id)->delete();
+	
+	//Kiểm tra lệnh delete để trả về một thông báo
+	if ($deleteData) {
+		Session::flash('success', 'Xóa  thành công!');
+	}else {                        
+		Session::flash('error', 'Xóa thất bại!');
+	}
+	
+	//Thực hiện chuyển trang
+	return redirect('cau-hinh/danh-sach');
     }
 }

@@ -21,7 +21,7 @@ class CreateCauhinhsTable extends Migration
             $table->string('ten');
             $table->string('giatri');
             $table->string('nguoitao');
-            $table->string('ngoisua');
+            $table->string('nguoisua');
             $table->smallInteger('daxoa');
         });
     }

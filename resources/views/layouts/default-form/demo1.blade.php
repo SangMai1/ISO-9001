@@ -1,15 +1,16 @@
 @extends('layouts.master')
 
+
 @section('content')
-<!DOCTYPE html>
-<html lang="en">
+@extends('layouts.master')
+@section('title', '')
+@section('pageName', '')
+@section('module', '')
 
-<head>
-  <title></title>
-</head>
+@section('content')
 
-<body>
-  <div class="container"><br><br>
+@endsection
+
     <form method="post" action="">
       @csrf
       <div class="form-group">
@@ -66,5 +67,5 @@
       <input class="btn btn-primary" type="submit" value="Thêm" />
             <a class="btn btn-primary" href="" role="button">Danh sách</a>
   </div>
-</body>
+</form>
 @endsection
