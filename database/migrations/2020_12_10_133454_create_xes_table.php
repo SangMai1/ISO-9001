@@ -15,7 +15,7 @@ class CreateXesTable extends Migration
     {
         Schema::create('xes', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('loaitaisanid');
+            $table->foreignId('taisanid');
             $table->string('bienso');
             $table->integer('socho');
             $table->foreignId('nhanvienid');

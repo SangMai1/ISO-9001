@@ -15,6 +15,9 @@ class CreateMenusesTable extends Migration
     {
         Schema::create('menuses', function (Blueprint $table) {
             $table->id();
+            $table->bigInteger('idcha');
+            $table->string('ten');
+            $table->string('url');
             $table->integer('vitri');
             $table->foreignId('chucnangid');
         });
