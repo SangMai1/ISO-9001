@@ -21,7 +21,7 @@ class CreateNguoingoaisTable extends Migration
             $table->string('email');
             $table->smallInteger('gioitinh');
             $table->string('nguoitao');
-            $table->string('ngoisua');
+            $table->string('nguoisua');
             $table->smallInteger('daxoa');
         });
     }

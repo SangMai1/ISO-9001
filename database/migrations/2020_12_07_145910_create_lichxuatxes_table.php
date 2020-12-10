@@ -29,7 +29,7 @@ class CreateLichxuatxesTable extends Migration
             $table->string('diadiemdi');
             $table->string('ghichu');
             $table->string('nguoitao');
-            $table->string('ngoisua');
+            $table->string('nguoisua');
             $table->smallInteger('daxoa');
         });
     }

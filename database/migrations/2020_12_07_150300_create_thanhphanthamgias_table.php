@@ -19,12 +19,13 @@ class CreateThanhphanthamgiasTable extends Migration
             $table->timestamp('ngaysua')->nullable()->default(null);
             $table->bigInteger('cuochopid');
             $table->smallInteger('loai')->comment('0:trong công ty, 1:ngoài công ty');
+            $table->smallInteger('loaithamgia')->comment('0 :Người tham gia, 1: Chủ trì, 2: Người chuẩn bị');
             $table->bigInteger('nhanvienid');
-            $table->bigInteger('nguoingoaiid');
+            $table->string('tennguoingoai');
             $table->string('nhiemvu');
             $table->string('ghichu');
             $table->string('nguoitao');
-            $table->string('ngoisua');
+            $table->string('nguoisua');
             $table->smallInteger('daxoa');
         });
     }
