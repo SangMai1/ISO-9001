@@ -1,7 +1,7 @@
 @extends('layouts.master')
 
-@section('title', 'Quản lý cấu hình')
-@section('pageName', 'Thêm mới cấu hình')
+@section('title', 'Quản lý danh mục')
+@section('pageName', 'Thêm mới danh mục')
 
 @section('content')
 <?php //Hiển thị thông báo thành công?>
@@ -41,7 +41,7 @@
 @endif
 
 <?php //Form thêm mới học sinh?>
-    <form method="post" action="{{ url('/cau-hinh/them-moi') }}">
+    <form method="post" action="{{route('danhmuc.save')}}">
       {{csrf_field()}}
         
       <div class="form-group">
@@ -55,18 +55,19 @@
       </div>
     
       <div class="form-group">
-        <label>Giá trị :</label>
-        <input class="form-control" type="text" name="giatri" id="giatri" placehorder=" Nhập giá trị" /><br>
-      </div>
-
-      <div class="form-group">
-        <label>Người tạo :</label>
-        <input class="form-control" type="text" name="nguoitao" id="nguoitao" placehorder=" Nhập người tạo" /><br>
-      </div>
-      
+        <label>Loại :</label>
+        @php
+          $loais = ["0"=>"Chức danh","1"=>"Phòng ban","2"=>"Loại tài sản"];
+        @endphp
+        <select class="form-control" name="loai">
+          @foreach($loais as $key => $value)
+            <option value="{{$key}}">{{$value}}</option>
+          @endforeach
+        </select>
+     </div>
 
       <input class="btn btn-primary" type="submit" value="Thêm" />
-            <a class="btn btn-primary" href="/cau-hinh/danh-sach" role="button">Danh sách</a>
+            <a class="btn btn-primary" href="{{route('danhmuc.list')}}" role="button">Danh sách</a>
   </div>
 </form>
 @endsection

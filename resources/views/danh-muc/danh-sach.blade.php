@@ -1,6 +1,6 @@
 @extends('layouts.master')
-@section('title', 'Quản lý cấu hình')
-@section('pageName', 'Danh sách cấu hình')
+@section('title', 'Quản lý danh mục')
+@section('pageName', 'Danh sách danh mục')
 
 @section('content')
 @if ( Session::has('success') )
@@ -23,56 +23,28 @@
 		</button>
 	</div>
 @endif
-<div class="container">
-    <?php
-    ?>
-        <th><a href="/cau-hinh/them-moi" class="btn btn-primary">Thêm mới</a></th>
-    <table class="table table-bordered table-hover"><br><br>
-        {{-- <x-inputs.checkbox name="">
-            @slot('content') @endslot
-        </x-inputs.checkbox>
-        <x-inputs.input title="Email" type="text" name="name" error="cscs"></x-inputs.input> --}}
-        <thead>
-            <tr>
-                <th width="50px"><input type="checkbox" id="master"></th>
-                <th>Stt</th>
-                <th>Mã</th>
-                <th>Tên</th>
-                <th>Giá trị</th>
-                <th>Người tạo</th>
-                <th>Ngày tạo</th>
-                <th>Người sửa</th>
-                <th>Ngày sửa</th>
-                
-
-            </tr>
-        </thead>
-        <tbody>
-            <?php
-            $stt = 0;
-            foreach ($cauhinh as $value) : $stt++
-            ?>
-                <tr>
-                    <td><input type="checkbox"  ></td>
-                    <td>{{$stt}}</td>
-                    <td>{{ $value['ma']}}</td>
-                    <td>{{ $value['ten']}}</td>
-                    <td>{{ $value['giatri']}}</td>
-                    <td>{{ $value['nguoitao']}}</td>
-                    <td>{{ $value['ngaytao']}}</td>
-                    <td>{{ $value['nguoisua']}}</td>
-                    <td>{{ $value['ngaysua']}}</td>
-
-                    <td>
-                        <a  href="/cau-hinh/{{$value['id']}}/chinh-sua"><i
-                       class="fa fa-pencil-square-o mr-2" aria-hidden="true"></i></a>
-                     <a href="/cau-hinh/{{$stt}}/xoa"><i class="fa fa-trash-alt" aria-hidden="true" ></i></a>
-                    </td>
-                   
-                </tr>
-                <?php endforeach ?>
-            
-        </tbody>
-    </table>
-</div>
+<a href="{{route('danhmuc.add')}}" class="btn btn-primary">Thêm mới</a>
+<x-card>
+    @slot('body') 
+        <x-table :titles="['Mã', 'Tên','Loại','Chức năng']" auto-index="true">
+            @slot('body')
+                @php
+                    $loais = ["0"=>"Chức danh","1"=>"Phòng ban","2"=>"Loại tài sản"];
+                @endphp
+                @foreach ($danhmucs as $item)
+                    <tr>
+                        <td>{{ $item['ma'] }}</td>
+                        <td>{{ $item['ten'] }}</td>
+                        <td>{{ $loais[$item['loai']] }}</td>
+                        <td>
+                            <a  href="{{route('danhmuc.edit',["id"=>$item['id']])}}"><i
+                                class="fa fa-pencil-square-o mr-2" aria-hidden="true"></i></a>
+                            <a href="{{route('danhmuc.delete',["id"=>$item['id']])}}"><i class="fa fa-trash-alt" aria-hidden="true" ></i></a>
+                        </td>
+                    </tr>
+                @endforeach
+            @endslot
+        </x-table>
+    @endslot
+</x-card>
 @endsection

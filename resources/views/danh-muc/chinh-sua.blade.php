@@ -1,7 +1,7 @@
 @extends('layouts.master')
 
-@section('title', 'Quản lý cấu hình')
-@section('pageName', 'Chỉnh sửa cấu hình')
+@section('title', 'Quản lý danh mục')
+@section('pageName', 'Chỉnh sửa danh mục')
 
 @section('content')
 <?php //Hiển thị thông báo thành công?>
@@ -27,32 +27,33 @@
 @endif
 
 <?php //Form thêm mới học sinh?>
-    <form method="post" action="{{ url('/cau-hinh/cap-nhat') }}">
+    <form method="post" action="{{route('danhmuc.update')}}">
       {{csrf_field()}}
-      <input class="form-control" type="hidden" name="id" value="{{$cauhinh['id']}}" /><br>
+      <input class="form-control" type="hidden" name="id" value="{{$danhmuc['id']}}" /><br>
       <div class="form-group">
         <label>Mã :</label>
-        <input class="form-control" type="text" name="ma" id="ma" placehorder=" Nhập mã" value="{{$cauhinh['ma']}}" /><br>
+        <input class="form-control" type="text" name="ma" id="ma" placehorder=" Nhập mã" value="{{$danhmuc['ma']}}" /><br>
       </div>
 
       <div class="form-group">
         <label>Tên :</label>
-        <input class="form-control" type="text" name="ten" id="ten" placehorder=" Nhập tên" value="{{$cauhinh['ten']}}" /><br>
+        <input class="form-control" type="text" name="ten" id="ten" placehorder=" Nhập tên" value="{{$danhmuc['ten']}}" /><br>
       </div>
     
       <div class="form-group">
-        <label>Giá trị :</label>
-        <input class="form-control" type="text" name="giatri" id="giatri" placehorder=" Nhập giá trị" value="{{$cauhinh['giatri']}}" /><br>
-      </div>
-
-      <div class="form-group">
-        <label>Người sửa :</label>
-        <input class="form-control" type="text" name="nguoisua" id="nguoisua" placehorder=" Nhập người sửa" value="{{$cauhinh['nguoisua']}}" /><br>
-      </div>
-      
+        <label>Loại :</label>
+        @php
+          $loais = ["0"=>"Chức danh","1"=>"Phòng ban","2"=>"Loại tài sản"];
+        @endphp
+        <select class="form-control" name="loai">
+          @foreach($loais as $key => $value)
+            <option value="{{$key}}" {{$key == $danhmuc['loai'] ? 'selected' : ''}}>{{$value}}</option>
+          @endforeach
+        </select>
+     </div>
 
       <input class="btn btn-primary" type="submit" value="Cập nhật" />
-            <a class="btn btn-primary" href="/cau-hinh/danh-sach" role="button">Danh sách</a>
+            <a class="btn btn-primary" href="{{route('danhmuc.list')}}" role="button">Danh sách</a>
   </div>
 </form>
 @endsection
