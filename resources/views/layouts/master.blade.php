@@ -9,7 +9,7 @@
     <title> @yield('title')</title>
     @include('includes.lib')
     <link href="/css/layout.css" rel="stylesheet">
-    <script data-main="js/layout.js" src="/js/require.js"></script>
+    <script data-main="/js/layout.js" src="/js/require.js"></script>
     @if (View::hasSection('module'))
         <script>
             requirejs(["html/@yield('module')"])

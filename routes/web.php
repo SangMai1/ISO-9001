@@ -44,3 +44,13 @@ Route::group(['prefix' => '/cau-hinh'], function () {
     Route::get('/{id}/xoa', 'App\Http\Controllers\CauhinhsController@destroy'); // Xóa cấu hình
 });
 
+Route::group(['prefix' => '/chuc-nang'], function () {
+    Route::get('/danh-sach', 'App\Http\Controllers\ChucnangsController@index')->name('viewChucNang'); // Hiển thị danh sách chức năng
+    Route::get('/them-moi', 'App\Http\Controllers\ChucnangsController@create')->name('add'); // Thêm mới chức năng
+    Route::post('/them-moi', 'App\Http\Controllers\ChucnangsController@store')->name('addChucNang'); // Xử lý thêm mới chức năng
+    Route::get('/cap-nhat-edit/{id}', 'App\Http\Controllers\ChucnangsController@edit')->name('edit'); // Cập nhật chức năng
+    Route::post('/cap-nhat/{id}', 'App\Http\Controllers\ChucnangsController@update')->name('editChucNang'); // Xử lý cập nhật chức năng
+    Route::get('/xoa/{id}', 'App\Http\Controllers\ChucnangsController@destroy')->name('xoa'); // Xóa chức năng
+});
+
+
