@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateMenusesTable extends Migration
+class CreateUsersvachucnangsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,9 @@ class CreateMenusesTable extends Migration
      */
     public function up()
     {
-        Schema::create('menuses', function (Blueprint $table) {
-            $table->id();
-            $table->bigInteger('idcha');
-            $table->string('ten');
-            $table->string('url');
-            $table->integer('vitri');
-            $table->foreignId('chucnangid');
+        Schema::create('usersvachucnangs', function (Blueprint $table) {
+            $table->bigInteger('userid');
+            $table->bigInteger('chucnangid');
         });
     }
 
@@ -30,6 +26,6 @@ class CreateMenusesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('menuses');
+        Schema::dropIfExists('usersvachucnangs');
     }
 }
