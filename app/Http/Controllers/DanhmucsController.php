@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Danhmucs;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 
 class DanhmucsController extends Controller
 {
@@ -14,7 +17,8 @@ class DanhmucsController extends Controller
      */
     public function index()
     {
-        //
+        $danhmucs = Danhmucs::all()->where('daxoa',0);
+        return view('/danh-muc/danh-sach',['danhmucs'=>$danhmucs]);
     }
 
     /**
@@ -24,7 +28,8 @@ class DanhmucsController extends Controller
      */
     public function create()
     {
-        //
+        //Hiển thị trang thêm danh mục
+	    return view('/danh-muc/them-moi');
     }
 
     /**
@@ -35,7 +40,40 @@ class DanhmucsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        date_default_timezone_set("Asia/Ho_Chi_Minh");     
+    
+        $request->validate([
+            'ma' => 'required',
+            'ten' => 'required',
+            'loai' => 'required',
+        ],[
+            'ma.required' => 'Mã không được bỏ trống',
+            'ten.required' => 'Tên không được bỏ trống',
+            'loai.required' => 'Loại không được bỏ trống',
+        ]);
+
+        $allRequest  = $request->all();
+        $ma = $allRequest['ma'];
+        $ten = $allRequest['ten'];
+        $loai = $allRequest['loai'];
+	
+        $danhmuc = new Danhmucs();
+        $danhmuc -> ten = $ten;
+        $danhmuc -> ma = $ma;
+        $danhmuc -> loai = $loai;
+        $danhmuc -> nguoitao = "admin";
+        $danhmuc -> ngaytao = Carbon::now();
+        $danhmuc -> nguoisua = "admin";
+        $danhmuc -> ngaysua = Carbon::now();
+        $danhmuc -> daxoa = "0";
+        if($danhmuc->save()){
+            Session::flash('success', 'Thêm mới thành công');
+        } else {
+            Session::flash('error', 'Thêm mới thất bại!');
+        }
+	
+        //Thực hiện chuyển trang
+        return redirect()->Route('danhmuc.add');
     }
 
     /**
@@ -55,9 +93,10 @@ class DanhmucsController extends Controller
      * @param  \App\Models\Danhmucs  $danhmucs
      * @return \Illuminate\Http\Response
      */
-    public function edit(Danhmucs $danhmucs)
+    public function edit($id)
     {
-        //
+        $danhmuc = Danhmucs::find($id);
+        return view('/danh-muc/chinh-sua', compact('danhmuc'));
     }
 
     /**
@@ -69,7 +108,38 @@ class DanhmucsController extends Controller
      */
     public function update(Request $request, Danhmucs $danhmucs)
     {
-        //
+        date_default_timezone_set("Asia/Ho_Chi_Minh");
+
+        $request->validate([
+            'ma' => 'required',
+            'ten' => 'required',
+            'loai' => 'required',
+        ],[
+            'ma.required' => 'Mã không được bỏ trống',
+            'ten.required' => 'Tên không được bỏ trống',
+            'loai.required' => 'Loại không được bỏ trống',
+        ]);
+
+        $allRequest  = $request->all();
+        $ma = $allRequest['ma'];
+        $ten = $allRequest['ten'];
+        $loai = $allRequest['loai'];
+
+        $danhmuc = Danhmucs::find($request->id);
+        $danhmuc -> ten = $ten;
+        $danhmuc -> ma = $ma;
+        $danhmuc -> loai = $loai;
+        $danhmuc -> nguoisua = "admin";
+        $danhmuc -> ngaysua = Carbon::now();
+ 
+        if($danhmuc->update()){
+            Session::flash('success', 'Cập nhật thành công');
+        } else {
+            Session::flash('error', 'Cập nhật thất bại');
+        }
+        
+        //Thực hiện chuyển trang
+        return  redirect()->Route('danhmuc.list');
     }
 
     /**
@@ -78,8 +148,22 @@ class DanhmucsController extends Controller
      * @param  \App\Models\Danhmucs  $danhmucs
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Danhmucs $danhmucs)
+    public function destroy($id)
     {
-        //
+        date_default_timezone_set("Asia/Ho_Chi_Minh");
+        //Thực hiện câu lệnh xóa với giá trị id = $id trả về
+        $danhmuc = Danhmucs::find($id);
+        $danhmuc -> nguoisua = "admin";
+        $danhmuc -> ngaysua = Carbon::now();
+        $danhmuc -> daxoa = 1;
+ 
+        if($danhmuc->update()){
+            Session::flash('success', 'Xóa  thành công!');
+        } else {
+            Session::flash('error', 'Xóa thất bại!');
+        }
+        
+        //Thực hiện chuyển trang
+        return redirect()->Route('danhmuc.list');
     }
 }
