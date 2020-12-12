@@ -14,7 +14,7 @@
   @endif
   <!-- Alert message (end) -->
 
-  <form method="post" action="{{ url('/chuc-nang/them-moi') }}">
+  <form method="post" action="{{ url('/chuc-nang/them-moi') }}" id="myModal">
 
 
     {{csrf_field()}}

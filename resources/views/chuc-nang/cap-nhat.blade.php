@@ -1,4 +1,4 @@
-@extends('layouts.master')
+{{-- @extends('layouts.master')
 
 @section('title', 'Quản lý chức năng')
 @section('pageName', 'Cập nhật chức năng')
@@ -14,7 +14,7 @@
         @endif
         <!-- Alert message (end) -->
 
-        <form method="post" action="{{ route('editChucNang',[$chucnang->id])}}">
+        <form method="post" action="{{ route('editChucNang')}}" id="myModalEdit">
           {{csrf_field()}}
           <input class="form-control" type="hidden" name="id" value="{{$chucnang['id']}}" /><br>
           <div class="form-group">
@@ -45,4 +45,4 @@
     </form>
   </div>
     
-@endsection
+@endsection --}}
