@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Danhmucs;
+use App\Util\CommonUtil;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -18,7 +19,7 @@ class DanhmucsController extends Controller
     public function index()
     {
         $danhmucs = Danhmucs::all()->where('daxoa',0);
-        return view('/danh-muc/danh-sach',['danhmucs'=>$danhmucs]);
+        return view('/danh-muc/danh-sach',["danhmucs" => $danhmucs,"temdm"=>"","loaiDm"=>"-1"]);
     }
 
     /**
@@ -61,9 +62,9 @@ class DanhmucsController extends Controller
         $danhmuc -> ten = $ten;
         $danhmuc -> ma = $ma;
         $danhmuc -> loai = $loai;
-        $danhmuc -> nguoitao = "admin";
+        $danhmuc -> nguoitao = CommonUtil::getValueCauhinh("USER_ADMIN");
         $danhmuc -> ngaytao = Carbon::now();
-        $danhmuc -> nguoisua = "admin";
+        $danhmuc -> nguoisua = CommonUtil::getValueCauhinh("USER_ADMIN");
         $danhmuc -> ngaysua = Carbon::now();
         $danhmuc -> daxoa = "0";
         if($danhmuc->save()){
@@ -129,7 +130,7 @@ class DanhmucsController extends Controller
         $danhmuc -> ten = $ten;
         $danhmuc -> ma = $ma;
         $danhmuc -> loai = $loai;
-        $danhmuc -> nguoisua = "admin";
+        $danhmuc -> nguoisua = CommonUtil::getValueCauhinh("USER_ADMIN");
         $danhmuc -> ngaysua = Carbon::now();
  
         if($danhmuc->update()){
@@ -153,7 +154,7 @@ class DanhmucsController extends Controller
         date_default_timezone_set("Asia/Ho_Chi_Minh");
         //Thực hiện câu lệnh xóa với giá trị id = $id trả về
         $danhmuc = Danhmucs::find($id);
-        $danhmuc -> nguoisua = "admin";
+        $danhmuc -> nguoisua = CommonUtil::getValueCauhinh("USER_ADMIN");
         $danhmuc -> ngaysua = Carbon::now();
         $danhmuc -> daxoa = 1;
  
@@ -165,5 +166,20 @@ class DanhmucsController extends Controller
         
         //Thực hiện chuyển trang
         return redirect()->Route('danhmuc.list');
+    }
+
+    public function find(Request $request){
+        $tendm = $request -> tendm ;
+        $loaiDm = $request -> loaidm;
+        $sql = " SELECT * FROM danhmucs WHERE daxoa = 0 ";
+        if(isset($request -> tendm) && $tendm != ""){
+            $sql = $sql . " AND ten like '%" . $tendm ."%' ";
+        }
+        if(isset($request -> loaidm) && $loaiDm >= 0){
+            $sql = $sql . " AND loai = " . $loaiDm ." ";
+        }
+
+        $danhmucs = DB::select($sql);
+        return view('/danh-muc/danh-sach',["danhmucs" => $danhmucs,"tendm"=>$tendm,"loaiDm"=>$loaiDm]);
     }
 }

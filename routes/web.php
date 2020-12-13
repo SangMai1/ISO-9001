@@ -51,6 +51,7 @@ Route::group(['prefix' => '/danh-muc'], function () {
     Route::get('/chinh-sua/{id}', 'App\Http\Controllers\DanhmucsController@edit')->name('danhmuc.edit'); // Màn hình sửa danh mục
     Route::post('/cap-nhat', 'App\Http\Controllers\DanhmucsController@update')->name('danhmuc.update'); // Xử lý sửa danh mục
     Route::get('/xoa/{id}', 'App\Http\Controllers\DanhmucsController@destroy')->name('danhmuc.delete'); // Xóa danh mục
+    Route::get('/search', 'App\Http\Controllers\DanhmucsController@find')->name('danhmuc.find'); // Tìm kiếm danh mục
 });
 Route::group(['prefix' => '/chuc-nang'], function () {
     Route::get('/danh-sach', 'App\Http\Controllers\ChucnangsController@index')->name('viewChucNang'); // Hiển thị danh sách chức năng
