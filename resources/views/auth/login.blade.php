@@ -31,9 +31,6 @@
                                             value="{{ old('email') }}" required autocomplete="email" autofocus>
                                         </x-inputs.input>
                                     </div>
-                                    <x-inputs.checkbox name="name" name>
-                                        @slot('content')  name="name" @endslot
-                                    </x-inputs.checkbox>
                                 </div>
                                 <div class="row">
                                     <div class="col-md-8 offset-md-2">
@@ -45,13 +42,11 @@
 
                                     </div>
                                 </div>
-
-
-                                <div class="form-group row">
+                                <div class="form-group row"> 
                                     <div class="col-md-6 offset-md-4">
                                         <x-inputs.checkbox name="remember" id="remember"
                                             :checked="old('remember') ? 'true' : ''">
-                                            @slot('content') <em>{{ __('lang.RememberMe') }}</em> @endslot
+                                            @slot('content') <em>{{ __('lang.RememberMe') }}</em> @endslot 
                                         </x-inputs.checkbox>
                                     </div>
                                 </div>
@@ -77,9 +72,11 @@
         </div>
     </div>
     <script src="/assets/js/material-dashboard.js?v=2.1.2" type="text/javascript"></script>
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
         integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA=="
         crossorigin="anonymous" />
+    {{-- <script data-main="js/layout.js" src="/js/require.js"></script> --}}
 </body>
 
 </html>

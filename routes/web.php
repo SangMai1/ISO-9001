@@ -17,6 +17,10 @@ Route::get('/', function () {
     return view('example');
 });
 
+Route::get('/a/b', function () {
+    return view('example');
+});
+
 Auth::routes(['register' => false]);
 
 
@@ -33,3 +37,5 @@ Route::get('/input', function(){
 });
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Route::get('/doc', function(){return view('doc');});
