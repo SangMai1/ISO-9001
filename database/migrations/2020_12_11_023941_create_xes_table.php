@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateNhomsTable extends Migration
+class CreateXesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,12 @@ class CreateNhomsTable extends Migration
      */
     public function up()
     {
-        Schema::create('nhoms', function (Blueprint $table) {
-            $table->id();
-            $table->string('ten');
+        Schema::create('xes', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->bigInteger('taisanid');
+            $table->string('bienso');
+            $table->integer('socho');
+            $table->bigInteger('nhanvienid');
             $table->string('nguoitao');
             $table->timestamp('ngaytao');
             $table->string('nguoisua');
@@ -31,6 +34,6 @@ class CreateNhomsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('nhoms');
+        Schema::dropIfExists('xes');
     }
 }

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTaisansTable extends Migration
+class CreateNhomsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,10 @@ class CreateTaisansTable extends Migration
      */
     public function up()
     {
-        Schema::create('taisans', function (Blueprint $table) {
-            $table->id();
-            $table->string('mataisan');
-            $table->string('tentaisan');
-            $table->float('giatien');
-            $table->integer('khauhao');
-            $table->foreignId('loaitaisanid');
+        Schema::create('nhoms', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->string('ma');
+            $table->string('ten');
             $table->string('nguoitao');
             $table->timestamp('ngaytao');
             $table->string('nguoisua');
@@ -35,6 +32,6 @@ class CreateTaisansTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('taisans');
+        Schema::dropIfExists('nhoms');
     }
 }

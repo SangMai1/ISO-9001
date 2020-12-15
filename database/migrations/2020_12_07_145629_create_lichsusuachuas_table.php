@@ -23,7 +23,7 @@ class CreateLichsusuachuasTable extends Migration
             $table->bigInteger('giatien');
             $table->string('ghichu');
             $table->string('nguoitao');
-            $table->string('ngoisua');
+            $table->string('nguoisua');
             $table->smallInteger('daxoa');
         });
     }

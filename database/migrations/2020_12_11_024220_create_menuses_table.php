@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCauhinhsTable extends Migration
+class CreateMenusesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,16 +13,18 @@ class CreateCauhinhsTable extends Migration
      */
     public function up()
     {
-        Schema::create('cauhinhs', function (Blueprint $table) {
+        Schema::create('menuses', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->timestamp('ngaytao');
-            $table->timestamp('ngaysua')->nullable()->default(null);
-            $table->string('ma');
+            $table->bigInteger('idcha');
             $table->string('ten');
-            $table->string('giatri');
+            $table->string('url');
+            $table->integer('vitri');
+            $table->bigInteger('chucnangid');
             $table->string('nguoitao');
+            $table->timestamp('ngaytao');
             $table->string('nguoisua');
-            $table->smallInteger('daxoa');
+            $table->timestamp('ngaysua')->nullable()->default(null);
+            $table->integer('daxoa');
         });
     }
 
@@ -33,6 +35,6 @@ class CreateCauhinhsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('cauhinhs');
+        Schema::dropIfExists('menuses');
     }
 }

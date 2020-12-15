@@ -23,7 +23,7 @@ class CreateCuochopsTable extends Migration
             $table->string('noidung');
             $table->smallInteger('trangthai');
             $table->string('nguoitao');
-            $table->string('ngoisua');
+            $table->string('nguoisua');
             $table->smallInteger('daxoa');
         });
     }

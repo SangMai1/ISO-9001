@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateNhomsvachucnangsTable extends Migration
+class CreateUsersvanhomsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,9 @@ class CreateNhomsvachucnangsTable extends Migration
      */
     public function up()
     {
-        Schema::create('nhomsvachucnangs', function (Blueprint $table) {
-            $table->foreignId('nhomid');
-            $table->foreignId('chucnangid');
+        Schema::create('usersvanhoms', function (Blueprint $table) {
+            $table->bigInteger('userid');
+            $table->bigInteger('nhomid');
         });
     }
 
@@ -26,6 +26,6 @@ class CreateNhomsvachucnangsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('nhomsvachucnangs');
+        Schema::dropIfExists('usersvanhoms');
     }
 }

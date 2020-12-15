@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateXesTable extends Migration
+class CreateTaisansTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,13 @@ class CreateXesTable extends Migration
      */
     public function up()
     {
-        Schema::create('xes', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('loaitaisanid');
-            $table->string('bienso');
-            $table->integer('socho');
-            $table->foreignId('nhanvienid');
+        Schema::create('taisans', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->string('mataisan');
+            $table->string('tentaisan');
+            $table->float('giatien');
+            $table->integer('khauhao');
+            $table->bigInteger('loaitaisanid');
             $table->string('nguoitao');
             $table->timestamp('ngaytao');
             $table->string('nguoisua');
@@ -34,6 +35,6 @@ class CreateXesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('xes');
+        Schema::dropIfExists('taisans');
     }
 }
