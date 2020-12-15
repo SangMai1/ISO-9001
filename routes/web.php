@@ -58,6 +58,16 @@ Route::group(['prefix' => '/chuc-nang'], function () {
     Route::post('/them-moi', 'App\Http\Controllers\ChucnangsController@store')->name('addChucNang'); // Xử lý thêm mới chức năng
     Route::get('/cap-nhat-edit/{id}', 'App\Http\Controllers\ChucnangsController@edit')->name('edit'); // Cập nhật chức năng
     Route::post('/cap-nhat', 'App\Http\Controllers\ChucnangsController@update')->name('editChucNang'); // Xử lý cập nhật chức năng
-    Route::get('/xoa', 'App\Http\Controllers\ChucnangsController@deleteAll')->name('xoaChucNang'); // Xóa chức năng
-    Route::get('/search', 'App\Http\Controllers\ChucnangsController@search')->name('searchChucNang');
+    Route::post('/xoa', 'App\Http\Controllers\ChucnangsController@deleteAll')->name('xoaChucNang'); // Xóa chức năng
+    Route::get('/search', 'App\Http\Controllers\ChucnangsController@search')->name('searchChucNang'); // Tìm kiếm chức năng
+});
+
+Route::group(['prefix' => '/nhom'], function () {
+    Route::get('/danh-sach', 'App\Http\Controllers\NhomsController@index')->name('viewNhoms'); // Hiển thị danh sách nhóm
+    Route::get('/them-moi', 'App\Http\Controllers\NhomsController@create')->name('themnhom'); // Thêm mới nhóm
+    Route::post('/them-moi', 'App\Http\Controllers\NhomsController@store')->name('addNhom'); // Xử lý thêm mới nhóm
+    Route::get('/cap-nhat-edit/{id}', 'App\Http\Controllers\NhomsController@edit')->name('editnhom'); // Cập nhật nhóm
+    Route::post('/cap-nhat', 'App\Http\Controllers\NhomsController@update')->name('editNhom'); // Xử lý cập nhật nhóm
+    Route::post('/xoa', 'App\Http\Controllers\NhomsController@deleteAll')->name('xoaNhom'); // Xóa nhóm
+    Route::get('/search', 'App\Http\Controllers\NhomsController@search')->name('searchNhom'); // Tìm kiếm nhóm
 });

@@ -5,7 +5,7 @@
 @section('content')
   <div class="container">
     <button type="submit" class="btn btn-primary" data-toggle="modal" data-target="#myModal" id="bnn"><i class="fas fa-plus-circle"></i></button>
-			<button class="btn btn-primary buttonDelete" data-url="{{ url('/chuc-nang/xoa') }}"><i class="fas fa-trash-alt"></i></button>
+			<button class="btn btn-primary buttonDelete"><i class="fas fa-trash-alt"></i></button>
       
       {{-- Search --}}
       <form action="{{route('searchChucNang')}}" method="GET">
@@ -116,7 +116,8 @@
         @endif
         <!-- Alert message (end) -->
    
-    <form method=get id="formDelete" action={{route('xoaChucNang')}}>
+    <form method="post" id="formDelete" action="{{route('xoaChucNang')}}">
+      {{ csrf_field() }}
       <table class="table table-bordered table-hover">
         <tr>
           <th width="50px"><input class="sub_chk" type="checkbox" id="master"></th>
@@ -125,12 +126,12 @@
           <th>URL</th>
         </tr>
         @foreach($chucNangs as $cn)
-        <tr class="edit" href="{{ route('edit',[$cn->id]) }}"data-toggle="modal" data-target="#myEdit" >
-          <td><input type="checkbox" value={{$cn->id}} name="list_ids" ></td>
+        <tr>
+          <td><input type="checkbox" value={{$cn->id}} name="idss[]"></td>
           <td>
             {{$cn->id}}
           </td>
-          <td>
+          <td class="edit" href="{{ route('edit',[$cn->id]) }}"data-toggle="modal" data-target="#myEdit">
             {{$cn->ten}}
           </td>
           <td>
@@ -182,9 +183,9 @@
           $('#myDelete').modal();
           $('#delRef').click(function() {
             $('#formDelete').submit();
-          });
+        });
 
-	});
+	  });
   
   });
 </script>

@@ -16,6 +16,7 @@ class CreateNhomsvachucnangsTable extends Migration
         Schema::create('nhomsvachucnangs', function (Blueprint $table) {
             $table->bigInteger('nhomid');
             $table->bigInteger('chucnangid');
+            
         });
     }
 
