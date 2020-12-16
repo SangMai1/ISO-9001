@@ -17,6 +17,9 @@
         display: block;
     }
 }
+.form-check-label{
+    min-height: 19px;
+}
 ul:not(.navbar-nav) {
     margin-top: 10px !important;
     li {
