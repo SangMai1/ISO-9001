@@ -9,8 +9,9 @@
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"
     integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
 <script src="/assets/js/core/popper.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap-material-design@4.1.3/dist/js/bootstrap-material-design.min.js">
-</script>
+{{-- <script src="/assets/js/core/bootstrap-material-design.min.js"></script> --}}
+<script src="https://cdn.jsdelivr.net/npm/bootstrap-material-design@4.1.3/dist/js/bootstrap-material-design.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.css" id="theme-styles">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.6.13/js/perfect-scrollbar.jquery.min.js"
     integrity="sha512-g1rQ3POLb/FTB5ouNwzsvY/++6bs5TYFcMbsjC19QxpL4JFL7W5EbCBJVKzORM4YRLm17j4vNyyGWhkiOB6MFw=="
     crossorigin="anonymous"></script>
@@ -19,7 +20,7 @@
     integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ=="
     crossorigin="anonymous"></script>
 <!--  Plugin for Sweet Alert -->
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@7.24.1/dist/sweetalert2.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.js"></script>
 <!-- Forms Validations Plugin -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.14.0/jquery.validate.min.js"
     integrity="sha512-2ZFPcPxv4xOvt+Sz1JMGyoliB3tccdckAJXlEz13o1byNrevFuyDoLs9tZfi+hTHz/h5o/XealriXyhyzGYrGg=="
@@ -29,10 +30,6 @@
 <!--	Plugin for Select, full documentation here: http://silviomoreto.github.io/bootstrap-select -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.11/js/bootstrap-select.min.js"
     integrity="sha512-QyrS4/8iw/iAH8hgZrjQ9vOEowaNvmCHID/2JMW+dap7lbRixaimYMh7CInb90VikGkYpcoLsnJ4ec7R1w7fHw=="
-    crossorigin="anonymous"></script>
-<!--  Plugin for the DateTimePicker, full documentation here: https://eonasdan.github.io/bootstrap-datetimepicker/ -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"
-    integrity="sha512-GDey37RZAxFkpFeJorEUwNoIbkTwsyC736KNSYucu1WJWFK9qTdzYub8ATxktr6Dwke7nbFaioypzbDOQykoRg=="
     crossorigin="anonymous"></script>
 <!--  DataTables.net Plugin, full documentation here: https://datatables.net/  -->
 <script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>

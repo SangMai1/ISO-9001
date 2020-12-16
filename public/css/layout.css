@@ -1,7 +1,25 @@
+[render] {
+  display: none !important;
+}
+
+.swal2-shown {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
 .sidebar::before {
   cursor: pointer;
   user-select: none;
   background-color: white !important;
+}
+
+.invalid-feedback *,
+.invalid-feedback {
+  color: red !important;
+  font-size: 13px !important;
+}
+.invalid-feedback *.default,
+.invalid-feedback.default {
+  display: block;
 }
 
 ul:not(.navbar-nav) {

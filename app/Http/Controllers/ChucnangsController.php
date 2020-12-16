@@ -140,56 +140,22 @@ class ChucnangsController extends Controller
      */
     public function destroy(Request $request)
     {
-        date_default_timezone_set("Asia/Ho_Chi_Minh");
-                 $list_id = $request -> input('list_ids');
-                 $ids = explode(",", $list_id);
-                
-                    $chucNang = chucnangs::whereIn('id', $ids)->update([
-                        "daxoa" => "1",
-                        "nguoisua" => "ai do",
-                        "ngaysua" => Carbon::now()
-
-                    ]);
-                    printf($chucNang);
-                    if($chucNang){
-                        Session::flash('message', 'Xóa thành công');
-                        Session::flash('alert-class', 'alert-success');
-                    }
-                    
-                
-            
-        //     $ids = explode(",", $list_id);
-        //     chucnangs::find($ids)->each(function ($daXoa, $key){
-        //         $daXoa->daxoa = "1";
-        //         $daXoa->nguoisua = "ai do";
-        //         $daXoa->ngaysua = Carbon::now();
-        //         if ($daXoa->update())
-        //             Session::flash('message', 'Xóa thành công');
-        //             Session::flash('alert-class', 'alert-success');
-
-          
         
-        // });
-        return redirect()->route('viewChucNang');
       }
 
      public function deleteAll(Request $request)
     {
 
         date_default_timezone_set("Asia/Ho_Chi_Minh");
-        $list_id = $request->input('list_ids');
-        $ids = explode(",", $list_id);
+        $list_id = $request -> input('idss');
+        
+        foreach($list_id as $list){
+            chucnangs::where('id',$list)->update([
+                "daxoa" => "1",
+                "nguoisua" => "ai do",
+                "ngaysua" => Carbon::now()
 
-        $chucNang = chucnangs::where('id',$ids)->update([
-            "daxoa" => "1",
-            "nguoisua" => "ai do",
-            "ngaysua" => Carbon::now()
-
-        ]);
-        printf($chucNang);
-        if ($chucNang) {
-            Session::flash('message', 'Xóa thành công');
-            Session::flash('alert-class', 'alert-success');
+            ]);
         }
         return redirect()->route('viewChucNang');
     }

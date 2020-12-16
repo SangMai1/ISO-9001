@@ -1,43 +1,22 @@
 @extends('layouts.master')
 @section('title', 'Test')
+@section('module', 'example')
 
 @section('content')
     {{-- active menu --}}
     <div id="active-menu" href="/quan-li-xe/lich-sua-xe" active="khoiPhucTaiKhoan"></div>
-    
+
     {{-- card component --}}
     <x-card>
         @slot('title') <em>Title</em> @endslot
         @slot('subTitle') category @endslot
         @slot('body')
-
-            {{-- table-component --}}
-            <x-table :titles="['name', 'age']" auto-index="true">
-                @slot('body')
-                    @php $collection = [["name" =>"nam", 'age'=>14], ["name" =>"nam", 'age'=>14], ["name" =>"dung", 'age'=>14],
-                    ["name" =>"dung", 'age'=>14], ["name" =>"dung", 'age'=>14]]
-                    @endphp
-                    @foreach ($collection as $item)
-                        <tr>
-                            <td><span data-toggle="tooltip" data-html="true" title="<em>Tooltip</em>">{{ $item['name'] }}</span>
-                            </td>
-                            <td>{{ $item['age'] }}</td>
-                        </tr>
-                    @endforeach
-                @endslot
-            </x-table>
-            <x-table :titles="['name', 'age']" auto-index="true">
-                @slot('body')
-                    @foreach ($collection as $item)
-                        <tr>
-                            <td><span data-toggle="tooltip" data-html="true" title="<em>Tooltip</em>">{{ $item['name'] }}</span>
-                            </td>
-                            <td>{{ $item['age'] }}</td>
-                        </tr>
-                    @endforeach
-                @endslot
-            </x-table>
-
+            <x-input title="title" type="text" name="name" error="Lỗi nè" float/>
+            <x-input title="title2" type="text" name="name" float/>
+            <x-input type="text" name="name" float>
+                @slot('title') <label>123</label> @endslot
+            </x-input>
+            <x-input title="render" type="checkbox" name="name" error="Lỗi tiếp nè"/>
         @endslot
     </x-card>
 @endsection

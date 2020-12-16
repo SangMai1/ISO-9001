@@ -1,12 +1,10 @@
+//@ts-no-check
+//@ts-ignore
 export const Utils = {
     showMessage(message = 'no message') {
         console.log(message)
     },
-    /**
-     * @param {number} length
-     * @returns {string}
-     */
-    randomString(length = 10) {
+    randomString(length:number = 10): string {
         const characters = 'abcdefghijklmnopqrstuvwxyz'
         const charactersLength = characters.length;
         Utils.randomString = function () {
@@ -18,5 +16,19 @@ export const Utils = {
             return result
         }
         return Utils.randomString()
+    },
+    activeAllActionFromObject(obj) {
+        for (let renderAction of Object.values(obj)) {
+            if (renderAction instanceof Function) renderAction()
+        }
+    },
+    loadScript(url) {
+        const script = document.createElement('script')
+        script.src = url
+        return new Promise((resolve) => {
+            script.onload = resolve
+            document.head.append(script)
+        })
+
     }
 }
