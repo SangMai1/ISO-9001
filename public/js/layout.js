@@ -77,6 +77,17 @@ define(["require", "exports", "./utils"], function (require, exports, utils_1) {
                             e.setAttribute('data-target', '#' + id);
                     }
                 });
+            },
+            removeErrorInput(jElement = $('body')) {
+                jElement.find('.form-group,.form-check').each(function (index, e) {
+                    if ($(this).find('.invalid-feedback')[0]) {
+                        $(this).find('input').on('input', function _event() {
+                            $(this).off('input', _event);
+                            $(e).removeClass('has-danger').find('.invalid-feedback.default').remove();
+                            $(e).find('.form-control-feedback.default').remove();
+                        });
+                    }
+                });
             }
         }
     };

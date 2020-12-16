@@ -17,6 +17,10 @@
   color: red !important;
   font-size: 13px !important;
 }
+.invalid-feedback *.default,
+.invalid-feedback.default {
+  display: block;
+}
 
 ul:not(.navbar-nav) {
   margin-top: 10px !important;

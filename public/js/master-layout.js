@@ -23,9 +23,7 @@
         $.fn.validateCustom = function (validate) {
             for (let nameInput of Object.keys(validate.rules)) {
                 let element = this.find(`[name="${nameInput}"]`);
-                let invalidFeedback = element.next('.invalid-feedback').addClass('d-block');
-                if (!invalidFeedback[0])
-                    invalidFeedback = $('<span class="invalid-feedback d-block"></span>');
+                let invalidFeedback = $('<span class="invalid-feedback d-block"></span>');
                 switch (element.attr('type')) {
                     case 'checkbox':
                     case 'radio':
@@ -34,7 +32,7 @@
                         break;
                     default:
                         element.closest('.form-group').attr('parent', '');
-                        $('<span class="form-control-feedback"><i class="fas fa-check"></i></span>')
+                        $('<span class="form-control-feedback"><i class="fas"></i></span>')
                             .insertAfter(element);
                         invalidFeedback.insertAfter(element);
                 }
@@ -72,12 +70,15 @@
                         switch (element.type) {
                             case 'checkbox':
                             case 'radio':
+                                $(element).closest('.form-check').find('.invalid-feedback.default').remove();
                                 return;
                             default:
                                 cacheValue.parent = $(element).closest('.form-group');
                                 cacheValue.invalidFeedback = $(element).parent()
                                     .next('.invalid-feedback');
                                 cacheValue.iconFeedback = $(element).parent().find('.form-control-feedback > .fas');
+                                cacheValue.parent.removeClass('has-danger').find('.invalid-feedback.default').remove();
+                                cacheValue.parent.find('.form-control-feedback.default').remove();
                         }
                         cache[element.name] = cacheValue;
                     }
@@ -89,43 +90,3 @@
         };
     }
 })();
-$(document).ready(function () {
-    $().ready(function () {
-        $sidebar = $('.sidebar');
-        $sidebar_img_container = $sidebar.find('.sidebar-background');
-        $full_page = $('.full-page');
-        $sidebar_responsive = $('body > .navbar-collapse');
-        window_width = $(window).width();
-        fixed_plugin_open = $('.sidebar .sidebar-wrapper .nav li.active a p').html();
-        if (window_width > 767 && fixed_plugin_open == 'Dashboard') {
-            if ($('.fixed-plugin .dropdown').hasClass('show-dropdown')) {
-                $('.fixed-plugin .dropdown').addClass('open');
-            }
-        }
-        $('.fixed-plugin a').click(function (event) {
-            if ($(this).hasClass('switch-trigger')) {
-                if (event.stopPropagation) {
-                    event.stopPropagation();
-                }
-                else if (window.event) {
-                    window.event.cancelBubble = true;
-                }
-            }
-        });
-        $('.fixed-plugin .active-color span').click(function () {
-            $full_page_background = $('.full-page-background');
-            $(this).siblings().removeClass('active');
-            $(this).addClass('active');
-            var new_color = $(this).data('color');
-            if ($sidebar.length != 0) {
-                $sidebar.attr('data-color', new_color);
-            }
-            if ($full_page.length != 0) {
-                $full_page.attr('filter-color', new_color);
-            }
-            if ($sidebar_responsive.length != 0) {
-                $sidebar_responsive.attr('data-color', new_color);
-            }
-        });
-    });
-});

@@ -13,6 +13,9 @@
 .invalid-feedback {
     color: red !important;
     font-size: 13px !important;
+    &.default{
+        display: block;
+    }
 }
 ul:not(.navbar-nav) {
     margin-top: 10px !important;

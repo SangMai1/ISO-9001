@@ -135,9 +135,9 @@
                                     @slot('subTitle') Ví dụ @endslot
                                     @slot('body')
                                         <form id="form-ex" method="post" action="">
-                                            <x-input title="input 1" type="text" name="first" float />
-                                            <x-input title="input 2" type="text" name="second" float />
-                                            <x-input title="input 3" type="checkbox" name="cb" />
+                                            <x-input title="Gõ vô là hết lỗi server / gõ 2 kí tự để hiện lỗi validation" type="text" name="first" error="Lỗi từ server nè!" float />
+                                            <x-input title="Bắt buộc nhâp cái ni" type="text" name="second" float />
+                                            <x-input title="Check vô là hết hiện lỗi server" type="checkbox" error="Lỗi từ server nè!"  name="cb" />
                                             <input type="submit" class="btn btn-success" value="Submit" />
                                         </form>
                                     @endslot
@@ -146,7 +146,7 @@
                                 <p>- Code Blade</p>
                                 <script>
                                     renderCode(
-                                        `<form id=\"form-ex\" method=\"post\" action=\"\">\r\n    ${'<'}x-input title=\"input 1\" type=\"text\" name=\"first\" float \/>\r\n    ${'<'}x-input title=\"input 2\" type=\"text\" name=\"second\" float \/>\r\n    ${'<'}x-input title=\"input 3\" type=\"checkbox\" name=\"cb\" \/>\r\n    <input type=\"submit\" class=\"btn btn-success\" value=\"Submit\" \/>\r\n<\/form>`
+                                        `<form id=\"form-ex\" method=\"post\" action=\"\">\r\n    <x-input title=\"G\u00F5 v\u00F4 l\u00E0 h\u1EBFt l\u1ED7i server \/ g\u00F5 2 k\u00ED t\u1EF1 \u0111\u1EC3 hi\u1EC7n l\u1ED7i validation\" type=\"text\" name=\"first\" error=\"L\u1ED7i t\u1EEB server n\u00E8!\" float \/>\r\n    <x-input title=\"B\u1EAFt bu\u1ED9c nh\u00E2p c\u00E1i ni\" type=\"text\" name=\"second\" float \/>\r\n    <x-input title=\"Check v\u00F4 l\u00E0 h\u1EBFt hi\u1EC7n l\u1ED7i server\" type=\"checkbox\" error=\"L\u1ED7i t\u1EEB server n\u00E8!\"  name=\"cb\" \/>\r\n    <input type=\"submit\" class=\"btn btn-success\" value=\"Submit\" \/>\r\n<\/form>`
                                     )
 
                                 </script>
