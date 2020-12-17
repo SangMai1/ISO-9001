@@ -7,5 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class chucnangs extends Model
 {
-    use HasFactory;
+    public $timestamps = true;
+    protected $table = "chucnangs";
+    protected $fillable = ["id", "ten", "url", "nguoitao", "nguoisua", "daxoa"];
+
 }

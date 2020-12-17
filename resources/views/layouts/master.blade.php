@@ -9,12 +9,6 @@
     <title> @yield('title')</title>
     @include('includes.lib')
     <link href="/css/layout.css" rel="stylesheet">
-    <script data-main="/js/layout.js" src="/js/require.js"></script>
-    @if (View::hasSection('module'))
-        <script>
-            requirejs(["html/@yield('module')"])
-        </script>
-    @endif
     <meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport' />
 </head>
 
@@ -31,7 +25,7 @@
                     @show
                 </div>
             </div>
-            @include('includes.footer')
+            {{-- @include('includes.footer')     --}}
         </div>
     </div>
     <div class="fixed-plugin">
@@ -59,69 +53,19 @@
     </div>
     <!-- Control Center for Material Dashboard: parallax effects, scripts for the example pages etc -->
     <script src="/assets/js/material-dashboard.js?v=2.1.2" type="text/javascript"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
-        integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA=="
-        crossorigin="anonymous" />
-    <script>
-        $(document).ready(function() {
-            $().ready(function() {
-                $sidebar = $('.sidebar');
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" />
 
-                $sidebar_img_container = $sidebar.find('.sidebar-background');
-
-                $full_page = $('.full-page');
-
-                $sidebar_responsive = $('body > .navbar-collapse');
-
-                window_width = $(window).width();
-
-                fixed_plugin_open = $('.sidebar .sidebar-wrapper .nav li.active a p').html();
-
-                if (window_width > 767 && fixed_plugin_open == 'Dashboard') {
-                    if ($('.fixed-plugin .dropdown').hasClass('show-dropdown')) {
-                        $('.fixed-plugin .dropdown').addClass('open');
-                    }
-
-                }
-
-                $('.fixed-plugin a').click(function(event) {
-                    // Alex if we click on switch, stop propagation of the event, so the dropdown will not be hide, otherwise we set the  section active
-                    if ($(this).hasClass('switch-trigger')) {
-                        if (event.stopPropagation) {
-                            event.stopPropagation();
-                        } else if (window.event) {
-                            window.event.cancelBubble = true;
-                        }
-                    }
-                });
-
-                $('.fixed-plugin .active-color span').click(function() {
-                    $full_page_background = $('.full-page-background');
-
-                    $(this).siblings().removeClass('active');
-                    $(this).addClass('active');
-
-                    var new_color = $(this).data('color');
-
-                    if ($sidebar.length != 0) {
-                        $sidebar.attr('data-color', new_color);
-                    }
-
-                    if ($full_page.length != 0) {
-                        $full_page.attr('filter-color', new_color);
-                    }
-
-                    if ($sidebar_responsive.length != 0) {
-                        $sidebar_responsive.attr('data-color', new_color);
-                    }
-                });
-            });
-        });
-
-    </script>
+    <script src="/js/master-layout.js"></script>
     @if (config('app.env') == 'local')
         <script src="http://localhost:35729/livereload.js"></script>
     @endif
+    <script data-main="/js/layout.js" src="/js/require.js"></script>
+    @if (View::hasSection('module'))
+        <script>
+            requirejs(["html/@yield('module')"])
+
+        </script>
+    @endif)
 </body>
 
 </html>

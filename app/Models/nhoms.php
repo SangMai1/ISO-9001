@@ -7,5 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class nhoms extends Model
 {
-    use HasFactory;
+    public $timestamps = true;
+    protected $table = "nhoms";
+    protected $fillable = ["id", "ma", "ten", "nguoitao", "nguoisua", "daxoa"];
+
 }

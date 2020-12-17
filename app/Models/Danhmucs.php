@@ -7,5 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Danhmucs extends Model
 {
-    use HasFactory;
+    public $timestamps = true;
+    protected $table = "danhmucs";
+    protected $fillable = ["id", "ten", "loai","ma", "nguoitao", "ngaytao", "nguoisua", "ngaysua", "daxoa"];
 }

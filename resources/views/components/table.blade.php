@@ -1,13 +1,11 @@
-@props(['titles', 'pagination'])
-<div {{ $attributes->merge(['class' => 'table-responsive']) }}>
-    <table class="table table-hover"> 
+@props(['pagination'])
+<div class="table-responsive">
+    <table class="table table-hover {{ $attributes['class'] }}" {{ $attributes }}>
         <thead class=" text-primary">
-            @foreach ($titles as $title)
-                <th>{{ $title }}</th>
-            @endforeach
+            {{ $head }}
         </thead>
         <tbody>
-            {{ $body }} 
+            {{ $body }}
         </tbody>
     </table>
 </div>

@@ -29,7 +29,7 @@
 	},
 	"Table Component": {
 		"scope": "blade",
-		"body": "<x-table :titles=\"[${1:'name', 'age'}]\" :autoIndex=\"true\">\r\n    @slot('body')\r\n        @foreach ($${2:collection} as $${3:item})\r\n            <tr>\r\n                <td>${4:{{ $item['name'] }}}<\/td>\r\n            <\/tr>\r\n        @endforeach\r\n    @endslot\r\n<\/x-table>",
+		"body": "<x-table ${1:auto-index} ${2:select}>\r\n    @slot('head')\r\n        <th>Name<\/th>\r\n    @endslot\r\n    @slot('body')\r\n        @foreach ($collection as $item)\r\n            <tr>\r\n                <td>{{ $item['name'] }}<\/td>\r\n            <\/tr>\r\n        @endforeach\r\n    @endslot\r\n<\/x-table>",
 		"description": "Table layout",
 		"prefix": "@tableComponent"
 	},
@@ -45,15 +45,9 @@
 		"description": "Active menu tag",
 		"prefix": "@activeMenu"
 	},
-	"Input checkbox Component": {
-		"scope": "blade",
-		"body": "<x-inputs.checkbox${1: name=\"${2:name}\"} ${3::checked=\"true\"}>\r\n    @slot('content') ${4:<em>This is check box<\/em>} @endslot\r\n<\/x-inputs.checkbox>",
-		"description": "Input checkbox Component",
-		"prefix": "@inputCheckboxComponent"
-	},
 	"Input Component": {
 		"scope": "blade",
-		"body": "<x-inputs.input title=\"${1:title}\" type=\"${2:text}\"${3: name=\"${4:name}\" }${5: value=\"${6:value}\"}></x-inputs.input>",
+		"body": "<x-input title=\"${2:title}\" type=\"${1:text}\"${3: name=\"${4:name}\" }${5:float}/>",
 		"description": "Input Component",
 		"prefix": "@inputComponent"
 	},
