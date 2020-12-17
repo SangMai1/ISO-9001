@@ -5,17 +5,10 @@ define(["require", "exports", "./utils"], function (require, exports, utils_1) {
     const DATA_CONFIG_ATTRIBUTE = 'data-config';
     exports.layoutAction = {
         rebuild: {
-            tooltip: () => $('[data-toggle="tooltip"]').tooltip().unbind('focusin'),
+            tooltip: () => $('[data-toggle="tooltip"]').tooltip(),
             popover: () => $('[data-toggle="popover"]').popover(),
-            autoIndexTable() {
-                $('.table-responsive[auto-index="true"]').each((i, e) => {
-                    const table = $(e).removeAttr('auto-index').find('table');
-                    if (!table[0])
-                        return;
-                    table.find('thead > tr').prepend($('<th><strong>#</strong></th>'));
-                    table.find('tbody > tr').each((i, e) => $(e).prepend((`<td><em>${i + 1}</em></td>`)));
-                });
-            },
+            autoAddSelectColumn() { $('table[select]')._addSelectRows().removeClass('select'); },
+            autoIndexTable() { $('table[auto-index]')._autoIndexTable().removeClass('auto-index'); },
             activeFromMenuTag() {
                 const activeMenuTag = $('#active-menu');
                 if (!activeMenuTag)

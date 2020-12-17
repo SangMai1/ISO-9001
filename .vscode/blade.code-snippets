@@ -29,7 +29,7 @@
 	},
 	"Table Component": {
 		"scope": "blade",
-		"body": "<x-table :titles=\"[${1:'name', 'age'}]\" :autoIndex=\"true\">\r\n    @slot('body')\r\n        @foreach ($${2:collection} as $${3:item})\r\n            <tr>\r\n                <td>${4:{{ $item['name'] }}}<\/td>\r\n            <\/tr>\r\n        @endforeach\r\n    @endslot\r\n<\/x-table>",
+		"body": "<x-table ${1:auto-index} ${2:select}>\r\n    @slot('head')\r\n        <th>Name<\/th>\r\n    @endslot\r\n    @slot('body')\r\n        @foreach ($collection as $item)\r\n            <tr>\r\n                <td>{{ $item['name'] }}<\/td>\r\n            <\/tr>\r\n        @endforeach\r\n    @endslot\r\n<\/x-table>",
 		"description": "Table layout",
 		"prefix": "@tableComponent"
 	},

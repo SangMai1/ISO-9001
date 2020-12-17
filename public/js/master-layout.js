@@ -1,5 +1,14 @@
 (function () {
     addJqueryValidationCustom();
+    addJqueryTableAutoIndex();
+    addSelectModeTable();
+    fixTooltip();
+    function fixTooltip() {
+        $.fn._tooltip = $.fn.tooltip;
+        $.fn.tooltip = function (selector) {
+            return this._tooltip(selector).off('focusin');
+        };
+    }
     function addJqueryValidationCustom() {
         $.extend($.validator.messages, {
             required: "Thông tin này là bắt buộc.",
@@ -87,6 +96,62 @@
                 return getCache(element);
             }
             return validator;
+        };
+    }
+    function addJqueryTableAutoIndex() {
+        $.fn._autoIndexTable = function () {
+            this.each((i, e) => {
+                const table = $(e);
+                const trHead = table.find('thead > tr');
+                if (!trHead.find('.auto-index-head')[0])
+                    trHead.prepend($('<th class="auto-index-head"><strong>#</strong></th>'));
+                table.children('tbody').children('tr').each((i, tr) => {
+                    if (!tr._ai) {
+                        tr._ai = $('<td ai></td>');
+                        tr.prepend(tr._ai[0]);
+                    }
+                    tr._ai.html(i + 1);
+                });
+            });
+            return this;
+        };
+    }
+    function addSelectModeTable() {
+        const checkbox = `<div class="form-check"><label class="form-check-label"><input class="form-check-input " type="checkbox"><span class="form-check-sign"><span class="check"></span></span></label></div>`;
+        $.fn._addSelectRows = function () {
+            this.each(function (i, e) {
+                const table = $(e);
+                const trHead = table.find('thead > tr');
+                if (!trHead.find('th.select')[0])
+                    trHead.prepend($(`<th class="select"></th>`).html((function () {
+                        const cbSelectAll = $(checkbox);
+                        const selectToolTipText = ['<span class="text-danger">Hủy chọn tất cả</span>', '<span class="text-success">Chọn tất cả</span>'];
+                        cbSelectAll.attr('data-toggle', 'tooltip').attr('data-html', 'true').attr('title', selectToolTipText[1]);
+                        cbSelectAll.find('input').on('change', function (evt) {
+                            const check = this.checked;
+                            const message = selectToolTipText[check ? 0 : 1];
+                            cbSelectAll.attr('data-original-title', message);
+                            $(`#${cbSelectAll.attr('aria-describedby')} > .tooltip-inner`).html(message);
+                            table.find('tbody > tr').each(function (i, tr) { tr._select[0].checked = check; });
+                        });
+                        cbSelectAll.tooltip();
+                        return cbSelectAll;
+                    })()));
+                table.children('tbody').children('tr').each((i, e) => {
+                    if (!e._select) {
+                        const jCheckbox = $(checkbox);
+                        e._select = jCheckbox.find('input');
+                        e.prepend($('<td sl></td>').append(jCheckbox)[0]);
+                    }
+                });
+                table[0]._eachSelected = function (callback) {
+                    table.find('tbody > tr').each(function (i, tr) {
+                        if (tr._select[0].checked)
+                            callback(tr);
+                    });
+                };
+            });
+            return this;
         };
     }
 })();

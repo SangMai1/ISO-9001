@@ -5,8 +5,6 @@
 @section('content')
 
 <div class="container">
-    <?php
-    ?>
     <h2>list</h2><br>
         <th><a href="/" class="btn btn-primary">Thêm mới</a></th>
     <table class="table table-bordered table-hover"><br><br>

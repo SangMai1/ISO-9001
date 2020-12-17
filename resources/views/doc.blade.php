@@ -41,6 +41,8 @@
                                 height: '100%',
                                 showConfirmButton: false,
                                 showCloseButton: true,
+                                allowOutsideClick: false,
+                                closeOnConfirm: false,
                             }
                         })
                     }
@@ -57,7 +59,7 @@
         @slot('body')
             <div class="row">
                 <div class="col-12">
-                    <x-input title="Search" type="text" id="search-doc" float/>
+                    <x-input title="Search" type="text" id="search-doc" float />
                 </div>
                 <div class="col-12">
                     <button class="btn btn-sm btn-primary btn-sm">Input Component</button>
@@ -125,6 +127,7 @@
                     <button class="btn btn-sm btn-primary btn-sm">JQuery Validation Custom</button>
                     <script>
                         renderView()
+
                     </script>
                     <div class="container">
                         <x-card>
@@ -135,9 +138,11 @@
                                     @slot('subTitle') Ví dụ @endslot
                                     @slot('body')
                                         <form id="form-ex" method="post" action="">
-                                            <x-input title="Gõ vô là hết lỗi server / gõ 2 kí tự để hiện lỗi validation" type="text" name="first" error="Lỗi từ server nè!" float />
+                                            <x-input title="Gõ vô là hết lỗi server / gõ 2 kí tự để hiện lỗi validation" type="text"
+                                                name="first" error="Lỗi từ server nè!" float />
                                             <x-input title="Bắt buộc nhâp cái ni" type="text" name="second" float />
-                                            <x-input title="Check vô là hết hiện lỗi server" type="checkbox" error="Lỗi từ server nè!"  name="cb" />
+                                            <x-input title="Check vô là hết hiện lỗi server" type="checkbox" error="Lỗi từ server nè!"
+                                                name="cb" class="ccbs" />
                                             <input type="submit" class="btn btn-success" value="Submit" />
                                         </form>
                                     @endslot
@@ -162,6 +167,70 @@
                                     <span>Tham khảo thêm config tại <a
                                             href="https://viblo.asia/p/tim-hieu-ve-jquery-validation-phan-1-E375zEqRlGW">Tìm hiểu về
                                             Jquery Validation - viblo.asia</a></span>
+                                </div>
+                            @endslot
+                        </x-card>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <button class="btn btn-sm btn-primary btn-sm">Table Component</button>
+                    <script>
+                        renderView()
+
+                    </script>
+                    <div class="container">
+                        <x-card>
+                            @slot('title') Table Component (Chưa hoàn thiện) @endslot
+                            @slot('subTitle') @tableComponent @endslot
+                            @slot('body')
+                                <x-card>
+                                    @slot('subTitle') Table @endslot
+                                    @slot('body')
+                                        <button class="btn btn-primary" id="table-component-get-list-btn">Lấy danh sách record đã chọn
+                                            tại đây</button>
+                                        {{-- dữ liệu mẫu --}}
+                                        @php $demoCollection = [
+                                            ['id'=> 2, 'name' => 'Hoang', 'age'=>14],
+                                            ['id'=> 3, 'name' => 'Nhi', 'age'=>15],
+                                            ['id'=> 5 ,'name' =>'Dung', 'age'=>16]
+                                        ] @endphp
+
+                                        {{-- Tự động thêm(auto-index) index và select(select) --}}
+                                        <x-table auto-index select id="table-component-table">
+                                            @slot('head')
+                                                <th>ID</th>
+                                                <th>Name</th>
+                                                <th>Age</th>
+                                            @endslot
+                                            @slot('body')
+                                                @foreach ($demoCollection as $item)
+                                                    <tr data-id="{{ $item['id'] }}">
+                                                        <td>{{ $item['id'] }}</td>
+                                                        <td>{{ $item['name'] }}</td>
+                                                        <td>{{ $item['age'] }}</td>
+                                                    </tr>
+                                                @endforeach
+                                            @endslot
+                                        </x-table>
+                                    @endslot
+                                </x-card>
+                                <br>
+
+                                <p>- Code Blade Cho view</p>
+                                <script>
+                                    renderCode(`<button class=\"btn btn-primary\" id=\"table-component-get-list-btn\">Lấy danh sách record đã chọn tại đây</button>\n${'{'}{-- dữ liệu mẫu --${'}'}}\n${'@'}php $demoCollection = [\n    ['id'=> 2, 'name' => 'Hoang', 'age'=>14],\n    ['id'=> 3, 'name' => 'Nhi', 'age'=>15],\n    ['id'=> 5 ,'name' =>'Dung', 'age'=>16]\n] ${'@'}endphp\n\n${'{'}{-- Tự động thêm(auto-index) index và select(select) --${'}'}}\n${'<'}x-table auto-index select id=\"table-component-table\">\n    ${'@'}slot('head')\n        <th>ID</th>\n        <th>Name</th>\n        <th>Age</th>\n    ${'@'}endslot\n    ${'@'}slot('body')\n        ${'@'}foreach ($demoCollection as $item)\n            <tr data-id=\"${'{'}{ $item['id'] ${'}'}}\">\n                <td>${'{'}{ $item['id'] ${'}'}}</td>\n                <td>${'{'}{ $item['name'] ${'}'}}</td>\n                <td>${'{'}{ $item['age'] ${'}'}}</td>\n            </tr>\n        ${'@'}endforeach\n    ${'@'}endslot\n${'<'}/x-table>`, 'html')
+                                </script>
+
+                                <p>- Code trong module</p>
+                                <script>
+                                    renderCode(`const getListBtn = $('#table-component-get-list-btn')\nconst table = $('#table-component-table')\ngetListBtn.on('click', function () {\n    const result = []\n    // Lấy ra DOM \"tr\" được chọn trong table (source trong file /resources/public/js/master-layout.ts => find \"_eachSelected\")\n    table[0]._eachSelected(function (tr) {\n        // Lấy data từ DOM tr -> data-id -> xem thêm về JQuery.fn.data -> https://viblo.asia/p/su-khac-nhau-giua-attr-va-data-trong-jquery-bJzKmzzEZ9N\n        result.push($(tr).data('id'))\n    })\n\n    alert(\`id của các table được chọn: \${JSON.stringify(result)}\`);\n})`, 'js')
+                                </script>
+
+                                <div class="attr">
+                                    <span name="auto-index">View sẽ tự động render Cột chỉ mục khi trang tải xong (Ngoài ra còn có
+                                        thể dùng JQuery.fn._autoIndexTable())</span>
+                                    <span name="select">View sẽ tự động render Cột lựa chọn row khi được tải (Ngoài ra còn có thể
+                                        dùng JQuery.fn._autoSelectMode())</span>
                                 </div>
                             @endslot
                         </x-card>
