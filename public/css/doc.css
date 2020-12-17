@@ -13,13 +13,6 @@
   content: "Thuộc tính bắt buộc";
 }
 
-table td:nth-child(1)::after {
-  content: ":";
-}
-table td:nth-child(1)::before {
-  content: "- ";
-}
-
 code {
   font-size: 20px !important;
 }

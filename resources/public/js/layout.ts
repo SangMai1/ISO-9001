@@ -6,19 +6,16 @@ const DATA_CONFIG_ATTRIBUTE = 'data-config'
 
 export const layoutAction = {
     rebuild: {
-        tooltip: () => $('[data-toggle="tooltip"]').tooltip().unbind('focusin'),
+        tooltip: () => $('[data-toggle="tooltip"]').tooltip(),
         popover: () => $('[data-toggle="popover"]').popover(),
         /**
-         * Tự động thêm cột index cho table có attribute auto-index=true
+         * Tự động thêm cột select cho table
+         */
+        autoAddSelectColumn() { $('table[select]')._addSelectRows().removeClass('select') },
+        /**
+         * Tự động thêm cột index cho table có attribute auto-index
         */
-        autoIndexTable() {
-            $('.table-responsive[auto-index="true"]').each((i, e) => {
-                const table = $(e).removeAttr('auto-index').find('table')
-                if (!table[0]) return
-                table.find('thead > tr').prepend($('<th><strong>#</strong></th>'))
-                table.find('tbody > tr').each((i, e) => $(e).prepend((`<td><em>${i + 1}</em></td>`)))
-            })
-        },
+        autoIndexTable() { $('table[auto-index]')._autoIndexTable().removeClass('auto-index') },
         /**
          * Auto kích hoạt menu thừ thẻ active menu @activeMenuTag snippet
          */
