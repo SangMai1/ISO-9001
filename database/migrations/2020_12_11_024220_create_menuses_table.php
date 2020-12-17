@@ -21,9 +21,8 @@ class CreateMenusesTable extends Migration
             $table->integer('vitri');
             $table->bigInteger('chucnangid');
             $table->string('nguoitao');
-            $table->timestamp('ngaytao');
             $table->string('nguoisua');
-            $table->timestamp('ngaysua')->nullable()->default(null);
+            $table->timestamps();
             $table->integer('daxoa');
         });
     }

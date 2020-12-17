@@ -20,9 +20,8 @@ class CreateXesTable extends Migration
             $table->integer('socho');
             $table->bigInteger('nhanvienid');
             $table->string('nguoitao');
-            $table->timestamp('ngaytao');
             $table->string('nguoisua');
-            $table->timestamp('ngaysua')->nullable()->default(null);
+            $table->timestamps();
             $table->integer('daxoa');
         });
     }

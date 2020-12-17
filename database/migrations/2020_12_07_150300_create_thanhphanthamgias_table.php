@@ -15,8 +15,7 @@ class CreateThanhphanthamgiasTable extends Migration
     {
         Schema::create('thanhphanthamgias', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->timestamp('ngaytao');
-            $table->timestamp('ngaysua')->nullable()->default(null);
+            $table->timestamps();
             $table->bigInteger('cuochopid');
             $table->smallInteger('loai')->comment('0:trong công ty, 1:ngoài công ty');
             $table->smallInteger('loaithamgia')->comment('0 :Người tham gia, 1: Chủ trì, 2: Người chuẩn bị');

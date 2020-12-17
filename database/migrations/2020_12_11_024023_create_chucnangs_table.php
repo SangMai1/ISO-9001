@@ -18,9 +18,8 @@ class CreateChucnangsTable extends Migration
             $table->string('ten');
             $table->string('url');
             $table->string('nguoitao');
-            $table->timestamp('ngaytao');
             $table->string('nguoisua');
-            $table->timestamp('ngaysua')->nullable()->default(null);
+            $table->timestamps();
             $table->integer('daxoa');
         });
     }

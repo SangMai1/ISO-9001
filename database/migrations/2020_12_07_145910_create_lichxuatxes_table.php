@@ -15,8 +15,7 @@ class CreateLichxuatxesTable extends Migration
     {
         Schema::create('lichxuatxes', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->timestamp('ngaytao');
-            $table->timestamp('ngaysua')->nullable()->default(null);
+            $table->timestamps();
             $table->bigInteger('xeid');
             $table->bigInteger('nhanvienid');
             $table->bigInteger('cuochopid');
