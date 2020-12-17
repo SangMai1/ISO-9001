@@ -15,14 +15,14 @@ class CreateCauhinhsTable extends Migration
     {
         Schema::create('cauhinhs', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->timestamp('ngaytao');
+            $table->timestamp('ngaytao')->useCurrent();
             $table->timestamp('ngaysua')->nullable()->default(null);
             $table->string('ma');
             $table->string('ten');
             $table->string('giatri');
             $table->string('nguoitao');
-            $table->string('nguoisua');
-            $table->smallInteger('daxoa');
+            $table->string('nguoisua')->nullable();
+            // $table->smallInteger('daxoa');
         });
     }
 

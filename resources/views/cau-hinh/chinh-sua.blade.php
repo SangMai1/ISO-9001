@@ -4,50 +4,42 @@
 @section('pageName', 'Chỉnh sửa cấu hình')
 
 @section('content')
-<?php //Hiển thị thông báo thành công?>
-@if ( Session::has('success') )
-	<div class="alert alert-success alert-dismissible" role="alert">
-		<strong>{{ Session::get('success') }}</strong>
-		<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-			<span aria-hidden="true">&times;</span>
-			<span class="sr-only">Đóng</span>
-		</button>
-	</div>
-@endif
-
-<?php //Hiển thị thông báo lỗi?>
-@if ( Session::has('error') )
-	<div class="alert alert-danger alert-dismissible" role="alert">
-		<strong>{{ Session::get('error') }}</strong>
-		<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-			<span aria-hidden="true">&times;</span>
-			<span class="sr-only">Đóng</span>
-		</button>
-	</div>
-@endif
-
-<?php //Form thêm mới học sinh?>
+@if (Session::get('success'))
+        <div class="alert alert-success">
+           {{Session::get('success')}}
+        </div>
+    @endif
+    @if (Session::get('fail'))
+        <div class="alert alert-danger">
+           {{Session::get('fail')}}
+        </div>
+    @endif
+    <br>
     <form method="post" action="{{ url('/cau-hinh/cap-nhat') }}">
-      {{csrf_field()}}
-      <input class="form-control" type="hidden" name="id" value="{{$cauhinh['id']}}" /><br>
+      @csrf
+      <input class="form-control" type="hidden" name="cid" value="{{$cauhinh['id']}}" /><br>
       <div class="form-group">
         <label>Mã :</label>
         <input class="form-control" type="text" name="ma" id="ma" placehorder=" Nhập mã" value="{{$cauhinh['ma']}}" /><br>
+        <span style="color:red">@error('ma'){{ $message }}  @enderror</span>
       </div>
 
       <div class="form-group">
         <label>Tên :</label>
         <input class="form-control" type="text" name="ten" id="ten" placehorder=" Nhập tên" value="{{$cauhinh['ten']}}" /><br>
+        <span style="color:red">@error('ten'){{ $message }}  @enderror</span>
       </div>
     
       <div class="form-group">
         <label>Giá trị :</label>
         <input class="form-control" type="text" name="giatri" id="giatri" placehorder=" Nhập giá trị" value="{{$cauhinh['giatri']}}" /><br>
+        <span style="color:red">@error('giatri'){{ $message }}  @enderror</span>
       </div>
 
       <div class="form-group">
         <label>Người sửa :</label>
         <input class="form-control" type="text" name="nguoisua" id="nguoisua" placehorder=" Nhập người sửa" value="{{$cauhinh['nguoisua']}}" /><br>
+        <span style="color:red">@error('nguoisua'){{ $message }}  @enderror</span>
       </div>
       
 

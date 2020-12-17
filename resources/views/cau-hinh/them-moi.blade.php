@@ -4,64 +4,42 @@
 @section('pageName', 'Thêm mới cấu hình')
 
 @section('content')
-<?php //Hiển thị thông báo thành công?>
-@if ( Session::has('success') )
-	<div class="alert alert-success alert-dismissible" role="alert">
-		<strong>{{ Session::get('success') }}</strong>
-		<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-			<span aria-hidden="true">&times;</span>
-			<span class="sr-only">Đóng</span>
-		</button>
-	</div>
-@endif
-
-<?php //Hiển thị thông báo lỗi?>
-@if ( Session::has('error') )
-	<div class="alert alert-danger alert-dismissible" role="alert">
-		<strong>{{ Session::get('error') }}</strong>
-		<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-			<span aria-hidden="true">&times;</span>
-			<span class="sr-only">Đóng</span>
-		</button>
-	</div>
-@endif
-
-@if ($errors->any())
-    <div class="alert alert-danger">
-        <ul>
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-          <span class="sr-only">Đóng</span>
-        </button>
-    </div>
-@endif
-
-<?php //Form thêm mới học sinh?>
-    <form method="post" action="{{ url('/cau-hinh/them-moi') }}">
+    @if (Session::get('success'))
+        <div class="alert alert-success">
+           {{Session::get('success')}}
+        </div>
+    @endif
+    @if (Session::get('fail'))
+        <div class="alert alert-danger">
+           {{Session::get('fail')}}
+        </div>
+    @endif
+    <br>
+    <form method="post" action="{{ url('/cau-hinh/luu') }}">
       {{csrf_field()}}
         
       <div class="form-group">
         <label>Mã :</label>
         <input class="form-control" type="text" name="ma" id="ma" placehorder=" Nhập mã" /><br>
+      <span style="color:red">@error('ma'){{ $message }}  @enderror</span>
       </div>
 
       <div class="form-group">
         <label>Tên :</label>
         <input class="form-control" type="text" name="ten" id="ten" placehorder=" Nhập tên" /><br>
+        <span style="color:red">@error('ten'){{ $message }}  @enderror</span>
       </div>
     
       <div class="form-group">
         <label>Giá trị :</label>
         <input class="form-control" type="text" name="giatri" id="giatri" placehorder=" Nhập giá trị" /><br>
+        <span style="color:red">@error('giatri'){{$message}} @enderror</span>
       </div>
 
       <div class="form-group">
         <label>Người tạo :</label>
         <input class="form-control" type="text" name="nguoitao" id="nguoitao" placehorder=" Nhập người tạo" /><br>
+        <span style="color:red">@error('nguoitao'){{$message}} @enderror</span>
       </div>
       
 

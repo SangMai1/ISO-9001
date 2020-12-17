@@ -6,7 +6,6 @@ use App\Models\Cauhinhs;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
-use Session;
 
 class CauhinhsController extends Controller
 {
@@ -17,8 +16,16 @@ class CauhinhsController extends Controller
      */
     public function index()
     {
-        $cauhinh = Cauhinhs::all()->toArray();
-        return view('cau-hinh/danh-sach')->with('cauhinh',$cauhinh);
+        $cauhinh = Cauhinhs::query();
+        if (request(('term'))) {
+            $cauhinh->orWhere('name',  'LIKE', '%' . request('term') . '%');
+        }
+        $cauhinh = $cauhinh->orderBy('id', 'DESC')->paginate(5);
+
+
+        return view('cau-hinh.danh-sach', compact('cauhinh'))
+            ->with('i', (request()->input('page', 1) - 1) * 5);
+      
     }
 
     /**
@@ -29,8 +36,16 @@ class CauhinhsController extends Controller
     public function create()
     {
         //Hiển thị trang thêm cấu hình
-	    return view('/cau-hinh/them-moi');
+	    return view('cau-hinh.them-moi');
     }
+
+    public function search(Request $request){
+        $search = $request->get('search');
+        $cauhinh = Cauhinhs::where('ten', 'like', '%'.$search.'%')->paginate(3);
+        return view('cau-hinh/danh-sach',['cauhinh'=> $cauhinh]);
+       
+    }
+   
 
     /**
      * Store a newly created resource in storage.
@@ -39,48 +54,33 @@ class CauhinhsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
-    date_default_timezone_set("Asia/Ho_Chi_Minh");     
+    {   
     
     $request->validate([
-        'ma' => 'required',
+        'ma' => 'required|unique:cauhinhs',
         'ten' => 'required',
         'giatri' => 'required',
         'nguoitao' => 'required'
+    ],[
+        'ma.required' => 'Mã không được bỏ trống',
+        'ma.unique' =>'Mã cấu hình này đã tồn tại',
+        'ten.required' => 'Tên không được bỏ trống',
+        'giatri.required' => 'Giá trị không được bỏ trống',
+        'nguoitao.required' => 'Người tạo không được bỏ trống'
     ]);
 
-	$allRequest  = $request->all();
-    $ma = $allRequest['ma'];
-    $ten = $allRequest['ten'];
-    $giatri = $allRequest['giatri'];
-    $nguoitao = $allRequest['nguoitao'];
-   // $nguoisua = $allRequest['nguoisua'];
-	
-	//Gán giá trị vào array
-	$dataInsertToDatabase = array(
-		'ma'  => $ma,
-        'ten' => $ten,
-        'giatri' => $giatri,
-        'nguoitao' => $nguoitao,
-        'nguoisua' => 'Chưa trải qua cập nhật',
-		'ngaytao' => Carbon::now(),
-        'ngaysua' => Carbon::now(),
-        'daxoa'=>'0'
-	);
-	
-	//Insert vào bảng 
-	$insertData = DB::table('cauhinhs')->insert($dataInsertToDatabase);
-	
-	//Kiểm tra Insert để trả về một thông báo
-	if ($insertData) {
-		Session::flash('success', 'Thêm mới cấu hình thành công!');
-	}else {                        
-		Session::flash('error', 'Thêm thất bại!');
-	}
-	
-	//Thực hiện chuyển trang
-	return redirect('/cau-hinh/them-moi');
+    Cauhinhs::create([
+        'ma' => $request ->input('ma'),
+        'ten' => $request ->input('ten'),
+        'giatri' => $request ->input('giatri'),
+        'nguoitao' => $request ->input('nguoitao'),
+        'nguoisua' => 'Chưa thực hiện cập nhật'
+    ]);
+
+        return redirect()->route('cauhinh.list')
+            ->with('success', 'Thêm mới cấu hình thành công !!');
     }
+	
 
     /**
      * Display the specified resource.
@@ -88,9 +88,9 @@ class CauhinhsController extends Controller
      * @param  \App\Models\Cauhinhs  $cauhinhs
      * @return \Illuminate\Http\Response
      */
-    public function show(Cauhinhs $cauhinhs)
+    public function show($id)
     {
-        //
+        
     }
 
     /**
@@ -103,6 +103,7 @@ class CauhinhsController extends Controller
     {
         $cauhinh = Cauhinhs::find($id)->toArray();
         return view('/cau-hinh/chinh-sua', compact('cauhinh'));
+        
     }
 
     /**
@@ -114,26 +115,30 @@ class CauhinhsController extends Controller
      */
     public function update(Request $request, Cauhinhs $cauhinhs)
     {
-    date_default_timezone_set("Asia/Ho_Chi_Minh");
- 
-	//Thực hiện câu lệnh update với các giá trị $request trả về
-	$cauhinhs = DB::table('cauhinhs')->where('id', $request->id)->update([
-		'ma' => $request->ma,
-        'ten' => $request->ten,
-        'giatri' => $request->giatri,
-        'nguoisua' => $request->nguoisua,
-		'ngaysua' => Carbon::now()
+
+     $request->validate([
+        'ma' => 'required',
+        'ten' => 'required',
+        'giatri' => 'required',
+        'nguoisua' => 'required'
+    ],[
+        'ma.required' => 'Mã không được bỏ trống',
+        'ten.required' => 'Tên không được bỏ trống',
+        'giatri.required' => 'Giá trị không được bỏ trống',
+        'nguoitao.required' => 'Người tạo không được bỏ trống'
     ]);
+ 
+    $cauhinhs = Cauhinhs::where('id', $request->input('cid'))->update([
+        	'ma' => $request ->input('ma'),
+            'ten' => $request ->input('ten'),
+            'giatri' => $request ->input('giatri'),
+            'nguoisua' => $request ->input('nguoisua'),
+            'ngaysua' => Carbon::now('Asia/Ho_Chi_Minh')
+    ]);
+    return redirect()->route('cauhinh.list')
+        ->with('success', 'Cập nhật cấu hình thành công !!');
 	
-	//Kiểm tra lệnh update để trả về một thông báo
-	if ($cauhinhs) {
-		Session::flash('success', 'Cập nhật cấu hình thành công!');
-	}else {                        
-		Session::flash('error', 'Cập nhật thất bại!');
-	}
-	
-	//Thực hiện chuyển trang
-	return  redirect()->Route('cauhinh');
+
     }
 
     /**
@@ -142,20 +147,54 @@ class CauhinhsController extends Controller
      * @param  \App\Models\Cauhinhs  $cauhinhs
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($id )
+    {
+     date_default_timezone_set("Asia/Ho_Chi_Minh");    
+	
+    $deleteData = Cauhinhs::find($id)->delete();
+    
+
+    return redirect()->route('cauhinh.list')
+        ->with('success', 'Xóa thành công!!');
+    }
+
+    // public function multipleDelete(Request $request)
+	// {
+	// 	$id = $request->id;
+	// 	foreach ($id as $cauhinh) 
+	// 	{
+	// 		Cauhinhs::where('id', $cauhinh)->delete();
+	// 	}
+	// 	return redirect()->route('cauhinh.list')
+    //     ->with('success', 'Xóa thành công!!');
+    // }
+    
+    public function getDeleteCauhinhs() 
+    {
+        $cauhinhs = Cauhinhs::onlyTrashed()->paginate(10);
+
+        return view('cau-hinh.da-xoa', compact('cauhinhs'))
+            ->with('i', (request()->input('page', 1) - 1) * 10);
+    }
+
+    public function restoreDeletedCauhinhs($id) 
     {
         
-	//Thực hiện câu lệnh xóa với giá trị id = $id trả về
-	$deleteData = Cauhinhs::find($id)->delete();
-	
-	//Kiểm tra lệnh delete để trả về một thông báo
-	if ($deleteData) {
-		Session::flash('success', 'Xóa  thành công!');
-	}else {                        
-		Session::flash('error', 'Xóa thất bại!');
-	}
-	
-	//Thực hiện chuyển trang
-	return redirect('cau-hinh/danh-sach');
+        $cauhinh = Cauhinhs::where('id', $id)->withTrashed()->first();
+
+        $cauhinh->restore();
+
+        return redirect()->route('cauhinh.list')
+            ->with('success', 'Khôi phục cấu hình thành công !!');
+    }
+
+    public function deletePermanently($id)
+    {
+        $cauhinh = Cauhinhs::where('id', $id)->withTrashed()->first();
+
+        $cauhinh->forceDelete();
+
+        return redirect()->route('cauhinh.list')
+            ->with('success', 'Cấu hình đã được xóa hoàn toàn !!');
     }
 }
