@@ -1,6 +1,7 @@
 <?php
     namespace App\Util;
 
+use App\Models\Danhmucs;
 use Illuminate\Support\Facades\DB;
 
 class CommonUtil {
@@ -28,5 +29,10 @@ class CommonUtil {
 
         static function getValueCauhinh($ma){
             return DB::table('cauhinhs')->where("ma","=",$ma)->where("daxoa",0)->value("giatri");
+        }
+
+        static function finDanhMucByloai($loai){
+            return DB::table("danhmucs")->where("daxoa",0)->where("loai",$loai)
+            ->pluck("ten","id");
         }
     }
