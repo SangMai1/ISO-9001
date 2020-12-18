@@ -15,8 +15,7 @@ class CreateLichsusuachuasTable extends Migration
     {
         Schema::create('lichsusuachuas', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->timestamp('ngaytao');
-            $table->timestamp('ngaysua')->nullable()->default(null);
+            $table->timestamps();
             $table->bigInteger('taisanid');
             $table->bigInteger('nguoidisua');
             $table->timestamp('thoigiansua')->nullable()->default(null);

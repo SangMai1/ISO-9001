@@ -7,11 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class nhoms extends Model
 {
-    public $timestamps = false;
+    public $timestamps = true;
     protected $table = "nhoms";
-    protected $fillable = ["id", "ma", "ten", "nguoitao", "ngaytao", "nguoisua", "ngaysua", "daxoa"];
+    protected $fillable = ["id", "ma", "ten", "nguoitao", "nguoisua", "daxoa"];
 
-    public function chucnangs(){
-        return $this->belongsToMany(chucnangs::class, 'chucnangid');
-    }
 }

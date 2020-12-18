@@ -108,8 +108,8 @@ class ChucnangsController extends Controller
         date_default_timezone_set("Asia/Ho_Chi_Minh");
 
         $validator = Validator::make($request->all(), [
-            'ten' => 'required|string|min:1',
-            'url' => 'required|string|min:1'
+            'ten' => 'required|string',
+            'url' => 'required|string'
         ]);
 
         if ($validator->fails()) {

@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class nhomsvachucnangs extends Model
 {
-    public $timestamps = false;
+    public $timestamps = true;
     protected $table = "nhomsvachucnangs";
     protected $fillable = ["nhomid", "chucnangid"];
 

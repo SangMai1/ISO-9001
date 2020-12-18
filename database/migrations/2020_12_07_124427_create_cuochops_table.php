@@ -15,8 +15,7 @@ class CreateCuochopsTable extends Migration
     {
         Schema::create('cuochops', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->timestamp('ngaytao');
-            $table->timestamp('ngaysua')->nullable()->default(null);
+            $table->timestamps();
             $table->string('ma');
             $table->string('ten');
             $table->string('diadiem');

@@ -25,7 +25,7 @@
                     @show
                 </div>
             </div>
-            @include('includes.footer')
+            {{-- @include('includes.footer')     --}}
         </div>
     </div>
     <div class="fixed-plugin">

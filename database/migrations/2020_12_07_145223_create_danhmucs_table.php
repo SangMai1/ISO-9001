@@ -15,8 +15,7 @@ class CreateDanhmucsTable extends Migration
     {
         Schema::create('danhmucs', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->timestamp('ngaytao');
-            $table->timestamp('ngaysua')->nullable()->default(null);
+            $table->timestamps();
             $table->string('ma');
             $table->string('ten');
             $table->smallInteger('loai')->comment('0:chức danh, 1: phòng ban, 2: Loại tài sản');

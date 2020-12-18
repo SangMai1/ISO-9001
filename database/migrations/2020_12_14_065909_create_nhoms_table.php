@@ -18,9 +18,8 @@ class CreateNhomsTable extends Migration
             $table->string('ma');
             $table->string('ten');
             $table->string('nguoitao');
-            $table->timestamp('ngaytao');
             $table->string('nguoisua');
-            $table->timestamp('ngaysua')->nullable()->default(null);
+            $table->timestamps();
             $table->integer('daxoa');
         });
     }
