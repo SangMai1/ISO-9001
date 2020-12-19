@@ -3,19 +3,49 @@
 import { Utils } from "./utils"
 
 const DATA_CONFIG_ATTRIBUTE = 'data-config'
-
+window.layoutAction
 export const layoutAction = {
     rebuild: {
-        tooltip: () => $('[data-toggle="tooltip"]').tooltip(),
-        popover: () => $('[data-toggle="popover"]').popover(),
+        tooltip: (selector = $('body')) => selector.find('[data-toggle="tooltip"]').tooltip(),
+        popover: (selector = $('body')) => selector.find('[data-toggle="popover"]').popover(),
+        autoBmd(selector) {
+            if ((selector = $(selector))[0]) {
+                selector.find('btn').bmdRipples()
+                selector.find('.form-control').bmdText()
+                selector.find('.selectpicker').selectpicker()
+            }
+        },
+        autoAddDeleteMode(selector = $('body')) {
+            selector.find('.delete-table-btn').each(function (i, deleteBtn: JQuery<HTMLElement>) {
+                deleteBtn = $(deleteBtn)
+                const table = deleteBtn.data('table')
+                    ? $(deleteBtn.data(table))
+                    : deleteBtn.find('~table, ~* table')
+                const deleteHref = deleteBtn.data('href');
+
+                if (!table[0] || !deleteHref) return
+                deleteBtn.on('click', function () {
+                    const idsSelected = table[0]._mapSelected(tr => $(tr).data('id'));
+                    showLoading()
+                    $.ajax({
+                        method: "POST",
+                        url: deleteHref,
+                        data: new FormData().fromObject({ ids: idsSelected, _token: token }),
+                    }).done(function (resp) {
+                        Toast.fire({ icon: 'success', timer: 1500 })
+                        table[0]._loadBodyTable($('tbody > tr', $(resp)));
+                    });
+                });
+            })
+        },
         /**
          * Tự động thêm cột select cho table
          */
-        autoAddSelectColumn() { $('table[select]')._addSelectRows().removeClass('select') },
+        autoAddSelectColumn(selector = $('body')) { selector.find('table[select]')._addSelectRows().removeClass('select') },
         /**
          * Tự động thêm cột index cho table có attribute auto-index
         */
-        autoIndexTable() { $('table[auto-index]')._autoIndexTable().removeClass('auto-index') },
+        autoIndexTable(selector = $('body')) { selector.find('table[auto-index]')._autoIndexTable().removeClass('auto-index') },
         /**
          * Auto kích hoạt menu thừ thẻ active menu @activeMenuTag snippet
          */
@@ -87,6 +117,19 @@ export const layoutAction = {
                     else
                         e.setAttribute('data-target', '#' + id)
                 }
+            })
+        },
+        cardTab(selector = $('body')) {
+            selector.find('[find-header]').each(function (i, cardBody) {
+                const ulHead = $(cardBody).parent().find('.card-header ul.nav-tabs')[0]
+                const tabHeads = $(ulHead).find(`[data-toggle="tab"]`)
+
+                $(cardBody).children('.tab-content').children('.tab-pane').each(function (i, tabPane) {
+                    const id = Utils.randomString(15)
+                    if (i > tabHeads.length) return
+                    tabHeads[i].setAttribute('href', `#${id}`)
+                    tabPane.id = id
+                })
             })
         },
         removeErrorInput(jElement = $('body')) {

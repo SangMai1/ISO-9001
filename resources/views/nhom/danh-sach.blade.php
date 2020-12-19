@@ -4,11 +4,37 @@
 @section('module', 'nhom/danh-sach')
 
 @section('content')
+    <div class="d-none csrf_token">@csrf</div>
     <x-card>
+<<<<<<< HEAD
+=======
 
-        @slot('title') Danh sách chức năng @endslot
+        <!-- Alert message (start) -->
+        @if (Session::has('message'))
+            <div class="alert {{ Session::get('alert-class') }}">
+                {{ Session::get('message') }}
+            </div>
+        @endif
+        <!-- Alert message (end) -->
+
+>>>>>>> 32af8890aafc1b41c0d2a76e8351281ef504551b
+        @slot('title') Danh sách nhóm @endslot
         @slot('body')
-            <button class="btn btn-sm btn-primary" id="delete-btn">delete</button>
+
+            {{-- Thêm mới nhóm --}}
+            <a href="/nhom/them-moi" class="btn btn-sm btn-primary"><i class="fas fa-plus-circle"></i></a>
+
+            {{-- Xóa nhóm --}}
+            <button class="btn btn-sm btn-primary" id="delete-btn"><i class="fas fa-trash-alt"></i></button>
+
+            {{-- Search --}}
+            <form action="{{ route('nhom.search') }}" method="GET">
+                <div class="form-group">
+                    <x-input title="Tìm kiếm" type="text" name="search" float />
+                    <button type="submit" class="btn btn-sm btn-primary">Tìm kiếm</button>
+
+                </div>
+            </form>
             <x-table auto-index select id="main-list">
                 @slot('head')
                     <th>Mã</th>
@@ -20,8 +46,8 @@
                             <td>
                                 {{ $ns->ma }}
                             </td>
-                            <td class="edit" href="{{ route('editnhom', [$ns->id]) }}" data-toggle="modal" data-target="#myEdit">
-                                {{ $ns->ten }}
+                            <td> <a href="{{ route('nhom.edit', [$ns->id]) }}">
+                                    {{ $ns->ten }}</a>
                             </td>
                         </tr>
                     @endforeach
@@ -29,44 +55,38 @@
             </x-table>
         @endslot
     </x-card>
-    <button type="submit" class="btn btn-primary" data-toggle="modal" data-target="#myModal" id="bnn"><i
-            class="fas fa-plus-circle"></i></button>
-    <button class="btn btn-primary buttonDelete"><i class="fas fa-trash-alt"></i></button>
+    {{-- <button type="submit" class="btn btn-primary" data-toggle="modal"
+        data-target="#myModal" id="bnn"><i class="fas fa-plus-circle"></i></button>
+    <button class="btn btn-primary buttonDelete"><i class="fas fa-trash-alt"></i></button> --}}
 
-    {{-- Search --}}
-    <form action="{{ route('searchNhom') }}" method="GET">
-        <div class="input-group">
-            <input type="text" name="search" class="form-group" />
-            <span class="input-group-prepend">
-                <button type="submit" class="btn btn-primary">Tìm kiếm</button>
-            </span>
-        </div>
-    </form>
+
 
     <!-- The Modal Add New-->
-    <div class="modal" id="myModal">
+    {{-- <div class="modal" id="myModal">
         <div class="modal-dialog">
             <div class="modal-content">
 
-                <!-- Modal Header -->
+                Modal Header
                 <div class="modal-header">
                     <h4>Thêm mới chức năng</h4>
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
-                <div id="model-body"></div>
+                <div id="model-body">
+
+                </div>
                 <div class="modal-footer">
 
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
 
     <!-- The Modal Edit -->
-    <div class="modal" id="myEdit">
+    {{-- <div class="modal" id="myEdit">
         <div class="modal-dialog">
             <div class="modal-content">
 
-                <!-- Modal Header -->
+                Modal Header
                 <div class="modal-header">
                     <h4>Edit nhóm</h4>
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -133,7 +153,7 @@
             </div>
         </div>
     </div>
-    </div>
+    </div> --}}
 
 
     <!-- The Modal Delete -->
@@ -163,6 +183,7 @@
 
 
 
+<<<<<<< HEAD
     <!-- Alert message (start) -->
     @if (Session::has('message'))
         <div class="alert {{ Session::get('alert-class') }}">
@@ -170,7 +191,11 @@
         </div>
     @endif
     <!-- Alert message (end) -->
-    <form method="get" id="formDelete" action="{{ route('xoaNhom') }}">
+    <form method="POST" id="formDelete" action="{{ route('xoaNhom') }}">
+=======
+
+    {{-- <form method="post" id="formDelete" action="{{ route('xoaNhom') }}">
+>>>>>>> 32af8890aafc1b41c0d2a76e8351281ef504551b
         {{ csrf_field() }}
         <input type="hidden" id="ids" name="ids" >
         <table class="table table-bordered table-hover">
@@ -196,58 +221,50 @@
                 </tr>
             @endforeach
         </table>
-    </form>
+    </form> --}}
 @endsection
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script type="text/javascript">
     $(document).ready(function() {
 
-        var link_url = "/nhom/them-moi #myModal";
-        $('#model-body').html(event).load(link_url);
 
-        $('#bnn').on('click', function(event) {
-            event.preventDefault();
-            $('#myModal').modal('hide');
+        // $('.edit').on('click', function(event) {
+        //     event.preventDefault();
+        //     $('input[name="chucnangids[]"]').prop("checked", false);
+        //     var href = $(this).attr('href');
+        //     $.ajax({
+        //         url: href,
+        //         type: 'get',
+        //         dataType: 'json',
+        //         success: function(n) {
+        //             console.log('sang', n);
+        //             for (var key in n) {
+        //                 $('#id_edit').val(n[key].id);
+        //                 $('#ma_edit').val(n[key].ma);
+        //                 $('#ten_edit').val(n[key].tennhom);
+        //                 let cns = n[key].idchucnang;
+        //                 let arr = [];
 
-        });
+        //                 $('input[name="chucnangids[]"]').each(function() {
+        //                     if (($('input[name="chucnangids[]"]').val() == cns)) {
+        //                         arr.push($(this).val);
+        //                     }
+        //                     return arr;
+        //                 });
+        //                 console.log(arr);
+        //                 // alert($('input[name="chucnangids[]"]').val().length);
+        //                 //   console.log(cns);
+        //                 // if(cns){
+        //                 //   $("#chucnangids").val(cns);
+        //                 // }
+        //                 if ($('input[name="chucnangids[]"]').val() == cns) {
+        //                     $('input[name="chucnangids[]"]').prop("checked", true);
+        //                 }
+        //             }
+        //         }
+        //     });
 
-        $('.edit').on('click', function(event) {
-            event.preventDefault();
-            $('input[name="chucnangids[]"]').prop("checked", false);
-            var href = $(this).attr('href');
-            $.ajax({
-                url: href,
-                type: 'get',
-                dataType: 'json',
-                success: function(n) {
-                    console.log('sang', n);
-                    for (var key in n) {
-                        $('#id_edit').val(n[key].id);
-                        $('#ma_edit').val(n[key].ma);
-                        $('#ten_edit').val(n[key].tennhom);
-                        let cns = n[key].idchucnang;
-                        let arr = [];
-
-                        $('input[name="chucnangids[]"]').each(function() {
-                            if (($('input[name="chucnangids[]"]').val() == cns)) {
-                                arr.push($(this).val);
-                            }
-                            return arr;
-                        });
-                        console.log(arr);
-                        // alert($('input[name="chucnangids[]"]').val().length);
-                        //   console.log(cns);
-                        // if(cns){
-                        //   $("#chucnangids").val(cns);
-                        // }
-                        if ($('input[name="chucnangids[]"]').val() == cns) {
-                            $('input[name="chucnangids[]"]').prop("checked", true);
-                        }
-                    }
-                }
-            });
-
-        });
+        // });
 
         $('.buttonDelete').on('click', function(event) {
             event.preventDefault();

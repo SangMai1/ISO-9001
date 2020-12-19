@@ -3,9 +3,8 @@
 
 <head>
     <meta charset="utf-8" />
-    <link rel="apple-touch-icon" sizes="76x76" href="/assets/img/apple-icon.png">
-    <link rel="icon" type="image/png" href="/assets/img/favicon.png">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    {{-- <link rel="apple-touch-icon" sizes="76x76" href="/assets/img/apple-icon.png"> --}}
+    {{-- <link rel="icon" type="image/png" href="/assets/img/favicon.png"> --}}
     <title> @yield('title')</title>
     @include('includes.lib')
     <link href="/css/layout.css" rel="stylesheet">
@@ -14,6 +13,7 @@
 
 <body class="">
     <div class="wrapper ">
+        <div class="csrf-token">@csrf</div>
         @include('includes.sidebar')
         <div class="main-panel">
             <!-- Navbar -->
@@ -25,7 +25,7 @@
                     @show
                 </div>
             </div>
-            {{-- @include('includes.footer')     --}}
+            {{-- @include('includes.footer') --}}
         </div>
     </div>
     <div class="fixed-plugin">
@@ -65,7 +65,7 @@
             requirejs(["html/@yield('module')"])
 
         </script>
-    @endif)
+    @endif
 </body>
 
 </html>

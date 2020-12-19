@@ -10,7 +10,7 @@
                     <span class="check"></span>
                 </span>
             </label>
-            <span class="invalid-feedback default" role="alert" >{{ $error }}</span>
+            <span class="invalid-feedback default" role="alert">{{ $error }}</span>
         </div>
     @else
         <div class="form-check form-check-radio">
@@ -57,7 +57,7 @@
             <label @php if(isset($float)) echo 'class="bmd-label-floating"' @endphp>{{ $title ?? '' }}</label>
             <input class="form-control {{ $attributes['class'] }}" {{ $attributes }}>
             <span class="invalid-feedback default" role="alert" class="default">{{ $error }}</span>
-            <span class="form-control-feedback default"><i class="fas fa-exclamation"></i></span> 
+            <span class="form-control-feedback default"><i class="fas fa-exclamation"></i></span>
         </div>
     @else
         <div class="form-group bmd-form-group">

@@ -1,3 +1,18 @@
+.selectpicker {
+  display: none;
+}
+
+.swal2-toast-shown {
+  background-color: #eee !important;
+}
+
+.text-one-line, .bootstrap-select > .dropdown-toggle > .filter-option, .bmd-label-floating {
+  white-space: nowrap;
+  max-width: calc(100% - 20px);
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
 .tooltip {
   font-style: italic;
 }
@@ -46,7 +61,8 @@ table .form-check .form-check-label > span.form-check-sign > .check::before {
   top: 3px !important;
   color: green;
 }
-table thead > tr > th.auto-index-head, table thead > tr > th.select {
+table thead > tr > th.auto-index-head,
+table thead > tr > th.select {
   width: 50px;
 }
 
@@ -56,50 +72,78 @@ td[ai] {
   color: blueviolet;
 }
 
-ul:not(.navbar-nav) {
+ul:not(.navbar-nav):not([role=presentation]):not(.nav-tabs) {
   margin-top: 10px !important;
 }
-ul:not(.navbar-nav) li i {
+ul:not(.navbar-nav):not([role=presentation]):not(.nav-tabs) li i {
   font-size: 18px !important;
   margin-right: 8px !important;
 }
-ul:not(.navbar-nav) li .dropdown-toggle::after {
+ul:not(.navbar-nav):not([role=presentation]):not(.nav-tabs) li .dropdown-toggle::after {
   margin-left: 8px;
   transform: rotate(-180deg);
 }
-ul:not(.navbar-nav) li .dropdown-toggle[aria-expanded=false]::after {
+ul:not(.navbar-nav):not([role=presentation]):not(.nav-tabs) li .dropdown-toggle[aria-expanded=false]::after {
   transform: rotate(-180deg);
 }
-ul:not(.navbar-nav) li .dropdown-toggle[aria-expanded=true] {
+ul:not(.navbar-nav):not([role=presentation]):not(.nav-tabs) li .dropdown-toggle[aria-expanded=true] {
   background-color: rgba(200, 200, 200, 0.4) !important;
 }
-ul:not(.navbar-nav) li .dropdown-toggle[aria-expanded=true]::after {
+ul:not(.navbar-nav):not([role=presentation]):not(.nav-tabs) li .dropdown-toggle[aria-expanded=true]::after {
   transform: rotate(0deg);
 }
-ul:not(.navbar-nav) li .nav-link {
+ul:not(.navbar-nav):not([role=presentation]):not(.nav-tabs) li .nav-link {
   font-size: 14px !important;
   display: flex;
   align-items: center;
   padding: 4px 8px !important;
 }
-ul:not(.navbar-nav) li img.icon {
+ul:not(.navbar-nav):not([role=presentation]):not(.nav-tabs) li img.icon {
   width: 18px;
   height: 18px;
   object-fit: contain;
 }
-ul:not(.navbar-nav) ul {
+ul:not(.navbar-nav):not([role=presentation]):not(.nav-tabs) ul {
   margin-top: 5px;
   margin-left: 15px;
 }
 
 @media (max-width: 991px) {
-  ul.nav li .nav-link {
+  ul.nav:not(.nav-tabs):not([role=presentation]) li .nav-link {
     font-size: 14px !important;
     display: flex;
     align-items: center;
     padding: 3px 4px !important;
   }
 }
+<<<<<<< HEAD
+*,
+:after,
+:before {
+  box-sizing: border-box;
+}
+
+.bootstrap-select > .dropdown-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.bootstrap-select > .dropdown-toggle > .filter-option {
+  margin-right: auto;
+  padding-right: 15px;
+}
+.bootstrap-select > .dropdown-menu ul {
+  position: unset !important;
+  cursor: pointer;
+}
+.bootstrap-select > .dropdown-menu ul > li.selected > a {
+  color: white !important;
+  background-color: #9c27b0;
+}
+.bootstrap-select > .dropdown-menu ul > li.disabled > a {
+  box-shadow: none !important;
+=======
 strong {
   color: red;
+>>>>>>> 32af8890aafc1b41c0d2a76e8351281ef504551b
 }

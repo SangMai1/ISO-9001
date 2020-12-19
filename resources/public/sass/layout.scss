@@ -1,4 +1,16 @@
-.tooltip{
+.selectpicker {
+    display: none;
+}
+.swal2-toast-shown {
+    background-color: #eee !important;
+}
+.text-one-line {
+    white-space: nowrap;
+    max-width: calc(100% - 20px);
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+.tooltip {
     font-style: italic;
 }
 .swal2-shown {
@@ -22,6 +34,9 @@
         min-height: 19px;
     }
 }
+.bmd-label-floating {
+    @extend .text-one-line;
+}
 table {
     .form-check {
         .form-check-label > span.form-check-sign {
@@ -29,14 +44,14 @@ table {
                 top: 15px !important;
                 left: 2px !important;
                 background-color: rebeccapurple;
-                z-index: 9999999; 
+                z-index: 9999999;
             }
             > .check {
                 top: 12px !important;
                 border-radius: 100%;
                 width: 26px;
                 height: 26px;
-                &::before{
+                &::before {
                     left: 3px !important;
                     top: 3px !important;
                     color: green;
@@ -45,7 +60,8 @@ table {
         }
         margin: 0 !important;
     }
-    thead > tr > th.auto-index-head, thead > tr > th.select{
+    thead > tr > th.auto-index-head,
+    thead > tr > th.select {
         width: 50px;
     }
 }
@@ -55,7 +71,7 @@ td[ai] {
     font-style: italic;
     color: blueviolet;
 }
-ul:not(.navbar-nav) {
+ul:not(.navbar-nav):not([role="presentation"]):not(.nav-tabs) {
     margin-top: 10px !important;
     li {
         i {
@@ -96,7 +112,7 @@ ul:not(.navbar-nav) {
 }
 
 @media (max-width: 991px) {
-    ul.nav {
+    ul.nav:not(.nav-tabs):not([role="presentation"]) {
         li {
             .nav-link {
                 font-size: 14px !important;
@@ -108,6 +124,45 @@ ul:not(.navbar-nav) {
     }
 }
 
+<<<<<<< HEAD
+*,
+:after,
+:before {
+    box-sizing: border-box;
+}
+
+.bootstrap-select {
+    > .dropdown-toggle {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        > .filter-option {
+            margin-right: auto;
+            padding-right: 15px;
+            @extend .text-one-line;
+        }
+    }
+    > .dropdown-menu {
+        ul {
+            // display: flex;
+            position: unset !important;
+            cursor: pointer;
+
+            > li {
+                &.selected > a {
+                    color: white !important;
+                    background-color: #9c27b0;
+                }
+                &.disabled {
+                    > a {
+                        box-shadow: none !important;
+                    }
+                }
+            }
+        }
+    }
+=======
 strong{
     color: red;
+>>>>>>> 32af8890aafc1b41c0d2a76e8351281ef504551b
 }

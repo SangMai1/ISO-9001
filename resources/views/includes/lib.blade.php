@@ -2,15 +2,15 @@
     href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
 <!-- CSS Files -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/material-dashboard@2.1.0/assets/css/material-dashboard.css">
-<!-- CSS Just for demo purpose, don't include it in your project -->
-<link href="/assets/demo/demo.css" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/material-dashboard@2.0.2/assets/css/material-dashboard.css">
+{{-- <link rel="stylesheet" href="https://demos.creative-tim.com/test/material-dashboard-pro/assets/css/material-dashboard.min.css?v=2.0.3"> --}}
+
 <!--   Core JS Files   -->
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"
     integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
 <script src="/assets/js/core/popper.min.js"></script>
-{{-- <script src="/assets/js/core/bootstrap-material-design.min.js"></script> --}}
-<script src="https://cdn.jsdelivr.net/npm/bootstrap-material-design@4.1.3/dist/js/bootstrap-material-design.min.js"></script>
+<script src="/assets/js/core/bootstrap-material-design.min.js"></script>
+{{-- <script src="https://cdn.jsdelivr.net/npm/bootstrap-material-design@4.1.3/dist/js/bootstrap-material-design.min.js"></script> --}}
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.css" id="theme-styles">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.6.13/js/perfect-scrollbar.jquery.min.js"
     integrity="sha512-g1rQ3POLb/FTB5ouNwzsvY/++6bs5TYFcMbsjC19QxpL4JFL7W5EbCBJVKzORM4YRLm17j4vNyyGWhkiOB6MFw=="

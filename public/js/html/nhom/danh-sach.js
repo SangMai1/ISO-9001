@@ -1,5 +1,6 @@
 $(() => {
     const table = $('#main-list');
+    let token = $('.csrf-token > input');
     if (!table[0])
         return;
     $('#delete-btn').on('click', function () {

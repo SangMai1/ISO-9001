@@ -4,7 +4,7 @@ export const Utils = {
     showMessage(message = 'no message') {
         console.log(message)
     },
-    randomString(length:number = 10): string {
+    randomString(length: number = 10): string {
         const characters = 'abcdefghijklmnopqrstuvwxyz'
         const charactersLength = characters.length;
         Utils.randomString = function () {
@@ -17,9 +17,9 @@ export const Utils = {
         }
         return Utils.randomString()
     },
-    activeAllActionFromObject(obj) {
+    activeAllActionFromObject(obj, args) {
         for (let renderAction of Object.values(obj)) {
-            if (renderAction instanceof Function) renderAction()
+            if (renderAction instanceof Function) renderAction.apply(obj, args)
         }
     },
     loadScript(url) {
@@ -30,5 +30,5 @@ export const Utils = {
             document.head.append(script)
         })
 
-    }
+    },
 }

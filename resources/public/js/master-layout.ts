@@ -1,10 +1,92 @@
 //@ts-nocheck
 // @ts-ignore
+const token = document.querySelector('.csrf-token > input').value;
+const Toast = Swal.mixin({
+    toast: true,
+    position: 'top-right',
+    showConfirmButton: false,
+    showCloseButton: true,
+    timer: undefined,
+    didOpen: (toast) => {
+        toast.addEventListener('mouseenter', window.Swal.stopTimer)
+        toast.addEventListener('mouseleave', window.Swal.resumeTimer)
+    }
+})
+const showLoading = function (message) { Toast.fire({ title: message, showCloseButton: false, didOpen: () => window.Swal.showLoading() }) };
+const getMessage = (html) => $('.alert-message', $(html))[0];
+
 (function () {
     addJqueryValidationCustom()
     addJqueryTableAutoIndex()
     addSelectModeTable()
+    addHTMLTableElementPrototype()
+    addPrototypeFormData()
     fixTooltip()
+    fixMaterial()
+
+    $.ajaxSetup({
+        "processData": false,
+        "mimeType": "multipart/form-data",
+        "contentType": false,
+    })
+
+    function fixMaterial() {
+        $((function () {
+            $sidebar = $('.sidebar');
+            $sidebar_img_container = $sidebar.find('.sidebar-background');
+            $full_page = $('.full-page');
+            $sidebar_responsive = $('body > .navbar-collapse');
+            window_width = $(window).width();
+            fixed_plugin_open = $('.sidebar .sidebar-wrapper .nav li.active a p').html();
+            if (window_width > 767 && fixed_plugin_open == 'Dashboard') {
+                if ($('.fixed-plugin .dropdown').hasClass('show-dropdown')) {
+                    $('.fixed-plugin .dropdown').addClass('open');
+                }
+            }
+            $('.fixed-plugin a').click(function (event) { 
+                // Alex if we click on switch, stop propagation of the event, so the dropdown will not be hide, otherwise we set the  section active
+                if ($(this).hasClass('switch-trigger')) {
+                    if (event.stopPropagation) {
+                        event.stopPropagation();
+                    } else if (window.event) {
+                        window.event.cancelBubble = true;
+                    }
+                }
+            });
+            $('.fixed-plugin .active-color span').click(function () {
+                $full_page_background = $('.full-page-background');
+                $(this).siblings().removeClass('active');
+                $(this).addClass('active');
+                var new_color = $(this).data('color');
+                if ($sidebar.length != 0) {
+                    $sidebar.attr('data-color', new_color);
+                }
+                if ($full_page.length != 0) {
+                    $full_page.attr('filter-color', new_color);
+                }
+                if ($sidebar_responsive.length != 0) {
+                    $sidebar_responsive.attr('data-color', new_color);
+                }
+            })
+        }))
+    }
+
+    function addPrototypeFormData() {
+        FormData.prototype.fromObject = function (this: FormData, obj) {
+            if (typeof obj !== 'object') return
+            for (let [key, value] of Object.entries(obj)) {
+                if (value instanceof Array) {
+                    key += '[]'
+                    for (let v of value) {
+                        this.append(key, v)
+                    }
+                } else {
+                    this.append(key, value)
+                }
+            }
+            return this
+        }
+    }
 
     function fixTooltip() {
         $.fn._tooltip = $.fn.tooltip
@@ -13,6 +95,32 @@
         }
     }
 
+    function addHTMLTableElementPrototype() {
+        HTMLTableElement.prototype._loadBodyTable = function (this: HTMLTableElement, body) {
+            $(this).find('tbody').html(body)
+            if (this._eventsLoadBody instanceof Array)
+                for (let evt of this._eventsLoadBody)
+                    evt(this)
+        }
+        HTMLTableElement.prototype._onLoadTableBody = function (this: HTMLTableElement, eventHandler) {
+            if (eventHandler instanceof Function) {
+                if (!(this._eventsLoadBody instanceof Array)) this._eventsLoadBody = []
+                this._eventsLoadBody.push(eventHandler)
+            }
+        }
+        HTMLTableElement.prototype._eachSelected = function (this: HTMLTableElement, callback) {
+            for (let tr of $(this).children('tbody').children('tr')) {
+                if (tr._select[0].checked) callback(tr)
+            }
+        }
+        HTMLTableElement.prototype._mapSelected = function (this: HTMLTableElement, callback) {
+            const output = []
+            for (let tr of $(this).children('tbody').children('tr')) {
+                if (tr._select[0].checked) output.push(callback(tr))
+            }
+            return output
+        }
+    }
     /**
      * Thêm $.fn.validateCustom ( dùng cho input viết từ component )
      */
@@ -130,11 +238,14 @@
      * Thêm $.fn._autoIndexTable ( Tự động đánh index cho table )
      */
     function addJqueryTableAutoIndex() {
-        $.fn._autoIndexTable = function () {
-            this.each((i, e) => {
-                const table = $(e)
+        $.fn._autoIndexTable = function (this: JQuery<HTMLElement>) {
+            this.each((i, element) => {
+                const table = $(element)
                 const trHead = table.find('thead > tr')
-                if (!trHead.find('.auto-index-head')[0]) trHead.prepend($('<th class="auto-index-head"><strong>#</strong></th>'))
+                if (!trHead.find('.auto-index-head')[0]) {
+                    trHead.prepend($('<th class="auto-index-head"><strong>#</strong></th>'))
+                    element._onLoadTableBody(function () { table._autoIndexTable() })
+                }
                 table.children('tbody').children('tr').each((i, tr) => {
                     if (!tr._ai) { tr._ai = $('<td ai></td>'); tr.prepend(tr._ai[0]) }
                     tr._ai.html(i + 1)
@@ -151,36 +262,34 @@
                 const table = $(e);
                 const trHead = table.find('thead > tr');
                 // Tự động thêm checkbox select vào header (nếu không tồn tại)
-                if (!trHead.find('th.select')[0])
-                    trHead.prepend($(`<th class="select"></th>`).html((function () {
-                        const cbSelectAll = $(checkbox)
-                        const selectToolTipText = ['<span class="text-danger">Hủy chọn tất cả</span>', '<span class="text-success">Chọn tất cả</span>']
-                        // Thêm tooltip attribute
-                        cbSelectAll.attr('data-toggle', 'tooltip').attr('data-html', 'true').attr('title', selectToolTipText[1])
-                        // Chọn hoặc hủy tất cả lựa chọn trong table
-                        cbSelectAll.find('input').on('change', function (evt) {
-                            const check = this.checked
-                            const message = selectToolTipText[check ? 0 : 1]
-                            cbSelectAll.attr('data-original-title', message)
-                            // Tìm thẻ tooltip đang được view và thay đổi trực tiếp content bên trong
-                            $(`#${cbSelectAll.attr('aria-describedby')} > .tooltip-inner`).html(message)
-                            table.find('tbody > tr').each(function (i, tr) { tr._select[0].checked = check })
-                        })
-                        cbSelectAll.tooltip()  
-                        return cbSelectAll
-                    })()))
+                if (!trHead.find('th.select')[0]) {
+                    trHead.prepend(
+                        $(`<th class="select"></th>`).html((function () {
+                            const cbSelectAll = $(checkbox)
+                            const selectToolTipText = ['<span class="text-danger">Hủy chọn tất cả</span>', '<span class="text-success">Chọn tất cả</span>']
+                            // Thêm tooltip attribute
+                            cbSelectAll.attr('data-toggle', 'tooltip').attr('data-html', 'true').attr('title', selectToolTipText[1])
+                            // Chọn hoặc hủy tất cả lựa chọn trong table
+                            cbSelectAll.find('input').on('change', function (evt) {
+                                const check = this.checked
+                                const message = selectToolTipText[check ? 0 : 1]
+                                cbSelectAll.attr('data-original-title', message)
+                                // Tìm thẻ tooltip đang được view và thay đổi trực tiếp content bên trong
+                                $(`#${cbSelectAll.attr('aria-describedby')} > .tooltip-inner`).html(message)
+                                table.find('tbody > tr').each(function (i, tr) { tr._select[0].checked = check })
+                            })
+                            cbSelectAll.tooltip()
+                            return cbSelectAll
+                        })()))
+                    e._onLoadTableBody(function () { table._addSelectRows() })
+                }
                 table.children('tbody').children('tr').each((i, e) => {
                     if (!e._select) {
                         const jCheckbox = $(checkbox)
                         e._select = jCheckbox.find('input');
                         e.prepend($('<td sl></td>').append(jCheckbox)[0])
                     }
-                });
-                table[0]._eachSelected = function (callback) {
-                    table.find('tbody > tr').each(function (i, tr) {
-                        if (tr._select[0].checked) callback(tr)
-                    })
-                }
+                })
             });
             return this;
         };

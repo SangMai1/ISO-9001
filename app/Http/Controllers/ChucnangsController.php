@@ -15,12 +15,15 @@ class ChucnangsController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
+     * route:viewChucNang
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $chucNangs = DB::table('chucnangs')->where('daxoa', 0)->get();
+        if ($request->get('no-layout') === '1') {
+            return view('chuc-nang.table-include', compact(['chucNangs']));
+        }
         return view('/chuc-nang/danh-sach', compact(['chucNangs']));
     }
 
@@ -46,26 +49,34 @@ class ChucnangsController extends Controller
         date_default_timezone_set("Asia/Ho_Chi_Minh");
 
         $validator = Validator::make($request->all(), [
-            'ten'=> 'required|string|min:1',
-            'url'=> 'required|string|min:1'
+            'ten' => 'required|string|min:1',
+            'url' => 'required|string|min:1'
         ]);
 
-        if($validator->fails()){
+        if ($validator->fails()) {
             return redirect()->Back()->withInput()->withErrors($validator);
         }
 
         $chucNang = new chucnangs();
+<<<<<<< HEAD
+        $chucNang->ten = $request->ten;
+        $chucNang->url = $request->url;
+        $chucNang->nguoitao = "sang";
+        $chucNang->nguoisua = "sang";
+        $chucNang->daxoa = "0";
+
+        if ($chucNang->save()) {
+=======
         $chucNang -> ten = $request -> ten;
         $chucNang -> url = $request -> url;
         $chucNang -> nguoitao = "sang";
-        $chucNang -> ngaytao = Carbon::now();
         $chucNang -> nguoisua = "sang";
-        $chucNang -> ngaysua = Carbon::now();
         $chucNang -> daxoa = "0";
         if($chucNang->save()){
+>>>>>>> 32af8890aafc1b41c0d2a76e8351281ef504551b
             Session::flash('message', 'Thêm mới thành công');
             Session::flash('alert-class', 'alert-sucess');
-            return redirect()->route('viewChucNang');
+            return redirect()->route('chucnang.list');
         } else {
             Session::flash('message', 'Thêm mới thất bại!');
             Session::flash('alert-class', 'alert-danger');
@@ -93,7 +104,8 @@ class ChucnangsController extends Controller
     public function edit($id)
     {
         $chucnang = chucnangs::find($id);
-        return response()->json($chucnang);
+        dd($chucnang);
+        return view('/chuc-nang/cap-nhat', compact(['chucnang']));
     }
 
     /**
@@ -116,15 +128,23 @@ class ChucnangsController extends Controller
             return redirect()->Back()->withInput()->withErrors($validator);
         }
 
+<<<<<<< HEAD
+        $chucnang = chucnangs::find($request->id);
+        $chucnang->ten = $request->ten;
+        $chucnang->url = $request->url;
+        $chucnang->nguoisua = "admin";
+        $chucnang->ngaysua = Carbon::now();
+        if ($chucnang->update()) {
+=======
         $chucnang = chucnangs::find($request -> id);
         $chucnang -> ten = $request -> ten;
         $chucnang -> url = $request -> url;
         $chucnang -> nguoisua = "admin";
-        $chucnang -> ngaysua = Carbon::now();
         if($chucnang -> update()){
+>>>>>>> 32af8890aafc1b41c0d2a76e8351281ef504551b
             Session::flash('message', 'Cập nhật thành công');
             Session::flash('alert-class', 'alert-success');
-            return redirect()->route('viewChucNang');
+            return redirect()->route('chucnang.list');
         } else {
             Session::flash('message', 'Cập nhật thất bại');
             Session::flash('alert-class', 'alert-danger');
@@ -140,30 +160,41 @@ class ChucnangsController extends Controller
      */
     public function destroy(Request $request)
     {
-        
-      }
+    }
 
-     public function deleteAll(Request $request)
+    public function deleteAll(Request $request)
     {
 
         date_default_timezone_set("Asia/Ho_Chi_Minh");
+<<<<<<< HEAD
+        $list_id = $request->input('ids');
+
+        if ($list_id)
+            foreach ($list_id as $list) {
+                chucnangs::where('id', $list)->update([
+                    "daxoa" => "1",
+                    "nguoisua" => "ai do",
+                ]);
+            }
+        return redirect(route('viewChucNang', ['no-layout' => 1]));
+=======
         $list_id = $request -> input('idss');
         
         foreach($list_id as $list){
             chucnangs::where('id',$list)->update([
                 "daxoa" => "1",
                 "nguoisua" => "ai do",
-                "ngaysua" => Carbon::now()
 
             ]);
         }
-        return redirect()->route('viewChucNang');
+        return redirect()->route('chucnang.list');
+>>>>>>> 32af8890aafc1b41c0d2a76e8351281ef504551b
     }
 
-    public function search(Request $request){
-        $search = $request -> input('search');
-        $chucNangs = chucnangs::where('ten', 'like', '%'.$search.'%')->get();
+    public function search(Request $request)
+    {
+        $search = $request->input('search');
+        $chucNangs = chucnangs::where('ten', 'like', '%' . $search . '%')->get();
         return view('/chuc-nang/danh-sach', compact(['chucNangs']));
     }
-     
 }
