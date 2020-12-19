@@ -40,6 +40,11 @@
               <option value="{{$key}}">{{$value}}</option>
             @endforeach
           </select>
+          {{-- <select class="form-control" name="nhanvienid">
+            @foreach($nhanviens as $nv)
+              <option value="{{$nv['id']}}">{{$nv['ten']}}</option>
+            @endforeach
+          </select> --}}
       </div>
       
 

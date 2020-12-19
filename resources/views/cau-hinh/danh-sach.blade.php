@@ -14,7 +14,7 @@
         </div>
     @endif
     <br>
-	
+<x-card>	
     <div class="row">
 
         <div class="col-md-6">
@@ -82,7 +82,7 @@
     
    
 
-</div>
+</x-card>
     <div class="d-flex justify-content-center">{{ $cauhinh->onEachSide(1)->links() }}</div>
     <!-- small modal -->
 

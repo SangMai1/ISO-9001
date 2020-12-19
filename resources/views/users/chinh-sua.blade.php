@@ -40,6 +40,11 @@
               <option value="{{$key}}" {{$key == $users['nhanvienid'] ? 'selected' : ''}}>{{$value}}</option>
             @endforeach
           </select>
+          {{-- <select class="form-control" name="nhanvienid">
+            @foreach($nhanviens as $nv)
+              <option value="{{$nv['id']}}" <?php echo ($users['nhanvienid'] == $nv['id'] ? 'selected' : '') ?>>{{$nv['ten']}}</option>
+            @endforeach
+          </select> --}}
       </div>
 
       

@@ -56,6 +56,7 @@
                 <td>{{ $value['name'] }}</td> 
                 <td>{{ $value['password'] }}</td>
                 <td>{{ $nhanviens[$value['nhanvienid']] }}</td>
+                {{-- <td><?php echo App\Models\nhanviens::find($value['id'])->ten ?></td> --}}
                 <td>{{ $value['nguoitao'] }}</td>
                 <td>{{ $value['created_at'] }}</td>
                 <td>{{ $value['nguoisua'] }}</td>

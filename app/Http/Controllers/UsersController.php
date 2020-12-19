@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\users;
+use App\Models\nhanviens;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
@@ -27,13 +28,14 @@ class UsersController extends Controller
      */
     public function create()
     {
+        $nhanviens = nhanviens::all()->toArray();
         return view('/users/them-moi');
     }
 
     public function search(Request $request){
         $search = $request->get('search');
         $users = users::where('name', 'like', '%'.$search.'%')->paginate(3);
-        return view('users/danh-sach',['users'=> $users]);
+        return view('users/danh-sach',['users'=> $users, 'nhanviens' => $nhanviens]);
        
     }
 
@@ -84,6 +86,7 @@ class UsersController extends Controller
      */
     public function edit($id)
     {
+        $nhanviens = nhanviens::all()->toArray();
         $users = users::find($id)->toArray();
         return view('/users/chinh-sua', compact('users'));
     }
@@ -125,6 +128,7 @@ class UsersController extends Controller
     {
         $users = users::find($id);
         $users -> daxoa = Carbon::now('Asia/Ho_Chi_Minh');
+        $users -> nguoisua = "Del Admin";
         $users->update();
         return redirect()->route('user.list')
         ->with('success', 'Xóa user thành công !!');
