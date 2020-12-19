@@ -21,7 +21,7 @@ class ChucnangsController extends Controller
     public function index(Request $request)
     {
         $chucNangs = DB::table('chucnangs')->where('daxoa', 0)->get();
-        if ($request->get('no-layout') === '1') {
+        if (Session::get('no-layout') == true) {
             return view('chuc-nang.table-include', compact(['chucNangs']));
         }
         return view('/chuc-nang/danh-sach', compact(['chucNangs']));
@@ -155,7 +155,9 @@ class ChucnangsController extends Controller
                     "nguoisua" => "ai do",
                 ]);
             }
-        return redirect(route('chucnang.list', ['no-layout' => 1]));
+        Session::flash('no-layout', true);
+        Session::flash('message', "{_type: 'Toast', icon: 'success', 'title': 'Xóa thành công'}");
+        return redirect(route('chucnang.list'));
     }
 
     public function search(Request $request)

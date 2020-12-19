@@ -32,7 +32,12 @@ define(["require", "exports", "./utils"], function (require, exports, utils_1) {
                             url: deleteHref,
                             data: new FormData().fromObject({ ids: idsSelected, _token: token }),
                         }).done(function (resp) {
-                            Toast.fire({ icon: 'success', timer: 1500 });
+                            const message = getMessage(resp);
+                            try {
+                                window[message._type].fire(message);
+                            }
+                            catch (error) {
+                            }
                             table[0]._loadBodyTable($('tbody > tr', $(resp)));
                         }).fail(() => window.Swal.closeToast());
                     });

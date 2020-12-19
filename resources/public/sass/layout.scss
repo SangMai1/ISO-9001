@@ -41,16 +41,15 @@ table {
     .form-check {
         .form-check-label > span.form-check-sign {
             &::before {
-                top: 15px !important;
-                left: 2px !important;
+                // top: 1px !important;
+                left: 1px !important;
                 background-color: rebeccapurple;
                 z-index: 9999999;
             }
             > .check {
-                top: 12px !important;
-                border-radius: 100%;
-                width: 26px;
-                height: 26px;
+                // border-radius: 100%;
+                width: 24px;
+                height: 24px;
                 &::before {
                     left: 3px !important;
                     top: 3px !important;

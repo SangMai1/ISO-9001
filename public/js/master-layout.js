@@ -1,5 +1,5 @@
 const token = document.querySelector('.csrf-token > input').value;
-const Toast = Swal.mixin({
+var Toast = Swal.mixin({
     toast: true,
     position: 'top-right',
     showConfirmButton: false,
@@ -10,8 +10,16 @@ const Toast = Swal.mixin({
         toast.addEventListener('mouseleave', window.Swal.resumeTimer);
     }
 });
-const showLoading = function (message = "Chờ xí ...") { Toast.fire({ title: message, showCloseButton: false, didOpen: () => window.Swal.showLoading() }); };
-const getMessage = (html) => $('.alert-message', $(html))[0];
+var showLoading = function (message = "Chờ xí ...") { Toast.fire({ title: message, showCloseButton: false, didOpen: () => window.Swal.showLoading() }); };
+var getMessage = (html) => {
+    try {
+        let result = $('.alert-message', $(html)).text();
+        eval(`result = ${result}`);
+        return result;
+    }
+    catch (error) {
+    }
+};
 (function () {
     addJqueryValidationCustom();
     addJqueryTableAutoIndex();
