@@ -23,7 +23,7 @@ Tip 2: you can also add an image using data-image tag
                         <ul class="collapse list-unstyled">
                             <li class="nav-item">
 
-                                <a href="/c" class="nav-link">Xem nhân viên</a>
+                                <a href="{{route('nhanvien.list')}}" class="nav-link">Xem nhân viên</a>
                             </li>
                             <li class="nav-item">
                                 <a href="#" class="nav-link" active="khoiPhucTaiKhoan">Khôi phục mật khẩu</a>
@@ -38,6 +38,12 @@ Tip 2: you can also add an image using data-image tag
                     </li>
                     <li class="nav-item">
                         <a href="#" class="nav-link"><i class="fas fa-list"></i><span>Nhóm chức năng</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{route('danhmuc.list')}}" class="nav-link"><i class="fas fa-list"></i><span>Danh mục</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{route('cauhinh.list')}}" class="nav-link"><i class="fas fa-list"></i><span>Cấu hình</span></a>
                     </li>
                 </ul>
             </li>

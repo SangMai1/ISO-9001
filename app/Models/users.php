@@ -7,5 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class users extends Model
 {
-    use HasFactory;
+    public $timestamps = true;
+    protected $table = "users";
+    protected $fillable = ["id", "username","password","nhanvienid","nguoitao", "nguoisua", "daxoa"];
 }
