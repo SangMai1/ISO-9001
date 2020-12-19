@@ -27,17 +27,32 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::get('/list', function(){ return view('/layouts/default-form/demo'); });
 Route::get('/input', function(){ return view('/layouts/default-form/demo1'); });
 
-
 Route::group(['prefix' => '/cau-hinh'], function () {
-    Route::get('/danh-sach',[CauhinhsController::class, 'index'])->name('cauhinh.list'); // Hiển thị danh sách cấu hình
-    Route::get('/them-moi', [CauhinhsController::class, 'create']); // Thêm mới cấu hình
-    Route::post('/luu',  [CauhinhsController::class, 'store']); // Xử lý thêm mới cấu hình
-    Route::get('/chinh-sua/{id}',  [CauhinhsController::class, 'edit']); // Sửa cấu hình
-    Route::post('/cap-nhat',  [CauhinhsController::class, 'update']); // Xử lý sửa cấu hình
-    Route::get('/tim-kiem',  [CauhinhsController::class, 'search']);
-    Route::get('/da-xoa', [CauhinhsController::class, 'getDeleteCauhinhs'])->name('getDeleteCauhinhs');
-    Route::get('/da-xoa/{id}', [CauhinhsController::class, 'restoreDeletedCauhinhs'])->name('restoreDeletedCauhinhs');
-    Route::get('/khoi-phuc/{id}', [CauhinhsController::class, 'deletePermanently'])->name('deletePermanently');
+    Route::get('/danh-sach','App\Http\Controllers\CauhinhsController@index')->name('cauhinh.list'); // Hiển thị danh sách cấu hình
+    Route::get('/them-moi', 'App\Http\Controllers\CauhinhsController@create')->name('cauhinh.create'); // Thêm mới cấu hình
+    Route::post('/luu', 'App\Http\Controllers\CauhinhsController@store')->name('cauhinh.store'); // Xử lý thêm mới cấu hình
+    Route::get('/chinh-sua/{id}',  'App\Http\Controllers\CauhinhsController@edit')->name('cauhinh.edit'); // Sửa cấu hình
+    Route::post('/cap-nhat',  'App\Http\Controllers\CauhinhsController@update')->name('cauhinh.update'); // Xử lý sửa cấu hình
+    Route::get('/tim-kiem',  'App\Http\Controllers\CauhinhsController@search')->name('cauhinh.search');
+    Route::get('/xoa/{id}', 'App\Http\Controllers\CauhinhsController@destroy')->name('cauhinh.destroy');
+    Route::get('/da-xoa', 'App\Http\Controllers\CauhinhsController@getDeleteCauhinhs')->name('getDeleteCauhinhs');
+    Route::get('/da-xoa/{id}', 'App\Http\Controllers\CauhinhsController@deletePermanently')->name('deletePermanently');
+    Route::get('/khoi-phuc/{id}', 'App\Http\Controllers\CauhinhsController@restoreDeletedCauhinhs')->name('restoreDeletedCauhinhs');
+});
+
+Route::group(['prefix' => '/users'], function(){
+    Route::get('/danh-sach', 'App\Http\Controllers\UsersController@index')->name('user.list');
+    Route::get('/them-moi', 'App\Http\Controllers\UsersController@create')->name('user.create');
+    Route::post('/luu', 'App\Http\Controllers\UsersController@store')->name('user.store');
+    Route::get('/tim-kiem', 'App\Http\Controllers\UsersController@search')->name('user.search');
+    Route::get('/chinh-sua/{id}', 'App\Http\Controllers\UsersController@edit')->name('user.edit');
+    Route::post('/cap-nhat', 'App\Http\Controllers\UsersController@update')->name('user.update');
+    Route::get('/xoa/{id}', 'App\Http\Controllers\UsersController@destroy')->name('user.destroy');
+    Route::get('/da-xoa', 'App\Http\Controllers\UsersController@getDeleteUsers')->name('getDeleteUsers');
+    Route::get('/da-xoa/{id}', 'App\Http\Controllers\UsersController@deletePermanentlyUser')->name('deletePermanentlyUser');
+    Route::get('/khoi-phuc/{id}', 'App\Http\Controllers\UsersController@restoreDeletedUser')->name('restoreDeletedUser');
+
+
 });
 
 Route::group(['prefix' => '/danh-muc'], function () {

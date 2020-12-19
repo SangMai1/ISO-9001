@@ -21,6 +21,7 @@ class CreateUsersTable extends Migration
             $table->string('nguoitao');
             $table->string('nguoisua');
             $table->timestamps();
+            $table->timestamp('daxoa')->nullable();
         });
     }
 

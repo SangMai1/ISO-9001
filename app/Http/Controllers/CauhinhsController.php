@@ -55,7 +55,7 @@ class CauhinhsController extends Controller
      */
     public function store(Request $request)
     {   
-    
+    date_default_timezone_set("Asia/Ho_Chi_Minh");
     $request->validate([
         'ma' => 'required|unique:cauhinhs',
         'ten' => 'required',
@@ -133,7 +133,7 @@ class CauhinhsController extends Controller
             'ten' => $request ->input('ten'),
             'giatri' => $request ->input('giatri'),
             'nguoisua' => $request ->input('nguoisua'),
-            'ngaysua' => Carbon::now('Asia/Ho_Chi_Minh')
+            'updated_at' => Carbon::now('Asia/Ho_Chi_Minh')
     ]);
     return redirect()->route('cauhinh.list')
         ->with('success', 'Cập nhật cấu hình thành công !!');
@@ -151,7 +151,8 @@ class CauhinhsController extends Controller
     {
      date_default_timezone_set("Asia/Ho_Chi_Minh");    
 	
-    $deleteData = Cauhinhs::find($id)->delete();
+     $deleteData = Cauhinhs::find($id)->delete();
+    
     
 
     return redirect()->route('cauhinh.list')

@@ -35,11 +35,8 @@
             <a href="/cau-hinh/them-moi" style="margin-bottom: 10px" class="btn btn-primary">Thêm mới</a>
         </div>
     </div>
-    <table class="table table-bordered "><br><br>
-        <thead>
-            <tr>
-                <th><input type="checkbox" id="chkCheckAll"></th>
-                <th>Stt</th>
+    <x-table auto-index select id="table-component-table">
+        @slot('head')
                 <th>Mã</th>
                 <th>Tên</th>
                 <th>Giá trị</th>
@@ -47,50 +44,41 @@
                 <th>Ngày tạo</th>
                 <th>Người sửa</th>
                 <th>Ngày sửa</th>
-                <th>Action</th>
-                
-
-
-            </tr>
-        </thead>
-        <tbody>
-            <?php
-            $stt = 0;
-            foreach ($cauhinh as $value):
-            $stt++; ?>
-            <tr id="sid{{ $value->id }}">
-                <td><input type="checkbox" name="ids" class="checkBoxClass" value="{{ $value['id'] }}" /></td>
-                <td>{{ $stt }}</td>
+                <th>Action</th>        
+        @endslot
+        @slot('body')
+            @foreach ($cauhinh as $value)
+            <tr data-id="{{ $value['id'] }}">
+            
                 <td>{{ $value['ma'] }}</td> 
                 <td>{{ $value['ten'] }}</td>
                 <td>{{ $value['giatri'] }}</td>
                 <td>{{ $value['nguoitao'] }}</td>
-                <td>{{ $value['ngaytao'] }}</td>
+                <td>{{ $value['created_at'] }}</td>
                 <td>{{ $value['nguoisua'] }}</td>
-                <td>{{ $value['ngaysua'] }}</td>
+                <td>{{ $value['updated_at'] }}</td>
                 <td>
-                        <form action="{{ route('cauhinhs.destroy', $value->id) }}" method="POST">
+                        {{-- <form action="{{ route('cauhinh.destroy', $value->id) }}" method="POST"> --}}
                             <a href="{{ url('/cau-hinh/chinh-sua', $value->id) }}"  title="Chỉnh sửa" style="color: none; ">
                                 <i class="fa fa-pencil-square-o text-success" aria-hidden="true" ></i></a>   
-                               
+                            <a href="{{ url('/cau-hinh/xoa', $value->id) }}"  title="Xoa" style="color: none; ">
+                                    <i class="fa fa-trash-alt" aria-hidden="true" ></i></a> 
                             
                             @csrf
                             @method('DELETE')
     
-                            <button type="submit" title="Xóa" style="border: none; background-color:transparent;">
+                            {{-- <button onclick="return confirm('Chắc chắn xóa ?');" type="submit" title="Xóa" style="border: none; background-color:transparent;">
                                 <i class="fa fa-trash-alt text-danger" aria-hidden="true"></i>
     
-                            </button>
-                        </form>
+                            </button> --}}
+                        {{-- </form> --}}
                     </td>
             </tr>
-            <?php
-            endforeach;
-            ?>
+            @endforeach
 
-        </tbody>
+        @endslot
 
-    </table>
+    </x-table>
     
    
 </div>

@@ -13,7 +13,6 @@ class Cauhinhs extends Model
     use SoftDeletes;
     protected $table = 'cauhinhs';
     protected $dates = ['deleted_at'];
-    public $timestamps = false;
 
     protected $fillable = [
         'ma',
@@ -21,7 +20,8 @@ class Cauhinhs extends Model
         'giatri',
         'nguoitao',
         'nguoisua',
-        'ngaytao'
+        'ngaytao',
+        'created_at'
     
     ];
 }
