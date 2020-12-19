@@ -39,12 +39,6 @@
                 <th>Mã</th>
                 <th>Tên</th>
                 <th>Giá trị</th>
-                <th>Người tạo</th>
-                <th>Ngày tạo</th>
-                <th>Người sửa</th>
-                <th>Ngày sửa</th>
-                
-
             </tr>
         </thead>
         <tbody>
@@ -58,11 +52,6 @@
                     <td>{{ $value['ma']}}</td>
                     <td>{{ $value['ten']}}</td>
                     <td>{{ $value['giatri']}}</td>
-                    <td>{{ $value['nguoitao']}}</td>
-                    <td>{{ $value['ngaytao']}}</td>
-                    <td>{{ $value['nguoisua']}}</td>
-                    <td>{{ $value['ngaysua']}}</td>
-
                     <td>
                         <a  href="/cau-hinh/{{$value['id']}}/chinh-sua"><i
                        class="fa fa-pencil-square-o mr-2" aria-hidden="true"></i></a>

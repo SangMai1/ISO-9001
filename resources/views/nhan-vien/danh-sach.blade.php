@@ -1,6 +1,7 @@
 @extends('layouts.master')
-@section('title', 'Quản lý danh mục')
-@section('pageName', 'Danh sách danh mục')
+@section('title', 'Quản lý nhân viên')
+@section('pageName', 'Danh sách nhân viên')
+@section('module','danh-sach')
 
 @section('content')
     @if ( Session::has('success') )
@@ -23,48 +24,59 @@
             </button>
         </div>
     @endif
+    
+    <button class="btn btn-primary buttonDelete" style="float: right"><i class="fas fa-trash-alt"></i></button>
+    <a href="{{route('nhanvien.add')}}" class="btn btn-primary" style="float: right"><i class="fas fa-plus-circle"></i></a>
+    <button class="btn btn-primary viewFind" style="float: right"><i class="fa fa-search"></i></button>
 
     {{-- Search --}}
-    <form action="{{route('danhmuc.find')}}" method="GET">
-        <div class="form-group">
-            <label>Tên danh mục</label>
-            <input class="form-control" type="text" name="tendm" value="{{$tendm ?? ""}}" /><br>
-        </div>
-        
-        <div class="form-group">
-            <label>Loại danh mục :</label>
-            @php
-              $loais = ["-1"=>"Chọn loại danh mục","0"=>"Chức danh","1"=>"Phòng ban","2"=>"Loại tài sản"];
-            @endphp
-            <select class="form-control" name="loaidm">
-              @foreach($loais as $key => $value)
-                <option value="{{$key}}" {{$key == $loaiDm ? 'selected' : ''}}>{{$value}}</option>
-              @endforeach
-            </select>
-        </div>
-
-        <button type="submit" class="btn btn-primary">Tìm kiếm</button>
+    <div class="viewForm">
+        <form action="{{route('nhanvien.find')}}" method="GET">
+            <button type="submit" class="btn btn-primary">Tìm kiếm</button>
+        </form>
+    </div>
+    <form method="post" id="formDelete" action="{{ route('nhanvien.delete') }}">
+        <input type="hidden" name="ids" id="ids"/>
+        {{ csrf_field() }}
+        <x-table auto-index select id="table">
+            @slot('head')
+                <th>Mã</th>
+                <th>Tên</th>
+            @endslot
+            @slot('body')
+                @foreach ($nhanviens as $item)
+                    <tr data-id="{{ $item->id }}">
+                        <td>{{ $item->ma }}</td>
+                        <td><a  href="{{route('nhanvien.edit',["id"=>$item->id])}}">{{ $item->ten }}</a></td>
+                    </tr>
+                @endforeach
+            @endslot
+        </x-table>
     </form>
 
-    <a href="{{route('danhmuc.add')}}" class="btn btn-primary">Thêm mới</a>
-    <x-card>
-        @slot('body') 
-            <x-table :titles="['Mã', 'Tên','Loại','Chức năng']" auto-index="true">
-                @slot('body')
-                    @foreach ($danhmucs as $item)
-                        <tr>
-                            <td>{{ $item->ma }}</td>
-                            <td>{{ $item->ten }}</td>
-                            <td>{{ $loais[$item->loai] }}</td>
-                            <td>
-                                <a  href="{{route('danhmuc.edit',["id"=>$item->id])}}"><i
-                                    class="fa fa-pencil-square-o mr-2" aria-hidden="true"></i></a>
-                                <a href="{{route('danhmuc.delete',["id"=>$item->id])}}"><i class="fa fa-trash-alt" aria-hidden="true" ></i></a>
-                            </td>
-                        </tr>
-                    @endforeach
-                @endslot
-            </x-table>
-        @endslot
-    </x-card>
+    <!-- The Modal Delete -->
+    <div class="modal" tabindex="-1" role="dialog" id="myDelete">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <!-- Modal Header -->
+                <div class="modal-header">
+
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div id="delete-body">
+                    <h4>Bạn có muốn xóa không?</h4>
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="delRef" class="btn btn-primary">Xác nhận</button>
+                    <button type="button" class="btn btn-primary thoat" data-dismiss="modal">Thoát</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 @endsection

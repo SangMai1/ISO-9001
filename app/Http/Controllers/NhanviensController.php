@@ -69,19 +69,15 @@ class NhanviensController extends Controller
         $nhanvien -> chucdanhid = $request -> chucdanhid;
         $nhanvien -> phongbanid = $request -> phongbanid;
         $nhanvien -> nguoitao = CommonUtil::getValueCauhinh("USER_ADMIN");
-        $nhanvien -> ngaytao = Carbon::now();
         $nhanvien -> nguoisua = CommonUtil::getValueCauhinh("USER_ADMIN");
-        $nhanvien -> ngaysua = Carbon::now();
         $nhanvien -> daxoa = "0";
        
         if($nhanvien->save()){
-            $user -> name = $request -> username;
+            $user -> username = $request -> username;
             $user -> password = $request -> password;
             $user -> nhanvienid = $nhanvien -> id;
             $user -> nguoitao = CommonUtil::getValueCauhinh("USER_ADMIN");
-            $user -> ngaytao = Carbon::now();
             $user -> nguoisua = CommonUtil::getValueCauhinh("USER_ADMIN");
-            $user -> ngaysua = Carbon::now();
             $user -> daxoa = "0";
             $user->save();
             Session::flash('success', 'Thêm mới thành công');
@@ -112,6 +108,7 @@ class NhanviensController extends Controller
      */
     public function edit($id)
     {
+        echo 'vao day';
         $nhanvien = Nhanviens::find($id);
         $chucdanhs = Danhmucs::all()->where('daxoa',0)->where('loai',0)->pluck("ten","id");
         $phongbans = Danhmucs::all()->where('daxoa',0)->where('loai',1)->pluck("ten","id");
@@ -150,7 +147,6 @@ class NhanviensController extends Controller
         $nhanvien -> chucdanhid = $request -> chucdanhid;
         $nhanvien -> phongbanid = $request -> phongbanid;
         $nhanvien -> nguoisua = CommonUtil::getValueCauhinh("USER_ADMIN");
-        $nhanvien -> ngaysua = Carbon::now();
        
         if($nhanvien->update()){
             Session::flash('success', 'Cập nhật thành công');
@@ -168,24 +164,21 @@ class NhanviensController extends Controller
      * @param  \App\Models\Nhanviens  $nhanviens
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
         date_default_timezone_set("Asia/Ho_Chi_Minh");
+        $ids = $request -> ids;
+        $list_id = explode(",",$ids);
         //Thực hiện câu lệnh xóa với giá trị id = $id trả về
-        $nhanvien = Nhanviens::find($id);
-        $nhanvien -> nguoisua = CommonUtil::getValueCauhinh("USER_ADMIN");
-        $nhanvien -> ngaysua = Carbon::now();
-        $nhanvien -> daxoa = 1;
- 
-        if($nhanvien->update()){
-            $user = users::where("nhanvienid",$nhanvien-> id);
-            $user -> nguoisua = CommonUtil::getValueCauhinh("USER_ADMIN");
-            $user -> ngaysua = Carbon::now();
-            $user -> daxoa = 1;
-            $user -> update();
-            Session::flash('success', 'Xóa  thành công!');
-        } else {
-            Session::flash('error', 'Xóa thất bại!');
+        foreach ($list_id as $list) {
+            Nhanviens::where('id', $list)->update([
+                "daxoa" => "1",
+                "nguoisua" => CommonUtil::getValueCauhinh("USER_ADMIN")
+            ]);
+            users::where('nhanvienid', $list)->update([
+                "daxoa" => "1",
+                "nguoisua" => CommonUtil::getValueCauhinh("USER_ADMIN")
+            ]);
         }
         
         //Thực hiện chuyển trang

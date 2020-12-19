@@ -63,9 +63,7 @@ class DanhmucsController extends Controller
         $danhmuc -> ma = $ma;
         $danhmuc -> loai = $loai;
         $danhmuc -> nguoitao = CommonUtil::getValueCauhinh("USER_ADMIN");
-        $danhmuc -> ngaytao = Carbon::now();
         $danhmuc -> nguoisua = CommonUtil::getValueCauhinh("USER_ADMIN");
-        $danhmuc -> ngaysua = Carbon::now();
         $danhmuc -> daxoa = "0";
         if($danhmuc->save()){
             Session::flash('success', 'Thêm mới thành công');
@@ -131,7 +129,6 @@ class DanhmucsController extends Controller
         $danhmuc -> ma = $ma;
         $danhmuc -> loai = $loai;
         $danhmuc -> nguoisua = CommonUtil::getValueCauhinh("USER_ADMIN");
-        $danhmuc -> ngaysua = Carbon::now();
  
         if($danhmuc->update()){
             Session::flash('success', 'Cập nhật thành công');
@@ -155,7 +152,6 @@ class DanhmucsController extends Controller
         //Thực hiện câu lệnh xóa với giá trị id = $id trả về
         $danhmuc = Danhmucs::find($id);
         $danhmuc -> nguoisua = CommonUtil::getValueCauhinh("USER_ADMIN");
-        $danhmuc -> ngaysua = Carbon::now();
         $danhmuc -> daxoa = 1;
  
         if($danhmuc->update()){

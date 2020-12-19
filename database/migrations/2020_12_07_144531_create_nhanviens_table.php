@@ -20,7 +20,7 @@ class CreateNhanviensTable extends Migration
             $table->string('ten');
             $table->string('email');
             $table->date('ngaysinh');
-            $table->smallInteger('gioitinh');
+            $table->smallInteger('gioitinh')->comment("0: nam, 1:nữ, 2:khác");
             $table->double('hesoluong');
             $table->bigInteger('chucdanhid');
             $table->bigInteger('phongbanid');

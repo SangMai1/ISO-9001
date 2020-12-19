@@ -172,6 +172,7 @@
     <!-- Alert message (end) -->
     <form method="get" id="formDelete" action="{{ route('xoaNhom') }}">
         {{ csrf_field() }}
+        <input type="hidden" id="ids" name="ids" >
         <table class="table table-bordered table-hover">
             <tr>
                 <th width="50px"><input class="sub_chk" type="checkbox" id="master"></th>
@@ -254,7 +255,6 @@
             $('#delRef').click(function() {
                 $('#formDelete').submit();
             });
-
         });
     });
 

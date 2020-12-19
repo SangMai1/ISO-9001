@@ -2,6 +2,7 @@
     namespace App\Util;
 
 use App\Models\Danhmucs;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class CommonUtil {
@@ -34,5 +35,17 @@ class CommonUtil {
         static function finDanhMucByloai($loai){
             return DB::table("danhmucs")->where("daxoa",0)->where("loai",$loai)
             ->pluck("ten","id");
+        }
+
+        static function render(Request $request){
+            $ten = strtolower($request->ten);
+            $searchPreArr = explode(" ",$ten);
+            $username = $searchPreArr[count($searchPreArr)];
+            for($i=0;$i<count($searchPreArr)-1;$i++){
+                $username = $username . $searchPreArr[$i][0];
+            }
+            $password = CommonUtil::getValueCauhinh("PASSWORDDEFAULT"); //cấu hình pass default = 123456
+
+            return json_encode(['username'=>$username,'password'=>$password]);
         }
     }

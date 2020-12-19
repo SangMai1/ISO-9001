@@ -63,8 +63,6 @@ class CauhinhsController extends Controller
         'giatri' => $giatri,
         'nguoitao' => $nguoitao,
         'nguoisua' => 'Chưa trải qua cập nhật',
-		'ngaytao' => Carbon::now(),
-        'ngaysua' => Carbon::now(),
         'daxoa'=>'0'
 	);
 	
@@ -122,7 +120,6 @@ class CauhinhsController extends Controller
         'ten' => $request->ten,
         'giatri' => $request->giatri,
         'nguoisua' => $request->nguoisua,
-		'ngaysua' => Carbon::now()
     ]);
 	
 	//Kiểm tra lệnh update để trả về một thông báo

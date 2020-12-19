@@ -47,24 +47,28 @@
     </form>
 
     <a href="{{route('danhmuc.add')}}" class="btn btn-primary">Thêm mới</a>
-    <x-card>
-        @slot('body') 
-            <x-table :titles="['Mã', 'Tên','Loại','Chức năng']" auto-index="true">
-                @slot('body')
-                    @foreach ($danhmucs as $item)
-                        <tr>
-                            <td>{{ $item->ma }}</td>
-                            <td>{{ $item->ten }}</td>
-                            <td>{{ $loais[$item->loai] }}</td>
-                            <td>
-                                <a  href="{{route('danhmuc.edit',["id"=>$item->id])}}"><i
-                                    class="fa fa-pencil-square-o mr-2" aria-hidden="true"></i></a>
-                                <a href="{{route('danhmuc.delete',["id"=>$item->id])}}"><i class="fa fa-trash-alt" aria-hidden="true" ></i></a>
-                            </td>
-                        </tr>
-                    @endforeach
-                @endslot
-            </x-table>
-        @endslot
-    </x-card>
+
+    <table class="table table-bordered table-hover">
+        <tr>
+          <th width="50px"><input class="sub_chk" type="checkbox" id="master"></th>
+          <th>STT</th>
+          <th>Mã</th>
+          <th>Tên</th>
+          <th>Loại</th>
+        </tr>
+        @foreach ($danhmucs as $item)
+        <tr>
+            <td><input type="checkbox" value={{$item->id}} name="idss[]"></td>
+            <td>{{$item->id}}</td>
+            <td>{{ $item->ma }}</td>
+            <td>{{ $item->ten }}</td>
+            <td>{{ $loais[$item->loai] }}</td>
+            <td>
+                <a  href="{{route('danhmuc.edit',["id"=>$item->id])}}"><i
+                    class="fa fa-pencil-square-o mr-2" aria-hidden="true"></i></a>
+                <a href="{{route('danhmuc.delete',["id"=>$item->id])}}"><i class="fa fa-trash-alt" aria-hidden="true" ></i></a>
+            </td>
+        </tr>
+        @endforeach
+      </table>
 @endsection
