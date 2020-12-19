@@ -12,7 +12,7 @@ const Toast = Swal.mixin({
         toast.addEventListener('mouseleave', window.Swal.resumeTimer)
     }
 })
-const showLoading = function (message) { Toast.fire({ title: message, showCloseButton: false, didOpen: () => window.Swal.showLoading() }) };
+const showLoading = function (message = "Chờ xí ...") { Toast.fire({ title: message, showCloseButton: false, didOpen: () => window.Swal.showLoading() }) };
 const getMessage = (html) => $('.alert-message', $(html))[0];
 
 (function () {
@@ -53,10 +53,11 @@ const getMessage = (html) => $('.alert-message', $(html))[0];
                     }
                 }
             });
+            
             $('.fixed-plugin .active-color span').click(function () {
                 $full_page_background = $('.full-page-background');
                 $(this).siblings().removeClass('active');
-                $(this).addClass('active');
+                $(this).addClass('acti  ve');
                 var new_color = $(this).data('color');
                 if ($sidebar.length != 0) {
                     $sidebar.attr('data-color', new_color);

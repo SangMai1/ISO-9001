@@ -124,12 +124,11 @@ ul:not(.navbar-nav):not([role="presentation"]):not(.nav-tabs) {
     }
 }
 
-<<<<<<< HEAD
 *,
 :after,
 :before {
     box-sizing: border-box;
-}
+} 
 
 .bootstrap-select {
     > .dropdown-toggle {
@@ -161,8 +160,4 @@ ul:not(.navbar-nav):not([role="presentation"]):not(.nav-tabs) {
             }
         }
     }
-=======
-strong{
-    color: red;
->>>>>>> 32af8890aafc1b41c0d2a76e8351281ef504551b
 }

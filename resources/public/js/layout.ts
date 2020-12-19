@@ -19,7 +19,7 @@ export const layoutAction = {
             selector.find('.delete-table-btn').each(function (i, deleteBtn: JQuery<HTMLElement>) {
                 deleteBtn = $(deleteBtn)
                 const table = deleteBtn.data('table')
-                    ? $(deleteBtn.data(table))
+                    ? $(deleteBtn.data('table'))
                     : deleteBtn.find('~table, ~* table')
                 const deleteHref = deleteBtn.data('href');
 
@@ -34,7 +34,7 @@ export const layoutAction = {
                     }).done(function (resp) {
                         Toast.fire({ icon: 'success', timer: 1500 })
                         table[0]._loadBodyTable($('tbody > tr', $(resp)));
-                    });
+                    }).fail(() => window.Swal.closeToast())
                 });
             })
         },

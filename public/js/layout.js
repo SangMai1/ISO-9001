@@ -19,7 +19,7 @@ define(["require", "exports", "./utils"], function (require, exports, utils_1) {
                 selector.find('.delete-table-btn').each(function (i, deleteBtn) {
                     deleteBtn = $(deleteBtn);
                     const table = deleteBtn.data('table')
-                        ? $(deleteBtn.data(table))
+                        ? $(deleteBtn.data('table'))
                         : deleteBtn.find('~table, ~* table');
                     const deleteHref = deleteBtn.data('href');
                     if (!table[0] || !deleteHref)
@@ -34,7 +34,7 @@ define(["require", "exports", "./utils"], function (require, exports, utils_1) {
                         }).done(function (resp) {
                             Toast.fire({ icon: 'success', timer: 1500 });
                             table[0]._loadBodyTable($('tbody > tr', $(resp)));
-                        });
+                        }).fail(() => window.Swal.closeToast());
                     });
                 });
             },

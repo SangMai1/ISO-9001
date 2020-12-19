@@ -155,7 +155,7 @@ class ChucnangsController extends Controller
                     "nguoisua" => "ai do",
                 ]);
             }
-        return redirect(route('viewChucNang', ['no-layout' => 1]));
+        return redirect(route('chucnang.list', ['no-layout' => 1]));
     }
 
     public function search(Request $request)
