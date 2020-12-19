@@ -4,17 +4,6 @@
 @section('pageName', '')
 
 @section('content')
-
-<<<<<<< HEAD
-<div class="container">
-  <!-- Alert message (start) -->
-  @if(Session::has('message'))
-    <div class="alert {{ Session::get('alert-class') }}">
-      {{ Session::get('message') }}
-    </div>
-  @endif
-  <!-- Alert message (end) -->
-=======
     <div class="container">
         <!-- Alert message (start) -->
         @if (Session::has('message'))
@@ -22,8 +11,6 @@
                 {{ Session::get('message') }}
             </div>
         @endif
-        <!-- Alert message (end) -->
->>>>>>> 3c4c89fe52a026ec5f0d04650c2db9170e77d634
 
         <x-card>
             @slot('title') Thêm mới nhóm @endslot

@@ -116,12 +116,7 @@ ul:not(.navbar-nav):not([role=presentation]):not(.nav-tabs) ul {
     padding: 3px 4px !important;
   }
 }
-<<<<<<< HEAD
-*,
-:after,
-:before {
-  box-sizing: border-box;
-}
+
 
 .bootstrap-select > .dropdown-toggle {
   display: flex;
@@ -142,8 +137,7 @@ ul:not(.navbar-nav):not([role=presentation]):not(.nav-tabs) ul {
 }
 .bootstrap-select > .dropdown-menu ul > li.disabled > a {
   box-shadow: none !important;
-=======
+}
 strong {
   color: red;
->>>>>>> 32af8890aafc1b41c0d2a76e8351281ef504551b
 }
