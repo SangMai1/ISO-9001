@@ -62,6 +62,7 @@ Route::group(['prefix' => '/danh-muc'], function () {
     Route::get('/chinh-sua/{id}', 'App\Http\Controllers\DanhmucsController@edit')->name('danhmuc.edit'); // Màn hình sửa danh mục
     Route::post('/cap-nhat', 'App\Http\Controllers\DanhmucsController@update')->name('danhmuc.update'); // Xử lý sửa danh mục
     Route::get('/xoa/{id}', 'App\Http\Controllers\DanhmucsController@destroy')->name('danhmuc.delete'); // Xóa danh mục
+    Route::get('/search', 'App\Http\Controllers\DanhmucsController@find')->name('danhmuc.find'); // Tìm kiếm danh mục
 });
 Route::group(['prefix' => '/chuc-nang'], function () {
     Route::get('/danh-sach', 'App\Http\Controllers\ChucnangsController@index')->name('viewChucNang'); // Hiển thị danh sách chức năng
@@ -81,4 +82,15 @@ Route::group(['prefix' => '/nhom'], function () {
     Route::post('/cap-nhat', 'App\Http\Controllers\NhomsController@update')->name('editNhom'); // Xử lý cập nhật nhóm
     Route::post('/xoa', 'App\Http\Controllers\NhomsController@deleteAll')->name('xoaNhom'); // Xóa nhóm
     Route::get('/search', 'App\Http\Controllers\NhomsController@search')->name('searchNhom'); // Tìm kiếm nhóm
+});
+
+Route::group(['prefix' => '/nhan-vien'], function () {
+    Route::get('/danh-sach', 'App\Http\Controllers\NhanviensController@index')->name('nhanvien.list'); // Hiển thị danh sách nhân viên
+    Route::get('/them-moi', 'App\Http\Controllers\NhanviensController@create')->name('nhanvien.add'); // màn hình thêm mới nhân viên
+    Route::post('/them-moi', 'App\Http\Controllers\NhanviensController@store')->name('nhanvien.save'); // Xử lý thêm mới nhân viên
+    Route::get('/chinh-sua/{id}', 'App\Http\Controllers\NhanviensController@edit')->name('nhanvien.edit'); // Màn hình sửa nhân viên
+    Route::post('/cap-nhat', 'App\Http\Controllers\NhanviensController@update')->name('nhanvien.update'); // Xử lý sửa nhân viên
+    Route::post('/xoa', 'App\Http\Controllers\NhanviensController@destroy')->name('nhanvien.delete'); // Xóa  nhân viên
+    Route::get('/search', 'App\Http\Controllers\NhanviensController@find')->name('nhanvien.find'); // Tìm kiếm  nhân viên
+    Route::post('/render', 'App\Util\CommonUtil@render')->name('nhanvien.render');
 });

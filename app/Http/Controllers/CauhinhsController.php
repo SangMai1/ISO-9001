@@ -79,6 +79,7 @@ class CauhinhsController extends Controller
 
         return redirect()->route('cauhinh.list')
             ->with('success', 'Thêm mới cấu hình thành công !!');
+
     }
 	
 
@@ -134,6 +135,7 @@ class CauhinhsController extends Controller
             'giatri' => $request ->input('giatri'),
             'nguoisua' => $request ->input('nguoisua'),
             'updated_at' => Carbon::now('Asia/Ho_Chi_Minh')
+
     ]);
     return redirect()->route('cauhinh.list')
         ->with('success', 'Cập nhật cấu hình thành công !!');

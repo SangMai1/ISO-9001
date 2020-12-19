@@ -100,3 +100,6 @@ ul:not(.navbar-nav) ul {
     padding: 3px 4px !important;
   }
 }
+strong {
+  color: red;
+}

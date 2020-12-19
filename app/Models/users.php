@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class users extends Model
 {
+
     use HasFactory;
     protected $table = 'users';
     protected $timestamp = ['daxoa'];
@@ -20,4 +21,5 @@ class users extends Model
        
     
     ];
+
 }

@@ -81,6 +81,7 @@
     </x-table>
     
    
+
 </div>
     <div class="d-flex justify-content-center">{{ $cauhinh->onEachSide(1)->links() }}</div>
     <!-- small modal -->
