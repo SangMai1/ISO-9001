@@ -22,11 +22,6 @@ class NhomsController extends Controller
     {
         $nhoms = DB::table('nhoms')->where('daxoa', 0)->get();
         $idChucNang = DB::table('chucnangs')->where('daxoa', 0)->pluck('ten', 'id');
-//         $nhoms = DB::select("select n.id, cn.ten FROM nhoms n
-// LEFT JOIN nhomsvachucnangs nvcn ON nvcn.nhomid = n.id 
-// LEFT JOIN chucnangs cn ON cn.id = nvcn.chucnangid
-// where n.id=1 and n.daxoa = 0 AND cn.daxoa = 0
-// group by n.id, cn.ten");
         return view('/nhom/danh-sach', compact(['nhoms', 'idChucNang']));
     }
 
@@ -64,9 +59,7 @@ class NhomsController extends Controller
         $nhom->ma = $request->ma;
         $nhom->ten = $request->ten;
         $nhom->nguoitao = "sang";
-        $nhom->ngaytao = Carbon::now();
         $nhom->nguoisua = "sang";
-        $nhom->ngaysua = Carbon::now();
         $nhom->daxoa = "0";
 
         

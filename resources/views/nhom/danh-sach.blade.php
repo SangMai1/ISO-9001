@@ -4,9 +4,9 @@
 @section('module', 'nhom/danh-sach')
 
 @section('content')
+    <div class="d-none csrf_token">@csrf</div>
     <x-card>
-
-        @slot('title') Danh sách chức năng @endslot
+        @slot('title') Danh sách nhóm @endslot
         @slot('body')
             <button class="btn btn-sm btn-primary" id="delete-btn">delete</button>
             <x-table auto-index select id="main-list">
@@ -170,7 +170,7 @@
         </div>
     @endif
     <!-- Alert message (end) -->
-    <form method="get" id="formDelete" action="{{ route('xoaNhom') }}">
+    <form method="POST" id="formDelete" action="{{ route('xoaNhom') }}">
         {{ csrf_field() }}
         <table class="table table-bordered table-hover">
             <tr>

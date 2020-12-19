@@ -23,13 +23,13 @@
 	},
 	"Card Component": {
 		"scope": "blade",
-		"body": "<x-card>\r\n    @slot('title') ${1:title} @endslot\r\n    @slot('subTitle') ${2:subTitle} @endslot\r\n    @slot('body') ${3:body} @endslot\r\n<\/x-card>",
+		"body": "<x-card>\r\n    @slot('title') ${1:title} @endslot\r\n    \u318d@slot('subTitle') ${2:subTitle} @endslot\r\n    @slot('body') ${3:body} @endslot\r\n<\/x-card>",
 		"description": "Card layout",
 		"prefix": "@cardComponent"
 	},
 	"Table Component": {
 		"scope": "blade",
-		"body": "<x-table ${1:auto-index} ${2:select}>\r\n    @slot('head')\r\n        <th>Name<\/th>\r\n    @endslot\r\n    @slot('body')\r\n        @foreach ($collection as $item)\r\n            <tr>\r\n                <td>{{ $item['name'] }}<\/td>\r\n            <\/tr>\r\n        @endforeach\r\n    @endslot\r\n<\/x-table>",
+		"body": "<x-table auto-index select>\r\n    @slot('head')\r\n        <th>T\u00EAn<\/th>\r\n    @endslot\r\n    @slot('body')\r\n        @foreach ($$collection as $$c)\r\n            <tr>\r\n                <td>{{ $$item['name'] }}<\/td>\r\n            <\/tr>\r\n        @endforeach\r\n    @endslot\r\n<\/x-table>",
 		"description": "Table layout",
 		"prefix": "@tableComponent"
 	},
@@ -51,4 +51,29 @@
 		"description": "Input Component",
 		"prefix": "@inputComponent"
 	},
+	"Delete Button": {
+		"scope": "blade",
+		"body": "<button class=\"btn btn-sm btn-danger rounded-circle p-2\"><i class=\"fas fa-trash\"></i></button>",
+		"description": "Delete Button",
+		"prefix": "@deleteButton"
+	},
+	"Edit Button": {
+		"scope": "blade",
+		"body": "<button class=\"btn btn-sm btn-primary rounded-circle p-2\"><i class=\"fas fa-edit\"></i></button>",
+		"description": "Edit Button",
+		"prefix": "@editButton"
+	},
+	"Select Syntax": {
+		"scope": "blade",
+		"body": "<select class=\"selectpicker\" data-style=\"btn btn-danger btn-round w-100\" title=\"Single Select\">\r\n    <option disabled selected>Single Option<\/option>\r\n    @foreach ($$collection as $$item)\r\n        <option value=\"{{ $$item->value }}\">{{ $$item->name }}<\/option>\r\n    @endforeach\r\n<\/select>",
+		"description": "Select option",
+		"prefix": "@selectOption"
+	},
+	"Tab Pane": {
+		"scope": "blade",
+		"body": "<div class=\"tab-pane\">$1</div>",
+		"description": "Select option",
+		"prefix": "@tabBodyPane"
+	},
+	
 }

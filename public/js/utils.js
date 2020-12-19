@@ -19,10 +19,10 @@ define(["require", "exports"], function (require, exports) {
             };
             return exports.Utils.randomString();
         },
-        activeAllActionFromObject(obj) {
+        activeAllActionFromObject(obj, args) {
             for (let renderAction of Object.values(obj)) {
                 if (renderAction instanceof Function)
-                    renderAction();
+                    renderAction.apply(obj, args);
             }
         },
         loadScript(url) {
@@ -32,6 +32,6 @@ define(["require", "exports"], function (require, exports) {
                 script.onload = resolve;
                 document.head.append(script);
             });
-        }
+        },
     };
 });
