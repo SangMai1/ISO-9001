@@ -58,14 +58,12 @@ class ChucnangsController extends Controller
         $chucNang -> ten = $request -> ten;
         $chucNang -> url = $request -> url;
         $chucNang -> nguoitao = "sang";
-        $chucNang -> ngaytao = Carbon::now();
         $chucNang -> nguoisua = "sang";
-        $chucNang -> ngaysua = Carbon::now();
         $chucNang -> daxoa = "0";
         if($chucNang->save()){
             Session::flash('message', 'Thêm mới thành công');
             Session::flash('alert-class', 'alert-sucess');
-            return redirect()->route('viewChucNang');
+            return redirect()->route('chucnang.list');
         } else {
             Session::flash('message', 'Thêm mới thất bại!');
             Session::flash('alert-class', 'alert-danger');
@@ -93,7 +91,8 @@ class ChucnangsController extends Controller
     public function edit($id)
     {
         $chucnang = chucnangs::find($id);
-        return response()->json($chucnang);
+        dd($chucnang);
+        return view('/chuc-nang/cap-nhat', compact(['chucnang']));
     }
 
     /**
@@ -120,11 +119,10 @@ class ChucnangsController extends Controller
         $chucnang -> ten = $request -> ten;
         $chucnang -> url = $request -> url;
         $chucnang -> nguoisua = "admin";
-        $chucnang -> ngaysua = Carbon::now();
         if($chucnang -> update()){
             Session::flash('message', 'Cập nhật thành công');
             Session::flash('alert-class', 'alert-success');
-            return redirect()->route('viewChucNang');
+            return redirect()->route('chucnang.list');
         } else {
             Session::flash('message', 'Cập nhật thất bại');
             Session::flash('alert-class', 'alert-danger');
@@ -153,11 +151,10 @@ class ChucnangsController extends Controller
             chucnangs::where('id',$list)->update([
                 "daxoa" => "1",
                 "nguoisua" => "ai do",
-                "ngaysua" => Carbon::now()
 
             ]);
         }
-        return redirect()->route('viewChucNang');
+        return redirect()->route('chucnang.list');
     }
 
     public function search(Request $request){

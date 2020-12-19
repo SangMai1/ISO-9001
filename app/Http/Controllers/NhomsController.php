@@ -22,11 +22,6 @@ class NhomsController extends Controller
     {
         $nhoms = DB::table('nhoms')->where('daxoa', 0)->get();
         $idChucNang = DB::table('chucnangs')->where('daxoa', 0)->pluck('ten', 'id');
-//         $nhoms = DB::select("select n.id, cn.ten FROM nhoms n
-// LEFT JOIN nhomsvachucnangs nvcn ON nvcn.nhomid = n.id 
-// LEFT JOIN chucnangs cn ON cn.id = nvcn.chucnangid
-// where n.id=1 and n.daxoa = 0 AND cn.daxoa = 0
-// group by n.id, cn.ten");
         return view('/nhom/danh-sach', compact(['nhoms', 'idChucNang']));
     }
 
@@ -52,8 +47,8 @@ class NhomsController extends Controller
         date_default_timezone_set("Asia/Ho_Chi_Minh");
 
         $validator = Validator::make($request->all(), [
-            'ma' => 'required|string|min:1',
-            'ten' => 'required|string|min:1'
+            'ma' => 'required|string',
+            'ten' => 'required|string'
         ]);
 
         if ($validator->fails()) {
@@ -64,9 +59,7 @@ class NhomsController extends Controller
         $nhom->ma = $request->ma;
         $nhom->ten = $request->ten;
         $nhom->nguoitao = "sang";
-        $nhom->ngaytao = Carbon::now();
         $nhom->nguoisua = "sang";
-        $nhom->ngaysua = Carbon::now();
         $nhom->daxoa = "0";
 
         
@@ -111,14 +104,16 @@ class NhomsController extends Controller
     public function edit($id)
     {
         
-        $nhoms = DB::select("select n.id, n.ma, n.ten as tennhom,cn.id as idchucnang, cn.ten as tenchucnang FROM nhoms n
-LEFT JOIN nhomsvachucnangs nvcn ON nvcn.nhomid = n.id 
-LEFT JOIN chucnangs cn ON cn.id = nvcn.chucnangid
-where n.id=$id and n.daxoa = 0 AND cn.daxoa = 0
-");
-
+        // $nhoms = DB::select("select n.id as id, n.ma, n.ten as tennhom,cn.id as idchucnang, cn.ten as tenchucnang FROM nhoms n
+        //             LEFT JOIN nhomsvachucnangs nvcn ON nvcn.nhomid = n.id 
+        //             LEFT JOIN chucnangs cn ON cn.id = nvcn.chucnangid
+        //             where n.id=$id and n.daxoa = 0 AND cn.daxoa = 0
+        //             ");
+        $nhoms = nhoms::find($id);
+        $idChucNang = DB::table('chucnangs')->where('daxoa', 0)->pluck('ten', 'id');
+        $chucNangCheck = DB::table('nhomsvachucnangs')->where('nhomid', $id)->get();
         
-        return response()->json($nhoms);;
+        return view('/nhom/cap-nhat', compact(['nhoms', 'idChucNang', 'chucNangCheck']));
     }
 
     /**
@@ -190,8 +185,7 @@ where n.id=$id and n.daxoa = 0 AND cn.daxoa = 0
         foreach ($list_id as $list) {
             nhoms::where('id', $list)->update([
                 "daxoa" => "1",
-                "nguoisua" => "ai do",
-                "ngaysua" => Carbon::now()
+                "nguoisua" => "ai do"
 
             ]);
         }
