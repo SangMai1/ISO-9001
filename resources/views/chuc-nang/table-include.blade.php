@@ -1,7 +1,16 @@
 <div class="table-region">
+<<<<<<< HEAD
     @isset($message) <div class="alert">{{ $message }}</div> @endisset
 
     <x-table auto-index id="table-main" class="mobile" select delete-href="{{ route('chucnang.delete') }}">
+=======
+    @if (Session::has('message'))
+        <div class="alert-message">{{ Session::get('message') }}</div>
+    @endif
+    <button class="btn btn-sm btn-danger rounded-circle p-2 delete-table-btn"
+        data-href="{{ route('chucnang.delete') }}"><i class="fas fa-trash"></i></button>
+    <x-table auto-index select id="table-main">
+>>>>>>> 8a14531affa6390bb05584b1108a771bb4586d79
         @slot('head')
             <th class="th-mobile">Chức năng</th>
 

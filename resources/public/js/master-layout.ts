@@ -37,6 +37,7 @@ _swalConfig.updateSuccess = { ..._swalConfig.toastTime, title: 'Cập nhật th�
 _swalConfig.updateFailed = { ..._swalConfig.toastTime, title: 'Cập nhật thất bại', icon: 'error' }
 _swalConfig.deleteSuccess = { ..._swalConfig.toastTime, title: 'Xóa thành công', icon: 'success' }
 _swalConfig.deleteFailed = { ..._swalConfig.toastTime, title: 'Xóa thất bại', icon: 'error' }
+
 //#endregion
 
 const Toast = Swal.mixin(_swalConfig.toast)
@@ -55,6 +56,7 @@ const showAlert = function (html: JQuery<HTMLElement>) {
 
     Swal.close()
 };
+
 
 (function () {
     addJqueryValidationCustom()

@@ -19,7 +19,7 @@ class ChucnangsController extends Controller
     public function index(Request $request)
     {
         $chucNangs = DB::table('chucnangs')->where('daxoa', 0)->get();
-        if ($request->get('no-layout') === '1') {
+        if (Session::get('no-layout') == true) {
             return view('chuc-nang.table-include', compact(['chucNangs']));
         }
         return view('/chuc-nang/danh-sach', compact(['chucNangs']));

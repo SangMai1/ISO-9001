@@ -24,8 +24,29 @@ const layoutAction = {
                     error: function (resp) {
                         console.log(resp)
 
+<<<<<<< HEAD
                     }
                 })
+=======
+                if (!table[0] || !deleteHref) return
+                deleteBtn.on('click', function () {
+                    const idsSelected = table[0]._mapSelected(tr => $(tr).data('id'));
+                    showLoading()
+                    $.ajax({
+                        method: "POST",
+                        url: deleteHref,
+                        data: new FormData().fromObject({ ids: idsSelected, _token: token }),
+                    }).done(function (resp) {
+                        const message = getMessage(resp)
+                        try {
+                            window[message._type].fire(message)
+                        } catch (error) {
+                            
+                        }
+                        table[0]._loadBodyTable($('tbody > tr', $(resp)));
+                    }).fail(() => window.Swal.closeToast())
+                });
+>>>>>>> 8a14531affa6390bb05584b1108a771bb4586d79
             })
         },
         /**
