@@ -1,18 +1,10 @@
-// $(() => {
-//     const table = $('#table-main');
-//     let token = $('.csrf-token > input').val();
-//     const deleteBtn = $('#delete-btn');
-//     const deleteHref = deleteBtn.data('href');
-//     if (!table[0]) return
-//     deleteBtn.on('click', function () {
-//         const idsSelected = table[0]._mapSelected(tr => $(tr).data('id'));
-
-//         $.ajax({
-//             method: "POST",
-//             url: deleteHref,
-//             data: new FormData().fromObject({ ids: idsSelected, _token: token }),
-//         }).done(function (resp) {
-//             table[0]._loadBodyTable($('tbody > tr', $(resp)))
-//         })
-//     });
-// });
+$(() => {
+    const table = $('.table-region table')
+    const deleteHref = table.attr('delete-href')
+    table.find('tbody > tr > td.td-action > .delete-btn').on('click', function (evt) {
+        const tr = $(this).closest('tr')
+        const id = tr.data('id')
+        $.ajax({ url: deleteHref, data: (new FormData()).fromObject({ id: id, _token: token }) })
+            .done(() => tr.remove())
+    })
+})

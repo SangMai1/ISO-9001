@@ -1,48 +1,30 @@
 @extends('layouts.master')
-
-@section('title', '')
-@section('pageName', '')
+@section('title', 'Thêm mới Chức năng')
 
 @section('content')
+    @include('message')
+    {{-- Thuộc tính data-form để dễ tìm lại form sau khi load xong, nếu không sẽ tìm qua "action" attribute--}}
+    <form method="post" data-form="addcn" ajax-form>
+        @csrf
+        <x-input title="Tên" type="text" name="ten" float />
+        <x-input title="Url" type="text" name="url" float />
+        <x-input title="Url" type="checkbox" name="cb" float />
+        <button class="btn btn-info " type="submit">Thêm</button>
+        <a class="btn btn-info" href="{{ route('chucnang.list') }}" role="button">Danh sách</a>
+    </form>
+    <script>
+        $('form[data-form]').validateCustom({
+            rules: {
+                ten: {
+                    required: true,
+                    minlength: 5
+                },
+                url: {
+                    required: true,
+                    minlength: 1
+                },
+            }
+        });
 
-    <div class="container">
-        <!-- Alert message (start) -->
-        @if (Session::has('message'))
-            <div class="alert {{ Session::get('alert-class') }}">
-                {{ Session::get('message') }}
-            </div>
-        @endif
-        <!-- Alert message (end) -->
-
-        <x-card>
-            @slot('title') Thêm mới chức năng @endslot
-            @slot('body')
-                <form method="post" action="{{ url('/chuc-nang/them-moi') }}">
-                    {{ csrf_field() }}
-
-                    <div class="form-group">
-                        <x-input title="Tên" type="text" name="ten" float />
-                        @if ($errors->has('ten'))
-                            <span class="errormsg">{{ $errors->first('ten') }}</span>
-                        @endif
-
-                    </div>
-
-                    <div class="form-group">
-                        <x-input title="Url" type="text" name="url" float />
-                        @if ($errors->has('url'))
-                            <span class="errormsg">{{ $errors->first('url') }}</span>
-                        @endif
-
-                    </div>
-
-                    <input class="btn btn-sm btn-primary " type="submit" value="Thêm" />
-                    <a class="btn btn-sm btn-primary" href="/chuc-nang/danh-sach" role="button">Danh sách</a>
-
-                </form>
-            @endslot
-        </x-card>
-
-
-    </div>
+    </script>
 @endsection

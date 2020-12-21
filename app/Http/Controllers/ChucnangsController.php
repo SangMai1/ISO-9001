@@ -2,14 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\RequestChucNang;
 use App\Models\chucnangs;
-use Carbon\Carbon;
-use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
-use SebastianBergmann\Environment\Console;
 
 class ChucnangsController extends Controller
 {
@@ -43,19 +41,16 @@ class ChucnangsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(RequestChucNang $request)
     {
 
         date_default_timezone_set("Asia/Ho_Chi_Minh");
+        // $request->validated();
+        dd($request->all());
 
-        $validator = Validator::make($request->all(), [
-            'ten' => 'required|string|min:1',
-            'url' => 'required|string|min:1'
-        ]);
-
-        if ($validator->fails()) {
-            return redirect()->Back()->withInput()->withErrors($validator);
-        }
+        // if ($validator->fails()) {
+        //     return Back()->withErrors($validator);
+        // }
 
         $chucNang = new chucnangs();
         $chucNang->ten = $request->ten;
@@ -63,15 +58,11 @@ class ChucnangsController extends Controller
         $chucNang->nguoitao = "sang";
         $chucNang->nguoisua = "sang";
         $chucNang->daxoa = "0";
-        if ($chucNang->save()) {
-            Session::flash('message', 'Thêm mới thành công');
-            Session::flash('alert-class', 'alert-sucess');
-            return redirect()->route('chucnang.list');
-        } else {
-            Session::flash('message', 'Thêm mới thất bại!');
-            Session::flash('alert-class', 'alert-danger');
-        }
-        return Back();
+
+        if ($chucNang->save()) Session::flash('message', 'addSuccess');
+        else Session::flash('message', "addFailed");
+
+        return view('message');
     }
 
     /**
@@ -121,6 +112,7 @@ class ChucnangsController extends Controller
         $chucnang->ten = $request->ten;
         $chucnang->url = $request->url;
         $chucnang->nguoisua = "admin";
+
         if ($chucnang->update()) {
             Session::flash('message', 'Cập nhật thành công');
             Session::flash('alert-class', 'alert-success');
@@ -146,16 +138,19 @@ class ChucnangsController extends Controller
     {
 
         date_default_timezone_set("Asia/Ho_Chi_Minh");
-        $list_id = $request->input('ids');
-
-        if ($list_id)
-            foreach ($list_id as $list) {
-                chucnangs::where('id', $list)->update([
-                    "daxoa" => "1",
-                    "nguoisua" => "ai do",
-                ]);
-            }
-        return redirect(route('chucnang.list', ['no-layout' => 1]));
+        $id = $request->input('id');
+        $result = chucnangs
+            ::where([['id', $id], ['daxoa', 0]])
+            ->update(
+                ["daxoa" => "1", "nguoisua" => "ai do",]
+            );
+        Session::flash(
+            "message",
+            $result
+                ? "{icon: 'success', _type: 'toastTime', title: 'Xóa thành công'}"
+                : "{icon: 'error', _type: 'toastTime', title: 'Xóa thất bại'}"
+        );
+        return view('message');
     }
 
     public function search(Request $request)

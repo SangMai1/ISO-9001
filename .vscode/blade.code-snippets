@@ -75,5 +75,10 @@
 		"description": "Select option",
 		"prefix": "@tabBodyPane"
 	},
+	"Action Head Table": {
+		"scope": "blade",
+		"body": "<th class=\"th-action\"><i class=\"fas fa-cogs\"></i></th>",
+		"prefix": "@tableHeadAction"
+	}
 	
 }
