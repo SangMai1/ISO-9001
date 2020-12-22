@@ -14,36 +14,31 @@
         </div>
     @endif
     <br>
-<x-card>	
+	
+    
     <div class="row">
 
         <div class="col-md-6">
-            <a class="btn btn-light" href="{{ url('/cau-hinh/da-xoa') }}" style="margin-bottom: 10px" title="Cấu hình đã xóa"> <i class="fas fa-recycle"></i></a>
-            <input class="btn btn-success" type="submit" name="submit" value="Xóa tất cả"/>
+            <a class="btn btn-light" href="{{ url('/cau-hinh/da-xoa') }}"  title="Cấu hình đã xóa"> <i class="fas fa-recycle"></i></a>
+            <a class="btn btn-light" href="/cau-hinh/them-moi" title="Thêm mới cấu hình"  ><i class="fas fa-plus"></i></a>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-2 ">
             <form action="{{ url('/cau-hinh/tim-kiem') }}" method="GET">
                 <div class="input-group">
                     <input type="search" name="search" class="form-control">
                     <span class="input-group-prepend">
-                        <button type="submit" class="btn btn-primary">Tìm kiếm</button>
+                        <button class="btn btn-light" title="Tìm kiếm cấu hình"><i class="fas fa-search"></i></button>
                     </span>
                 </div>
             </form>
         </div>
-        <div class="col-md-2 text-right">
-            <a href="/cau-hinh/them-moi" style="margin-bottom: 10px" class="btn btn-primary">Thêm mới</a>
-        </div>
+        
     </div>
     <x-table auto-index select id="table-component-table">
         @slot('head')
                 <th>Mã</th>
                 <th>Tên</th>
                 <th>Giá trị</th>
-                <th>Người tạo</th>
-                <th>Ngày tạo</th>
-                <th>Người sửa</th>
-                <th>Ngày sửa</th>
                 <th>Action</th>        
         @endslot
         @slot('body')
@@ -53,15 +48,11 @@
                 <td>{{ $value['ma'] }}</td> 
                 <td>{{ $value['ten'] }}</td>
                 <td>{{ $value['giatri'] }}</td>
-                <td>{{ $value['nguoitao'] }}</td>
-                <td>{{ $value['created_at'] }}</td>
-                <td>{{ $value['nguoisua'] }}</td>
-                <td>{{ $value['updated_at'] }}</td>
                 <td>
                         {{-- <form action="{{ route('cauhinh.destroy', $value->id) }}" method="POST"> --}}
                             <a href="{{ url('/cau-hinh/chinh-sua', $value->id) }}"  title="Chỉnh sửa" style="color: none; ">
                                 <i class="fa fa-pencil-square-o text-success" aria-hidden="true" ></i></a>   
-                            <a href="{{ url('/cau-hinh/xoa', $value->id) }}"  title="Xoa" style="color: none; ">
+                            <a href="{{ url('/cau-hinh/xoa', $value->id) }}" onclick="return confirm('Chắc chắn xóa ?');"  title="Xoa" style="color: none; ">
                                     <i class="fa fa-trash-alt" aria-hidden="true" ></i></a> 
                             
                             @csrf
@@ -81,8 +72,8 @@
     </x-table>
     
    
+    
 
-</x-card>
     <div class="d-flex justify-content-center">{{ $cauhinh->onEachSide(1)->links() }}</div>
     <!-- small modal -->
 

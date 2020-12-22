@@ -1,7 +1,7 @@
 @extends('layouts.master')
 
 @section('title', 'Quản lý cấu hình')
-@section('pageName', 'Thêm mới cấu hình')
+@section('pageName', '')
 
 @section('content')
     @if (Session::get('success'))
@@ -15,11 +15,14 @@
         </div>
     @endif
     <br>
+  <x-card>
+    @slot('title') Thêm mới cấu hình @endslot 
+    @slot('body')
     <form method="post" action="{{ url('/cau-hinh/luu') }}">
       {{csrf_field()}}
         
       <div class="form-group">
-        <label>Mã :</label>
+        <label >Mã :</label>
         <input class="form-control" type="text" name="ma" id="ma" placehorder=" Nhập mã" /><br>
       <span style="color:red">@error('ma'){{ $message }}  @enderror</span>
       </div>
@@ -47,4 +50,6 @@
             <a class="btn btn-primary" href="/cau-hinh/danh-sach" role="button">Danh sách</a>
   </div>
 </form>
+@endslot
+  </x-card>
 @endsection
