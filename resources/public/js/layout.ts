@@ -21,32 +21,39 @@ const layoutAction = {
                 $.ajax({
                     url: postHref,
                     data: new FormData(this),
-                    error: function (resp) {
-                        console.log(resp)
-
-<<<<<<< HEAD
+                    error: (resp) => {
+                        Swal.close()
+                        if (resp.getResponseHeader('content-type').toLowerCase() !== 'application/json') return
+                        const result = JSON.parse(resp.responseText)
+                        if (result.message !== 'The given data was invalid.') return
+                        for (let [fieldName, error] of Object.entries(result.errors)) {
+                            const input = $(this).find(`[name="${fieldName}"]`)
+                            if (input[0]) input[0]._setBmdError(error)
+                        }
+                        layoutAction.renders.removeErrorInput($(this))
                     }
                 })
-=======
-                if (!table[0] || !deleteHref) return
-                deleteBtn.on('click', function () {
-                    const idsSelected = table[0]._mapSelected(tr => $(tr).data('id'));
-                    showLoading()
-                    $.ajax({
-                        method: "POST",
-                        url: deleteHref,
-                        data: new FormData().fromObject({ ids: idsSelected, _token: token }),
-                    }).done(function (resp) {
-                        const message = getMessage(resp)
-                        try {
-                            window[message._type].fire(message)
-                        } catch (error) {
-                            
-                        }
-                        table[0]._loadBodyTable($('tbody > tr', $(resp)));
-                    }).fail(() => window.Swal.closeToast())
-                });
->>>>>>> 8a14531affa6390bb05584b1108a771bb4586d79
+            })
+        },
+        /**
+         * Tự động thêm event xóa cho table có attribute [delete-href]
+         *      -> event được gán lên query 'tbody > tr > td.td-action .delete-btn'
+         *      -> id được gắn trong attribute data-id của <tr> trong <tbody> của <table>
+         */
+        autoAddDeleteEventTable(selector = $('body')) {
+            selector.find('table[delete-href]').each(function (i, table: JQuery<HTMLElement>) {
+                table = $(table)
+                const deleteHref = table.attr('delete-href')
+                table.find('tbody > tr > td.td-action .delete-btn').on('click', function (evt) {
+                    const tr = $(this).closest('tr')
+                    const id = tr.data('id')
+                    $.ajax({ url: deleteHref, data: (new FormData()).fromObject({ id: id, _token: token }) })
+                        .done(() => {
+                            tr.remove()
+                            if (table.find('thead > tr > .auto-index-head')[0]) table._autoIndexTable()
+                        })
+                })
+
             })
         },
         /**
@@ -181,8 +188,7 @@ const layoutAction = {
                 if ($(this).find('.invalid-feedback')[0]) {
                     $(this).find('input').on('input', function _event() {
                         $(this).off('input', _event)
-                        $(e).removeClass('has-danger').find('.invalid-feedback.default').remove()
-                        $(e).find('.form-control-feedback.default').remove()
+                        this._setBmdError()
                     })
                 }
             })

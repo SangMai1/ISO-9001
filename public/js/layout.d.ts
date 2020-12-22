@@ -5,6 +5,7 @@ declare const layoutAction: {
         popover: (selector?: JQuery<HTMLElement, HTMLElement>) => any;
         autoBmd(selector: any): void;
         autoFormEvent(selector?: JQuery<HTMLElement, HTMLElement>): void;
+        autoAddDeleteEventTable(selector?: JQuery<HTMLElement, HTMLElement>): void;
         autoAddSelectColumn(selector?: JQuery<HTMLElement, HTMLElement>): void;
         autoIndexTable(selector?: JQuery<HTMLElement, HTMLElement>): void;
         activeFromMenuTag(): void;

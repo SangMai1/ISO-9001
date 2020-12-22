@@ -55,7 +55,7 @@ const showAlert = function (html) {
     addJqueryValidationCustom();
     addJqueryTableAutoIndex();
     addSelectModeTable();
-    addHTMLTableElementPrototype();
+    addHTMLPrototype();
     addPrototypeFormData();
     fixTooltip();
     $(() => fixMaterial());
@@ -100,13 +100,15 @@ const showAlert = function (html) {
             return this._tooltip(selector).off('focusin');
         };
     }
-    function addHTMLTableElementPrototype() {
-        HTMLTableElement.prototype._loadBodyTable = function (body) {
-            $(this).find('tbody').html(body);
-            if (this._eventsLoadBody instanceof Array)
-                for (let evt of this._eventsLoadBody)
-                    evt(this);
+    function addHTMLPrototype() {
+        const addBody = (table, action, body) => {
+            $(table).find('tbody')[action](body);
+            if (table._eventsLoadBody instanceof Array)
+                for (let evt of table._eventsLoadBody)
+                    evt(table, body);
         };
+        HTMLTableElement.prototype._loadBodyTable = function (body) { addBody(this, 'html', body); };
+        HTMLTableElement.prototype._appendBodyTable = function (body) { addBody(this, 'append', body); };
         HTMLTableElement.prototype._onLoadTableBody = function (eventHandler) {
             if (eventHandler instanceof Function) {
                 if (!(this._eventsLoadBody instanceof Array))
@@ -128,7 +130,7 @@ const showAlert = function (html) {
             }
             return output;
         };
-        HTMLElement.prototype._setBmdError = function (error) {
+        {
             const getFeedBack = (parent) => {
                 let feedback = $(parent).find('.invalid-feed-back');
                 feedback = feedback[0] ? feedback : $('<span class="invalid-feedback d-block"></span>');
@@ -137,55 +139,56 @@ const showAlert = function (html) {
             };
             const getFormControlFeedback = (parent) => {
                 let controlFeedback = $(parent).find('.form-control-feedback');
-                controlFeedback = controlFeedback[0] ? controlFeedback : $('<span class="form-control-feedback></span>');
+                controlFeedback = controlFeedback[0] ? controlFeedback : $('<span class="form-control-feedback"></span>');
                 controlFeedback.html($('<i class="fas fa-check"></i>'));
                 return controlFeedback;
             };
-            switch ($(this).attr('type')) {
-                case 'checkbox':
-                case 'radio':
-                    {
-                        const parent = $(this).closest('.form-check');
-                        if (!parent[0])
-                            return;
-                        const feedback = getFeedBack(parent);
-                        parent.append(feedback);
-                        this._setBmdError = function (error) {
-                            feedback.html(error);
-                        };
-                        this._setBmdError(error);
-                    }
-                    break;
-                default:
-                    {
-                        const parent = $(this).closest('.form-group');
-                        if (!parent[0])
-                            return;
-                        parent.append(getFeedBack(parent));
-                        const feedback = getFeedBack(parent);
-                        const formControlFeedback = getFormControlFeedback(parent);
-                        const iconFeedback = formControlFeedback.children('i');
-                        parent.append(feedback).append(formControlFeedback);
-                        let oldStatus = undefined;
-                        this._setBmdError = function (error) {
-                            feedback.html(error);
-                            if (error) {
-                                if (oldStatus !== false) {
-                                    parent.removeClass('has-success').addClass('has-danger');
-                                    iconFeedback.addClass('fa-exclamation').removeClass('fa-check');
+            HTMLElement.prototype._setBmdError = function (error) {
+                switch ($(this).attr('type')) {
+                    case 'checkbox':
+                    case 'radio':
+                        {
+                            const parent = $(this).closest('.form-check');
+                            if (!parent[0])
+                                return;
+                            const feedback = getFeedBack(parent);
+                            parent.append(feedback);
+                            this._setBmdError = function (error) {
+                                feedback.html(error || '');
+                            };
+                            this._setBmdError(error);
+                        }
+                        break;
+                    default:
+                        {
+                            const parent = $(this).closest('.form-group');
+                            if (!parent[0])
+                                return;
+                            const feedback = getFeedBack(parent);
+                            const formControlFeedback = getFormControlFeedback(parent);
+                            const iconFeedback = formControlFeedback.children('i');
+                            parent.append(feedback).append(formControlFeedback);
+                            let oldStatus = undefined;
+                            this._setBmdError = function (error) {
+                                feedback.html(error || '');
+                                if (error) {
+                                    if (oldStatus !== false) {
+                                        parent.removeClass('has-success').addClass('has-danger');
+                                        iconFeedback.addClass('fa-exclamation').removeClass('fa-check');
+                                    }
                                 }
-                            }
-                            else {
-                                if (oldStatus !== true) {
-                                    parent.addClass('has-success').removeClass('has-danger');
-                                    iconFeedback.removeClass('fa-exclamation').addClass('fa-check');
+                                else {
+                                    if (oldStatus !== true) {
+                                        parent.addClass('has-success').removeClass('has-danger');
+                                        iconFeedback.removeClass('fa-exclamation').addClass('fa-check');
+                                    }
                                 }
-                            }
-                        };
-                        this._setBmdError(error);
-                    }
-            }
-        };
+                            };
+                            this._setBmdError(error);
+                        }
+                }
+            };
+        }
     }
     function addJqueryValidationCustom() {
         $.validator.addMethod("regex", function (value, element, regexp) {
@@ -215,38 +218,13 @@ const showAlert = function (html) {
             const validator = this.validate(Object.assign(Object.assign({}, validate), {
                 lang: 'vi',
                 highlight: function (element) {
-                    console.log(this.invalid);
+                    element._setBmdError(this.submitted[element.name]);
                 },
                 unhighlight: function (element) {
-                    console.log(this.invalid);
+                    element._setBmdError();
                 },
-                errorPlacement: function (error, element) { return; }
+                errorPlacement: (error) => { }
             }));
-            function getCache(element) {
-                const cache = {};
-                getCache = function (element) {
-                    let cacheValue = cache[element.name];
-                    if (!cacheValue) {
-                        cacheValue = {};
-                        switch (element.type) {
-                            case 'checkbox':
-                            case 'radio':
-                                $(element).closest('.form-check').find('.invalid-feedback.default').remove();
-                                return;
-                            default:
-                                cacheValue.parent = $(element).closest('.form-group');
-                                cacheValue.invalidFeedback = $(element).parent()
-                                    .next('.invalid-feedback');
-                                cacheValue.iconFeedback = $(element).parent().find('.form-control-feedback > .fas');
-                                cacheValue.parent.removeClass('has-danger').find('.invalid-feedback.default').remove();
-                                cacheValue.parent.find('.form-control-feedback.default').remove();
-                        }
-                        cache[element.name] = cacheValue;
-                    }
-                    return cacheValue;
-                };
-                return getCache(element);
-            }
             return validator;
         };
     }

@@ -1,4 +1,4 @@
-$bodyColor: rgb(253,253,252);
+$bodyColor: rgb(253, 253, 252);
 body {
     background: $bodyColor;
 }
@@ -7,10 +7,6 @@ body {
 }
 .selectpicker {
     display: none;
-}
-.dropdown-toggle {
-    display: flex;
-    align-items: center;
 }
 .swal2-toast-shown {
     background-color: $bodyColor !important;
@@ -162,6 +158,13 @@ ul:not(.navbar-nav):not([role="presentation"]):not(.nav-tabs) {
 }
 
 .dropdown-toggle {
+    &.auto-icon {
+        display: flex;
+        align-items: center;
+        &::after {
+            margin-left: auto !important;
+        }
+    }
     &::after {
         margin-left: 8px;
         transform: rotate(-180deg);

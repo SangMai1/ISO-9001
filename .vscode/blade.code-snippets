@@ -1,20 +1,4 @@
 {
-	// Place your ISO-9001 workspace snippets here. Each snippet is defined under a snippet name and has a scope, prefix, body and 
-	// description. Add comma separated ids of the languages where the snippet is applicable in the scope field. If scope 
-	// is left empty or omitted, the snippet gets applied to all languages. The prefix is what is 
-	// used to trigger the snippet and the body will be expanded and inserted. Possible variables are: 
-	// $1, $2 for tab stops, $0 for the final cursor position, and ${1:label}, ${2:another} for placeholders. 
-	// Placeholders with the same ids are connected.
-	// Example:
-	// "Print to console": {
-	// 	"scope": "javascript,typescript",
-	// 	"prefix": "log",
-	// 	"body": [
-	// 		"console.log('$1');",
-	// 		"$2"
-	// 	],
-	// 	"description": "Log output to console"
-	// }
 	"Master Layout": {
 		"scope": "blade",
 		"body": "@extends('layouts.master')\r\n@section('title', '$1')\r\n@section('pageName', '$2')\r\n@section('module', '$3')\r\n\r\n@section('content')\r\n$4\r\n@endsection\r\n",
@@ -53,15 +37,15 @@
 	},
 	"Delete Button": {
 		"scope": "blade",
-		"body": "<button class=\"btn btn-sm btn-danger rounded-circle p-2\"><i class=\"fas fa-trash\"></i></button>",
+		"body": "<button class=\"btn btn-sm btn-danger btn-icon\"><i class=\"fas fa-trash\"></i></button>",
 		"description": "Delete Button",
-		"prefix": "@deleteButton"
+		"prefix": "@deleteButtonAction"
 	},
 	"Edit Button": {
 		"scope": "blade",
-		"body": "<button class=\"btn btn-sm btn-primary rounded-circle p-2\"><i class=\"fas fa-edit\"></i></button>",
+		"body": "<a class=\"btn btn-sm btn-info btn-icon rounded-circle\"><i class=\"fas fa-edit\"></i></a>",
 		"description": "Edit Button",
-		"prefix": "@editButton"
+		"prefix": "@editLinkAction"
 	},
 	"Select Syntax": {
 		"scope": "blade",
@@ -78,7 +62,21 @@
 	"Action Head Table": {
 		"scope": "blade",
 		"body": "<th class=\"th-action\"><i class=\"fas fa-cogs\"></i></th>",
-		"prefix": "@tableHeadAction"
-	}
-	
+		"prefix": "@thAction"
+	},
+	"Collapse mobile": {
+		"scope": "blade",
+		"body": "<a data-toggle=\"collapse\" class=\"dropdown-toggle btn-info btn auto-icon\">\r\n    <span class=\"cell\" index=\"2\"><\/span>\r\n<\/a>\r\n<div class=\"collapse\">\r\n    <div class=\"cell\" index=\"1\"><\/div>\r\n    <div class=\"cell\" index=\"2\"><\/div>\r\n    <div class=\"cell\" index=\"3\"><\/div>\r\n<\/div>",
+		"prefix": "@collapseGroupMobile"
+	},
+	"Collapse": {
+		"scope": "blade",
+		"body": "<a data-toggle=\"collapse\" class=\"dropdown-toggle btn-info btn ${1:auto-icon}\">\r\n    ${2:<span class=\"cell\" index=\"2\">This is button collapse<\/span>}\r\n<\/a>\r\n<div class=\"collapse\">\r\n    ${3:<span>This is content collapse<\/span>}\r\n<\/div>\r\n",
+		"prefix": "@collapseGroup"
+	},
+	"Cell div mobile": {
+		"scope": "blade",
+		"body": "<div class=\"cell\" index=\"${1:1}\"></div>",
+		"prefix": "@cellmobile"
+	},
 }

@@ -62,7 +62,7 @@ const showAlert = function (html: JQuery<HTMLElement>) {
     addJqueryValidationCustom()
     addJqueryTableAutoIndex()
     addSelectModeTable()
-    addHTMLTableElementPrototype()
+    addHTMLPrototype()
     addPrototypeFormData()
     fixTooltip()
 
@@ -112,13 +112,16 @@ const showAlert = function (html: JQuery<HTMLElement>) {
         }
     }
 
-    function addHTMLTableElementPrototype() {
-        HTMLTableElement.prototype._loadBodyTable = function (this: HTMLTableElement, body) {
-            $(this).find('tbody').html(body)
-            if (this._eventsLoadBody instanceof Array)
-                for (let evt of this._eventsLoadBody)
-                    evt(this)
+    function addHTMLPrototype() {
+        const addBody = (table, action, body) => {
+            $(table).find('tbody')[action](body)
+            if (table._eventsLoadBody instanceof Array)
+                for (let evt of table._eventsLoadBody)
+                    evt(table, body)
         }
+
+        HTMLTableElement.prototype._loadBodyTable = function (this: HTMLTableElement, body) { addBody(this, 'html', body) }
+        HTMLTableElement.prototype._appendBodyTable = function (this: HTMLTableElement, body) { addBody(this, 'append', body) }
         HTMLTableElement.prototype._onLoadTableBody = function (this: HTMLTableElement, eventHandler) {
             if (eventHandler instanceof Function) {
                 if (!(this._eventsLoadBody instanceof Array)) this._eventsLoadBody = []
@@ -137,7 +140,7 @@ const showAlert = function (html: JQuery<HTMLElement>) {
             }
             return output
         }
-        HTMLElement.prototype._setBmdError = function (this: HTMLElement, error) {
+        {
             const getFeedBack = (parent) => {
                 let feedback = $(parent).find('.invalid-feed-back')
                 feedback = feedback[0] ? feedback : $('<span class="invalid-feedback d-block"></span>')
@@ -146,54 +149,58 @@ const showAlert = function (html: JQuery<HTMLElement>) {
             }
             const getFormControlFeedback = (parent) => {
                 let controlFeedback = $(parent).find('.form-control-feedback')
-                controlFeedback = controlFeedback[0] ? controlFeedback : $('<span class="form-control-feedback></span>')
+                controlFeedback = controlFeedback[0] ? controlFeedback : $('<span class="form-control-feedback"></span>')
                 controlFeedback.html($('<i class="fas fa-check"></i>'))
                 return controlFeedback
             }
 
-            switch ($(this).attr('type')) {
-                case 'checkbox':
-                case 'radio':
-                    {
-                        const parent = $(this).closest('.form-check')
-                        if (!parent[0]) return
-                        const feedback = getFeedBack(parent)
-                        parent.append(feedback)
-                        this._setBmdError = function (error) {
-                            feedback.html(error)
+            HTMLElement.prototype._setBmdError = function (this: HTMLElement, error: string) {
+                switch ($(this).attr('type')) {
+                    case 'checkbox':
+                    case 'radio':
+                        {
+                            const parent = $(this).closest('.form-check')
+                            if (!parent[0]) return
+
+                            const feedback = getFeedBack(parent)
+                            parent.append(feedback)
+
+                            this._setBmdError = function (error) {
+                                feedback.html(error || '')
+                            }
+                            this._setBmdError(error)
                         }
-                        this._setBmdError(error)
-                    }
-                    break
-                default:
-                    {
-                        const parent = $(this).closest('.form-group')
-                        if (!parent[0]) return
-                        parent.append(getFeedBack(parent))
-                        const feedback = getFeedBack(parent)
-                        const formControlFeedback = getFormControlFeedback(parent)
-                        const iconFeedback = formControlFeedback.children('i')
+                        break
+                    default:
+                        {
+                            const parent = $(this).closest('.form-group')
+                            if (!parent[0]) return
 
-                        parent.append(feedback).append(formControlFeedback)
-                        let oldStatus = undefined
+                            const feedback = getFeedBack(parent)
+                            const formControlFeedback = getFormControlFeedback(parent)
+                            const iconFeedback = formControlFeedback.children('i')
 
-                        this._setBmdError = function (error) {
-                            feedback.html(error)
-                            if (error) {
-                                if (oldStatus !== false) {
-                                    parent.removeClass('has-success').addClass('has-danger')
-                                    iconFeedback.addClass('fa-exclamation').removeClass('fa-check')
-                                }
-                            } else {
-                                if (oldStatus !== true) {
-                                    parent.addClass('has-success').removeClass('has-danger')
-                                    iconFeedback.removeClass('fa-exclamation').addClass('fa-check')
+                            parent.append(feedback).append(formControlFeedback)
+                            let oldStatus = undefined
+
+                            this._setBmdError = function (error: string) {
+                                feedback.html(error || '')
+                                if (error) {
+                                    if (oldStatus !== false) {
+                                        parent.removeClass('has-success').addClass('has-danger')
+                                        iconFeedback.addClass('fa-exclamation').removeClass('fa-check')
+                                    }
+                                } else {
+                                    if (oldStatus !== true) {
+                                        parent.addClass('has-success').removeClass('has-danger')
+                                        iconFeedback.removeClass('fa-exclamation').addClass('fa-check')
+                                    }
                                 }
                             }
-                        }
 
-                        this._setBmdError(error)
-                    }
+                            this._setBmdError(error)
+                        }
+                }
             }
         }
     }
@@ -238,53 +245,18 @@ const showAlert = function (html: JQuery<HTMLElement>) {
                 ...{
                     lang: 'vi',
                     highlight: function (element) {
-                        // const cacheValue = getCache(element)
-                        // if (cacheValue) {
-                        //     cacheValue.parent.addClass('has-danger')
-                        //     cacheValue.iconFeedback.removeClass('fa-check')
-                        //         .addClass('fa-exclamation')
-                        // }
-                        console.log(this.invalid)
+                        element._setBmdError(this.submitted[element.name])
+
+                        // Dùng để fix lỗi setError chồng lên nhau -> Thứ tự ưu tiên
+                        // element._errorLevel = 100 
                     },
                     unhighlight: function (element) {
-                        // element._setBmdError()
-                        console.log(this.invalid)
+                        element._setBmdError()
                     },
-                    errorPlacement: function (error, element) { return }
+                    errorPlacement: (error) => { }
                 }
             })
 
-            /**
-             * cache lại các element (dùng cho event highlight/unhighlight của jquery validation)
-             * @param element 
-             */
-            function getCache(element) {
-                const cache = {};
-                getCache = function (element) {
-                    let cacheValue = cache[element.name]
-                    if (!cacheValue) {
-                        cacheValue = {}
-                        switch (element.type) {
-                            case 'checkbox':
-                            case 'radio':
-                                $(element).closest('.form-check').find('.invalid-feedback.default').remove()
-                                return
-                            default:
-                                cacheValue.parent = $(element).closest(
-                                    '.form-group')
-                                cacheValue.invalidFeedback = $(element).parent()
-                                    .next(
-                                        '.invalid-feedback')
-                                cacheValue.iconFeedback = $(element).parent().find('.form-control-feedback > .fas')
-                                cacheValue.parent.removeClass('has-danger').find('.invalid-feedback.default').remove()
-                                cacheValue.parent.find('.form-control-feedback.default').remove()
-                        }
-                        cache[element.name] = cacheValue
-                    }
-                    return cacheValue
-                }
-                return getCache(element)
-            }
             return validator
         }
     }

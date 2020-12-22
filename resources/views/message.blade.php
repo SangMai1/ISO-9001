@@ -1,3 +1,4 @@
-@if(Session::has('message'))
-    <div class="alert-message">{{ Session::get('message') }}</div>
+@if (session('message'))
+    <div class="alert-message">{{ session('message') }}</div>
+    @php Session::forget('message') @endphp
 @endif
