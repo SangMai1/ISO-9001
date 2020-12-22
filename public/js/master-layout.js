@@ -1,6 +1,6 @@
 $(() => { window.token = document.querySelector('.csrf-token > input').value; });
 const _swalConfig = {};
-const Toast = Swal.mixin(_swalConfig.toast);
+var Toast;
 const showLoading = function (message = "Chờ xí ...") { Toast.fire({ title: message, showCloseButton: false, didOpen: () => Swal.showLoading() }); };
 const showAlert = function (html) {
     html = $(html);
@@ -70,6 +70,7 @@ const showAlert = function (html) {
         _swalConfig.updateFailed = Object.assign(Object.assign({}, _swalConfig.toastTime), { title: 'Cập nhật thất bại', icon: 'error' });
         _swalConfig.deleteSuccess = Object.assign(Object.assign({}, _swalConfig.toastTime), { title: 'Xóa thành công', icon: 'success' });
         _swalConfig.deleteFailed = Object.assign(Object.assign({}, _swalConfig.toastTime), { title: 'Xóa thất bại', icon: 'error' });
+        Toast = Swal.mixin(_swalConfig.toast);
     }
     function fixMaterial() {
         const style = document.createElement('style');
@@ -171,9 +172,8 @@ const showAlert = function (html) {
                         const feedback = getFeedBack(parent);
                         const formControlFeedback = getFormControlFeedback(parent);
                         const iconFeedback = formControlFeedback.children('i');
-                        const feedback = getFeedBack(parent);
-                        const formControlFeedback = getFormControlFeedback(parent);
-                        const iconFeedback = formControlFeedback.children('i');
+                        parent.append(feedback).append(formControlFeedback);
+                        let oldStatus = undefined;
                         this._setBmdError = function (error) {
                             feedback.html(error || '');
                             if (error) {
@@ -188,8 +188,8 @@ const showAlert = function (html) {
                                     iconFeedback.removeClass('fa-exclamation').addClass('fa-check');
                                 }
                             }
-                            this._setBmdError(error);
                         };
+                        this._setBmdError(error);
                     }
             }
         };

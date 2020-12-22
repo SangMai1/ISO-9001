@@ -3,8 +3,7 @@
 
 @section('content')
     @include('message')
-    {{-- Thuộc tính data-form để dễ tìm lại form sau khi load xong, nếu không sẽ tìm qua "action" attribute--}}
-    <form method="post" data-form="addcn" ajax-form autocomplete="off">
+    <form method="post" autocomplete="off" ajax-form>
         @csrf
         <x-input title="Tên" type="text" name="ten" float />
         <x-input title="Url" type="text" name="url" float />
@@ -12,7 +11,7 @@
         <a class="btn btn-info" href="{{ route('chucnang.list') }}" role="button">Danh sách</a>
     </form>
     <script>
-        $('form[data-form]').validateCustom({
+        $('form[ajax-form]').validateCustom({
             rules: {
                 ten: {
                     required: true,

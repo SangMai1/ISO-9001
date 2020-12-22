@@ -2,7 +2,7 @@
 //@ts-nocheck
 $(() => { window.token = document.querySelector('.csrf-token > input').value })
 const _swalConfig: { [key: string]: SweetAlertOptions } = {}
-const Toast = Swal.mixin(_swalConfig.toast)
+var Toast: SwalInterface
 const showLoading = function (message = "Chờ xí ...") { Toast.fire({ title: message, showCloseButton: false, didOpen: () => Swal.showLoading() }) };
 const showAlert = function (html: JQuery<HTMLElement>) {
     html = $(html)
@@ -43,7 +43,6 @@ const showAlert = function (html: JQuery<HTMLElement>) {
     })
 
     function configSweetAlert() {
-
         swal = Swal.mixin({
             customClass: {
                 confirmButton: 'btn btn-success btn-sm',
@@ -79,6 +78,8 @@ const showAlert = function (html: JQuery<HTMLElement>) {
         _swalConfig.deleteSuccess = { ..._swalConfig.toastTime, title: 'Xóa thành công', icon: 'success' }
         _swalConfig.deleteFailed = { ..._swalConfig.toastTime, title: 'Xóa thất bại', icon: 'error' }
         //#endregion
+
+        Toast = Swal.mixin(_swalConfig.toast)
     }
 
     // fix lỗi màn hình đen menu không kéo hết :V
@@ -185,9 +186,9 @@ const showAlert = function (html: JQuery<HTMLElement>) {
                         const formControlFeedback = getFormControlFeedback(parent)
                         const iconFeedback = formControlFeedback.children('i')
 
-                        const feedback = getFeedBack(parent)
-                        const formControlFeedback = getFormControlFeedback(parent)
-                        const iconFeedback = formControlFeedback.children('i')
+                        parent.append(feedback).append(formControlFeedback)
+                        let oldStatus = undefined
+
                         this._setBmdError = function (error: string) {
                             feedback.html(error || '')
                             if (error) {
@@ -198,12 +199,12 @@ const showAlert = function (html: JQuery<HTMLElement>) {
                             } else {
                                 if (oldStatus !== true) {
                                     parent.addClass('has-success').removeClass('has-danger')
-                                    iconFeedback.removeClass('fa-exclamation').addClass('fa-check')
+                                    iconFeedback.removeClass('fa-exclamation').addClass('fa-check') 
                                 }
                             }
-
-                            this._setBmdError(error)
                         }
+
+                        this._setBmdError(error)
                     }
             }
         }
