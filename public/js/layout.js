@@ -19,9 +19,36 @@ const layoutAction = {
                 $.ajax({
                     url: postHref,
                     data: new FormData(this),
-                    error: function (resp) {
-                        console.log(resp);
+                    error: (resp) => {
+                        Swal.close();
+                        if (resp.getResponseHeader('content-type').toLowerCase() !== 'application/json')
+                            return;
+                        const result = JSON.parse(resp.responseText);
+                        if (result.message !== 'The given data was invalid.')
+                            return;
+                        for (let [fieldName, error] of Object.entries(result.errors)) {
+                            const input = $(this).find(`[name="${fieldName}"]`);
+                            if (input[0])
+                                input[0]._setBmdError(error);
+                        }
+                        layoutAction.renders.removeErrorInput($(this));
                     }
+                });
+            });
+        },
+        autoAddDeleteEventTable(selector = $('body')) {
+            selector.find('table[delete-href]').each(function (i, table) {
+                table = $(table);
+                const deleteHref = table.attr('delete-href');
+                table.find('tbody > tr > td.td-action .delete-btn').on('click', function (evt) {
+                    const tr = $(this).closest('tr');
+                    const id = tr.data('id');
+                    $.ajax({ url: deleteHref, data: (new FormData()).fromObject({ id: id, _token: token }) })
+                        .done(() => {
+                        tr.remove();
+                        if (table.find('thead > tr > .auto-index-head')[0])
+                            table._autoIndexTable();
+                    });
                 });
             });
         },
@@ -138,8 +165,7 @@ const layoutAction = {
                 if ($(this).find('.invalid-feedback')[0]) {
                     $(this).find('input').on('input', function _event() {
                         $(this).off('input', _event);
-                        $(e).removeClass('has-danger').find('.invalid-feedback.default').remove();
-                        $(e).find('.form-control-feedback.default').remove();
+                        this._setBmdError();
                     });
                 }
             });

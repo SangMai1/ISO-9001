@@ -10,11 +10,6 @@ body {
   display: none;
 }
 
-.dropdown-toggle {
-  display: flex;
-  align-items: center;
-}
-
 .swal2-toast-shown {
   background-color: #fdfdfc !important;
 }
@@ -118,6 +113,9 @@ td[ai] {
   width: 30px !important;
   height: 30px !important;
   font-size: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   padding: 0 !important;
 }
 
@@ -147,6 +145,13 @@ ul:not(.navbar-nav):not([role=presentation]):not(.nav-tabs) ul {
   margin-left: 15px;
 }
 
+.dropdown-toggle.auto-icon {
+  display: flex;
+  align-items: center;
+}
+.dropdown-toggle.auto-icon::after {
+  margin-left: auto !important;
+}
 .dropdown-toggle::after {
   margin-left: 8px;
   transform: rotate(-180deg);

@@ -2,11 +2,14 @@ interface HTMLElement {
     _eachSelected: (callback: (tr: HTMLTableCellElement) => void) => void
     _mapSelected: <K>(callback: (tr: HTMLTableCellElement) => K) => K[]
     _loadBodyTable: (body: any) => void
-    _onLoadTableBody: (evt: () => void) => void
+    _onLoadTableBody: (evt: (table: HTMLTableElement, body: HTMLTableRowElement[]) => void) => void
+    _setBmdError: (message: string) => void
 }
+
 interface FormData {
     fromObject: (obj: any) => FormData
 }
+
 interface JQuery<HTMLElement> {
     validateCustom: (config: any) => any
     _addSelectRows: (table: any) => void

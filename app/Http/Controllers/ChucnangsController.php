@@ -45,12 +45,6 @@ class ChucnangsController extends Controller
     {
 
         date_default_timezone_set("Asia/Ho_Chi_Minh");
-        // $request->validated();
-        dd($request->all());
-
-        // if ($validator->fails()) {
-        //     return Back()->withErrors($validator);
-        // }
 
         $chucNang = new chucnangs();
         $chucNang->ten = $request->ten;
@@ -59,8 +53,7 @@ class ChucnangsController extends Controller
         $chucNang->nguoisua = "sang";
         $chucNang->daxoa = "0";
 
-        if ($chucNang->save()) Session::flash('message', 'addSuccess');
-        else Session::flash('message', "addFailed");
+        Session::flash('message', $chucNang->save() ? 'addSuccess' : 'addFailed');
 
         return view('message');
     }
@@ -130,9 +123,6 @@ class ChucnangsController extends Controller
      * @param  \App\Models\chucnangs  $chucnangs
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request)
-    {
-    }
 
     public function deleteAll(Request $request)
     {
@@ -144,12 +134,7 @@ class ChucnangsController extends Controller
             ->update(
                 ["daxoa" => "1", "nguoisua" => "ai do",]
             );
-        Session::flash(
-            "message",
-            $result
-                ? "{icon: 'success', _type: 'toastTime', title: 'Xóa thành công'}"
-                : "{icon: 'error', _type: 'toastTime', title: 'Xóa thất bại'}"
-        );
+        Session::flash("message", $result ? "deleteSuccess" : "deleteFailed");
         return view('message');
     }
 

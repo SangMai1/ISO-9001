@@ -1,48 +1,9 @@
 // @ts-ignore
 //@ts-nocheck
 $(() => { window.token = document.querySelector('.csrf-token > input').value })
-const _swalConfig: { [key: string]: SweetAlertOptions } = {
-    toast: {
-        toast: true,
-        position: 'top-right',
-        showConfirmButton: false,
-        showCloseButton: true,
-        didOpen: (toast) => {
-            layoutAction.rebuild.autoBmd('.swal2-popup')
-            toast.addEventListener('mouseenter', window.Swal.stopTimer)
-            toast.addEventListener('mouseleave', window.Swal.resumeTimer)
-        }
-    },
-    buttonsStyling: false
-}
-
-//#region swal_config
-swal = Swal.mixin({
-    customClass: {
-        confirmButton: 'btn btn-success btn-sm',
-        cancelButton: 'btn btn-danger btn-sm',
-        denyButton: 'btn btn-primary btn-warning btn-sm'
-    },
-    didOpen: () => {
-        layoutAction.rebuild.autoBmd('.swal2-popup')
-    },
-    buttonsStyling: false
-})
-
-_swalConfig.toastTime = { ..._swalConfig.toast, timer: 1500 }
-_swalConfig.errorAjax = { ..._swalConfig.toastTime, title: 'Lỗi khi gửi Request', icon: 'error' }
-_swalConfig.addSuccess = { ..._swalConfig.toastTime, title: 'Thêm thành công', icon: 'success' }
-_swalConfig.addError = { ..._swalConfig.toastTime, title: 'Thêm thất bại', icon: 'error' }
-_swalConfig.updateSuccess = { ..._swalConfig.toastTime, title: 'Cập nhật thành công', icon: 'success' }
-_swalConfig.updateFailed = { ..._swalConfig.toastTime, title: 'Cập nhật thất bại', icon: 'error' }
-_swalConfig.deleteSuccess = { ..._swalConfig.toastTime, title: 'Xóa thành công', icon: 'success' }
-_swalConfig.deleteFailed = { ..._swalConfig.toastTime, title: 'Xóa thất bại', icon: 'error' }
-
-//#endregion
-
+const _swalConfig: { [key: string]: SweetAlertOptions } = {}
 const Toast = Swal.mixin(_swalConfig.toast)
-
-const showLoading = function (message = "Chờ xí ...") { Toast.fire({ title: message, showCloseButton: false, didOpen: () => window.Swal.showLoading() }) };
+const showLoading = function (message = "Chờ xí ...") { Toast.fire({ title: message, showCloseButton: false, didOpen: () => Swal.showLoading() }) };
 const showAlert = function (html: JQuery<HTMLElement>) {
     html = $(html)
     let message = $(html).hasClass('alert-message') ? html.text() : $('.alert-message', $(html)).text()
@@ -63,10 +24,13 @@ const showAlert = function (html: JQuery<HTMLElement>) {
     addJqueryTableAutoIndex()
     addSelectModeTable()
     addHTMLTableElementPrototype()
+    addPrototypeInput()
     addPrototypeFormData()
     fixTooltip()
-
+    configSweetAlert()
+    
     $(() => fixMaterial())
+
 
     $.ajaxSetup({
         "processData": false,
@@ -77,6 +41,45 @@ const showAlert = function (html: JQuery<HTMLElement>) {
         "success": (resp) => showAlert(resp),
         "error": () => Swal.fire(_swalConfig.errorAjax)
     })
+
+    function configSweetAlert() {
+
+        swal = Swal.mixin({
+            customClass: {
+                confirmButton: 'btn btn-success btn-sm',
+                cancelButton: 'btn btn-danger btn-sm',
+                denyButton: 'btn btn-primary btn-warning btn-sm'
+            },
+            didOpen: () => {
+                layoutAction.rebuild.autoBmd('.swal2-popup')
+            },
+            buttonsStyling: false
+        })
+
+        //#region swal_config
+        _swalConfig.toast = {
+            toast: true,
+            position: 'top-right',
+            showConfirmButton: false,
+            showCloseButton: true,
+            didOpen: (toast) => {
+                layoutAction.rebuild.autoBmd('.swal2-popup')
+                toast.addEventListener('mouseenter', window.Swal.stopTimer)
+                toast.addEventListener('mouseleave', window.Swal.resumeTimer)
+            },
+            buttonsStyling: false
+        }
+
+        _swalConfig.toastTime = { ..._swalConfig.toast, timer: 1500 }
+        _swalConfig.errorAjax = { ..._swalConfig.toastTime, title: 'Lỗi khi gửi Request', icon: 'error' }
+        _swalConfig.addSuccess = { ..._swalConfig.toastTime, title: 'Thêm thành công', icon: 'success' }
+        _swalConfig.addError = { ..._swalConfig.toastTime, title: 'Thêm thất bại', icon: 'error' }
+        _swalConfig.updateSuccess = { ..._swalConfig.toastTime, title: 'Cập nhật thành công', icon: 'success' }
+        _swalConfig.updateFailed = { ..._swalConfig.toastTime, title: 'Cập nhật thất bại', icon: 'error' }
+        _swalConfig.deleteSuccess = { ..._swalConfig.toastTime, title: 'Xóa thành công', icon: 'success' }
+        _swalConfig.deleteFailed = { ..._swalConfig.toastTime, title: 'Xóa thất bại', icon: 'error' }
+        //#endregion
+    }
 
     // fix lỗi màn hình đen menu không kéo hết :V
     function fixMaterial() {
@@ -113,12 +116,15 @@ const showAlert = function (html: JQuery<HTMLElement>) {
     }
 
     function addHTMLTableElementPrototype() {
-        HTMLTableElement.prototype._loadBodyTable = function (this: HTMLTableElement, body) {
-            $(this).find('tbody').html(body)
-            if (this._eventsLoadBody instanceof Array)
-                for (let evt of this._eventsLoadBody)
-                    evt(this)
+        const addBody = (table, action, body) => {
+            $(table).find('tbody')[action](body)
+            if (table._eventsLoadBody instanceof Array)
+                for (let evt of table._eventsLoadBody)
+                    evt(table, body)
         }
+
+        HTMLTableElement.prototype._loadBodyTable = function (this: HTMLTableElement, body) { addBody(this, 'html', body) }
+        HTMLTableElement.prototype._appendBodyTable = function (this: HTMLTableElement, body) { addBody(this, 'append', body) }
         HTMLTableElement.prototype._onLoadTableBody = function (this: HTMLTableElement, eventHandler) {
             if (eventHandler instanceof Function) {
                 if (!(this._eventsLoadBody instanceof Array)) this._eventsLoadBody = []
@@ -137,30 +143,35 @@ const showAlert = function (html: JQuery<HTMLElement>) {
             }
             return output
         }
-        HTMLElement.prototype._setBmdError = function (this: HTMLElement, error) {
-            const getFeedBack = (parent) => {
-                let feedback = $(parent).find('.invalid-feed-back')
-                feedback = feedback[0] ? feedback : $('<span class="invalid-feedback d-block"></span>')
-                feedback.html('')
-                return feedback
-            }
-            const getFormControlFeedback = (parent) => {
-                let controlFeedback = $(parent).find('.form-control-feedback')
-                controlFeedback = controlFeedback[0] ? controlFeedback : $('<span class="form-control-feedback></span>')
-                controlFeedback.html($('<i class="fas fa-check"></i>'))
-                return controlFeedback
-            }
+    }
 
+    function addPrototypeInput() {
+        const getFeedBack = (parent) => {
+            let feedback = $(parent).find('.invalid-feed-back')
+            feedback = feedback[0] ? feedback : $('<span class="invalid-feedback d-block"></span>')
+            feedback.html('')
+            return feedback
+        }
+        const getFormControlFeedback = (parent) => {
+            let controlFeedback = $(parent).find('.form-control-feedback')
+            controlFeedback = controlFeedback[0] ? controlFeedback : $('<span class="form-control-feedback"></span>')
+            controlFeedback.html($('<i class="fas fa-check"></i>'))
+            return controlFeedback
+        }
+
+        HTMLElement.prototype._setBmdError = function (this: HTMLElement, error: string) {
             switch ($(this).attr('type')) {
                 case 'checkbox':
                 case 'radio':
                     {
                         const parent = $(this).closest('.form-check')
                         if (!parent[0]) return
+
                         const feedback = getFeedBack(parent)
                         parent.append(feedback)
+
                         this._setBmdError = function (error) {
-                            feedback.html(error)
+                            feedback.html(error || '')
                         }
                         this._setBmdError(error)
                     }
@@ -169,7 +180,7 @@ const showAlert = function (html: JQuery<HTMLElement>) {
                     {
                         const parent = $(this).closest('.form-group')
                         if (!parent[0]) return
-                        parent.append(getFeedBack(parent))
+
                         const feedback = getFeedBack(parent)
                         const formControlFeedback = getFormControlFeedback(parent)
                         const iconFeedback = formControlFeedback.children('i')
@@ -177,8 +188,8 @@ const showAlert = function (html: JQuery<HTMLElement>) {
                         parent.append(feedback).append(formControlFeedback)
                         let oldStatus = undefined
 
-                        this._setBmdError = function (error) {
-                            feedback.html(error)
+                        this._setBmdError = function (error: string) {
+                            feedback.html(error || '')
                             if (error) {
                                 if (oldStatus !== false) {
                                     parent.removeClass('has-success').addClass('has-danger')
@@ -238,53 +249,18 @@ const showAlert = function (html: JQuery<HTMLElement>) {
                 ...{
                     lang: 'vi',
                     highlight: function (element) {
-                        // const cacheValue = getCache(element)
-                        // if (cacheValue) {
-                        //     cacheValue.parent.addClass('has-danger')
-                        //     cacheValue.iconFeedback.removeClass('fa-check')
-                        //         .addClass('fa-exclamation')
-                        // }
-                        console.log(this.invalid)
+                        element._setBmdError(this.submitted[element.name])
+
+                        // Dùng để fix lỗi setError chồng lên nhau -> Thứ tự ưu tiên
+                        // element._errorLevel = 100 
                     },
                     unhighlight: function (element) {
-                        // element._setBmdError()
-                        console.log(this.invalid)
+                        element._setBmdError()
                     },
-                    errorPlacement: function (error, element) { return }
+                    errorPlacement: (error) => { }
                 }
             })
 
-            /**
-             * cache lại các element (dùng cho event highlight/unhighlight của jquery validation)
-             * @param element 
-             */
-            function getCache(element) {
-                const cache = {};
-                getCache = function (element) {
-                    let cacheValue = cache[element.name]
-                    if (!cacheValue) {
-                        cacheValue = {}
-                        switch (element.type) {
-                            case 'checkbox':
-                            case 'radio':
-                                $(element).closest('.form-check').find('.invalid-feedback.default').remove()
-                                return
-                            default:
-                                cacheValue.parent = $(element).closest(
-                                    '.form-group')
-                                cacheValue.invalidFeedback = $(element).parent()
-                                    .next(
-                                        '.invalid-feedback')
-                                cacheValue.iconFeedback = $(element).parent().find('.form-control-feedback > .fas')
-                                cacheValue.parent.removeClass('has-danger').find('.invalid-feedback.default').remove()
-                                cacheValue.parent.find('.form-control-feedback.default').remove()
-                        }
-                        cache[element.name] = cacheValue
-                    }
-                    return cacheValue
-                }
-                return getCache(element)
-            }
             return validator
         }
     }
