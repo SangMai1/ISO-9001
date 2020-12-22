@@ -28,7 +28,7 @@ const showAlert = function (html: JQuery<HTMLElement>) {
     addPrototypeFormData()
     fixTooltip()
     configSweetAlert()
-    
+
     $(() => fixMaterial())
 
 
@@ -185,9 +185,9 @@ const showAlert = function (html: JQuery<HTMLElement>) {
                         const formControlFeedback = getFormControlFeedback(parent)
                         const iconFeedback = formControlFeedback.children('i')
 
-                        parent.append(feedback).append(formControlFeedback)
-                        let oldStatus = undefined
-
+                        const feedback = getFeedBack(parent)
+                        const formControlFeedback = getFormControlFeedback(parent)
+                        const iconFeedback = formControlFeedback.children('i')
                         this._setBmdError = function (error: string) {
                             feedback.html(error || '')
                             if (error) {
@@ -201,9 +201,9 @@ const showAlert = function (html: JQuery<HTMLElement>) {
                                     iconFeedback.removeClass('fa-exclamation').addClass('fa-check')
                                 }
                             }
-                        }
 
-                        this._setBmdError(error)
+                            this._setBmdError(error)
+                        }
                     }
             }
         }

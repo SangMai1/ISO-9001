@@ -171,8 +171,9 @@ const showAlert = function (html) {
                         const feedback = getFeedBack(parent);
                         const formControlFeedback = getFormControlFeedback(parent);
                         const iconFeedback = formControlFeedback.children('i');
-                        parent.append(feedback).append(formControlFeedback);
-                        let oldStatus = undefined;
+                        const feedback = getFeedBack(parent);
+                        const formControlFeedback = getFormControlFeedback(parent);
+                        const iconFeedback = formControlFeedback.children('i');
                         this._setBmdError = function (error) {
                             feedback.html(error || '');
                             if (error) {
@@ -187,8 +188,8 @@ const showAlert = function (html) {
                                     iconFeedback.removeClass('fa-exclamation').addClass('fa-check');
                                 }
                             }
+                            this._setBmdError(error);
                         };
-                        this._setBmdError(error);
                     }
             }
         };
