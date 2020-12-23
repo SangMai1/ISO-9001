@@ -25,7 +25,7 @@ class CreateThanhphanthamgiasTable extends Migration
             $table->string('ghichu');
             $table->string('nguoitao');
             $table->string('nguoisua');
-            $table->smallInteger('daxoa');
+            $table->softDeletes();
         });
     }
 
