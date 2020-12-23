@@ -314,7 +314,7 @@ const showAlert = function (html: JQuery<HTMLElement>) {
                             // Thêm tooltip attribute
                             cbSelectAll.attr('data-toggle', 'tooltip').attr('data-html', 'true').attr('title', selectToolTipText[1])
                             // Chọn hoặc hủy tất cả lựa chọn trong table
-                            cbSelectAll.find('input').on('change', function (evt) {
+                            cbSelectAll.find('input').on('input', function (evt) {
                                 const check = this.checked
                                 const message = selectToolTipText[check ? 0 : 1]
                                 cbSelectAll.attr('data-original-title', message)
@@ -324,16 +324,16 @@ const showAlert = function (html: JQuery<HTMLElement>) {
                             })
                             cbSelectAll.tooltip()
                             return cbSelectAll
-                        })()))  
-                    e._onLoadTableBody(function () { table._addSelectRows() })
+                        })()))
+                    e._onLoadTableBody(function () { table._addSelectRows(callback) })
                 }
-                callback = callback instanceof Function ? callback : ()=>{}
+                callback = callback instanceof Function ? callback : () => { }
                 table.children('tbody').children('tr').each((i, e) => {
                     if (!e._select) {
                         const jCheckbox = $(checkbox)
                         e._select = jCheckbox.find('input');
                         e.prepend($('<td sl></td>').append(jCheckbox)[0])
-                        // callback(e._select[0])
+                        callback(e._select[0])
                     }
                 })
             });

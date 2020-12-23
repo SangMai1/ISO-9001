@@ -19,7 +19,7 @@ use App\Http\Controllers\CauhinhsController;
 */
 
 Route::get('/doc', function () { return view('doc'); }); // Thêm documentation cho layout
-Route::get('/', function () { return view('example'); });
+Route::get('/', function () {  echo(123); response('123'); });
 Route::get('/home', function(){ return redirect('/');})->name('home');
 Auth::routes(['register' => true]);
 Route::get('/example', function () { return view('example');});

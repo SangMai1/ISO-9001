@@ -52,11 +52,7 @@ Tip 2: you can also add an image using data-image tag
                         <a href="{{ route('danhmuc.list') }}" class="nav-link"><i class="fas fa-list"></i><span>Danh mục</span></a>
                     </li>
                     <li class="nav-item">
-<<<<<<< HEAD
                         <a href="{{ route('cauhinh.list') }}" class="nav-link"><i class="fas fa-list"></i><span>Cấu hình</span></a>
-=======
-                        <a href="{{url('/cau-hinh/danh-sach')}}" class="nav-link"><i class="fas fa-list"></i><span>Cấu hình</span></a>
->>>>>>> 6992d1b45ef4901c79d3ef981d37680936900451
                     </li>
                 </ul>
             </li>
