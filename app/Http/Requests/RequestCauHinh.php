@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class RequestChucNang extends FormRequest
+class RequestCauHinh extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,16 +24,18 @@ class RequestChucNang extends FormRequest
     public function rules()
     {
         return  [
-            'ten' => 'required|string|min:8',
-            'url' => 'required|string|min:1'
+            'ma' => 'required|string|min:5',
+            'ten' => 'required|string|min:6',
+            'giatri' => 'required|string|min:3'
         ];
     }
 
     public function attributes()
     {
         return [
-            'ten' => 'Tên chức năng',
-            'url' => 'Đường dẫn URL'
+            'ma' => 'Mã cấu hình ',
+            'ten' => 'Tên cấu hình',
+            'giatri' => 'Giá trị'
         ];
     }
     
