@@ -301,7 +301,7 @@ const showAlert = function (html: JQuery<HTMLElement>) {
 
     function addSelectModeTable() {
         const checkbox = `<div class="form-check"><label class="form-check-label"><input class="form-check-input " type="checkbox"><span class="form-check-sign"><span class="check"></span></span></label></div>`;
-        $.fn._addSelectRows = function () {
+        $.fn._addSelectRows = function (callback) {
             this.each(function (i, e) {
                 const table = $(e);
                 const trHead = table.find('thead > tr');
@@ -324,14 +324,16 @@ const showAlert = function (html: JQuery<HTMLElement>) {
                             })
                             cbSelectAll.tooltip()
                             return cbSelectAll
-                        })()))
+                        })()))  
                     e._onLoadTableBody(function () { table._addSelectRows() })
                 }
+                callback = callback instanceof Function ? callback : ()=>{}
                 table.children('tbody').children('tr').each((i, e) => {
                     if (!e._select) {
                         const jCheckbox = $(checkbox)
                         e._select = jCheckbox.find('input');
                         e.prepend($('<td sl></td>').append(jCheckbox)[0])
+                        // callback(e._select[0])
                     }
                 })
             });

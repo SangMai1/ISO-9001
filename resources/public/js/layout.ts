@@ -59,7 +59,11 @@ const layoutAction = {
         /**
          * Tự động thêm cột select cho table
          */
-        autoAddSelectColumn(selector = $('body')) { selector.find('table[select]')._addSelectRows().removeClass('select') },
+        autoAddSelectColumn(selector = $('body')) { selector.find('table[select]').each(function(index, table){
+            const callbackName = table.getAttribute('select')
+            if(callbackName) $(table)._addSelectRows(window[callbackName])
+            else $(table)._addSelectRows().removeClass('select')
+        }) },
         /**
          * Tự động thêm cột index cho table có attribute auto-index
         */

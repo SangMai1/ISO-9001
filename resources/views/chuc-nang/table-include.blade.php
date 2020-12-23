@@ -11,7 +11,7 @@
                                                                                 ( với cấu hình mặc định của ajaxSetting                                     
                                                                                     ( config trong file ( master-layout.ts -> find(\$.ajaxSetup) ) )        
                                                                         -> xóa record sau khi render                                                    -->
-    <x-table auto-index id="table-main" class="mobile" load-more=""
+    <x-table auto-index id="table-main" class="mobile" select load-more=""
         delete-href="{{ route('chucnang.delete') }}">
         @slot('head')
             <!-- field cho mobile:                                  - Không được tính index                                                             -->
