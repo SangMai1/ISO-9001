@@ -6,7 +6,7 @@ const layoutAction = {
     rebuild: {
         tooltip: (selector = $('body')) => selector.find('[data-toggle="tooltip"]').tooltip(),
         popover: (selector = $('body')) => selector.find('[data-toggle="popover"]').popover(),
-        autoBmd(selector) {
+        autoBmd(selector = $('body')) {
             if ((selector = $(selector))[0]) {
                 selector.find('.btn').bmdRipples()
                 selector.find('.form-control').bmdText()
@@ -164,13 +164,14 @@ const layoutAction = {
                 styleElement.innerHTML = headersStyle
                 document.head.append(styleElement)
 
-                table._onLoadTableBody(loadTable)
+                table._onLoadTableBody(loadTable.bind(table))
                 table._onLoadTableBody(() => layoutAction.rebuild.autoBmd(table))
                 table._onLoadTableBody(() => layoutAction.renders.collapse(table))
                 loadTable.bind(table)()
             })
             function loadTable(this: HTMLTableElement) {
                 $(this).children('tbody').children('tr').each(function (i, tr) {
+                    console.log('load table')
                     if (tr._cellRender) return
 
                     const tds = $(tr).children('td:not([ai]):not([sl]):not(.td-mobile):not(.td-action)')
@@ -188,9 +189,24 @@ const layoutAction = {
                 if ($(this).find('.invalid-feedback')[0]) {
                     $(this).find('input').on('input', function _event() {
                         $(this).off('input', _event)
-                        this._setBmdError()
+                        this._setBmdError(-1)
                     })
                 }
+            })
+        },
+        addLoadMore(jElement = $('body')) {
+            jElement.find('table[load-more]').each(function (index, table) {
+                const loadMoreHref = table.getAttribute('load-more') || window.location.pathname
+                const loadMoreButton = $('<button class="btn btn-info w-100">Xem thêm ...</button>')
+                const queryTable = 'table[load-more]' // config thêm
+                loadMoreButton.insertAfter(table)
+                window.btn = loadMoreButton
+                loadMoreButton.on('click', function () {
+                    $.ajax({ url: loadMoreHref, method: "GET", data: "no-layout&limit=4" }).done((resp) => {
+                        const trArr = $(resp).find('table[load-more]').find('tbody > tr')
+                        table._appendBodyTable(trArr)
+                    })
+                })
             })
         }
     }

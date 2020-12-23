@@ -15,21 +15,7 @@ class ChucnangsSeeder extends Seeder
     public function run()
     {
         DB::table('chucnangs')->truncate();
-        DB::table('chucnangs')->insert([
-            ['ten' => 'Danh sách xe', 'url' => '/xe/danh-sach', 'nguoitao' => 'sang', 'nguoisua' => 'sang', 'daxoa' => 0],
-            ['ten' => 'Thêm xe', 'url' => '/xe/them-xe', 'nguoitao' => 'sang', 'nguoisua' => 'sang', 'daxoa' => 0],
-            ['ten' => 'Xóa xe', 'url' => '/xe/xóa-xe', 'nguoitao' => 'sang', 'nguoisua' => 'sang', 'daxoa' => 0],
-            ['ten' => 'Xóa xe', 'url' => '/xe/xóa-xe', 'nguoitao' => 'sang', 'nguoisua' => 'sang', 'daxoa' => 0],
-            ['ten' => 'Xóa xe', 'url' => '/xe/xóa-xe', 'nguoitao' => 'sang', 'nguoisua' => 'sang', 'daxoa' => 0],
-            ['ten' => 'Xóa xe', 'url' => '/xe/xóa-xe', 'nguoitao' => 'sang', 'nguoisua' => 'sang', 'daxoa' => 0],
-            ['ten' => 'Xóa xe', 'url' => '/xe/xóa-xe', 'nguoitao' => 'sang', 'nguoisua' => 'sang', 'daxoa' => 0],
-            ['ten' => 'Xóa xe', 'url' => '/xe/xóa-xe', 'nguoitao' => 'sang', 'nguoisua' => 'sang', 'daxoa' => 0],
-            ['ten' => 'Xóa xe', 'url' => '/xe/xóa-xe', 'nguoitao' => 'sang', 'nguoisua' => 'sang', 'daxoa' => 0],
-            ['ten' => 'Xóa xe', 'url' => '/xe/xóa-xe', 'nguoitao' => 'sang', 'nguoisua' => 'sang', 'daxoa' => 0],
-            ['ten' => 'Xóa xe', 'url' => '/xe/xóa-xe', 'nguoitao' => 'sang', 'nguoisua' => 'sang', 'daxoa' => 0],
-            ['ten' => 'Xóa xe', 'url' => '/xe/xóa-xe', 'nguoitao' => 'sang', 'nguoisua' => 'sang', 'daxoa' => 0],
-            ['ten' => 'Xóa xe', 'url' => '/xe/xóa-xe', 'nguoitao' => 'sang', 'nguoisua' => 'sang', 'daxoa' => 0],
-            ['ten' => 'Xóa xe', 'url' => '/xe/xóa-xe', 'nguoitao' => 'sang', 'nguoisua' => 'sang', 'daxoa' => 0],
-        ]);
+        $content = file_get_contents('./database/seeders/seed-json/chucnangs.json', true);
+        DB::table('chucnangs')->insert(json_decode($content, true));
     }
 }

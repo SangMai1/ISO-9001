@@ -1,0 +1,42 @@
+[
+    {
+        "id": 1,
+        "ten": "Danh s\u00e1ch ch\u1ee9c n\u0103ng",
+        "url": "\/chuc-nang\/danh-sach",
+        "nguoitao": "admin",
+        "nguoisua": "admin",
+        "created_at": null,
+        "updated_at": null,
+        "deleted_at": null
+    },
+    {
+        "id": 2,
+        "ten": "Th\u00eam ch\u1ee9c n\u0103ng",
+        "url": "\/chuc-nang\/them-moi",
+        "nguoitao": "admin",
+        "nguoisua": "admin",
+        "created_at": null,
+        "updated_at": null,
+        "deleted_at": null
+    },
+    {
+        "id": 3,
+        "ten": "X\u00f3a ch\u1ee9c n\u0103ng",
+        "url": "\/chuc-nang\/xoa",
+        "nguoitao": "admin",
+        "nguoisua": "admin",
+        "created_at": null,
+        "updated_at": null,
+        "deleted_at": null
+    },
+    {
+        "id": 4,
+        "ten": "C\u1eadp nh\u1eadt ch\u1ee9c n\u0103ng",
+        "url": "\/xe\/chinh-sua",
+        "nguoitao": "admin",
+        "nguoisua": "admin",
+        "created_at": null,
+        "updated_at": null,
+        "deleted_at": null
+    }
+]

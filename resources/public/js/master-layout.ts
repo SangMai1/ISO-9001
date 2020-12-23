@@ -148,7 +148,7 @@ const showAlert = function (html: JQuery<HTMLElement>) {
 
     function addPrototypeInput() {
         const getFeedBack = (parent) => {
-            let feedback = $(parent).find('.invalid-feed-back')
+            let feedback = $(parent).find('.invalid-feedback')
             feedback = feedback[0] ? feedback : $('<span class="invalid-feedback d-block"></span>')
             feedback.html('')
             return feedback
@@ -184,24 +184,36 @@ const showAlert = function (html: JQuery<HTMLElement>) {
 
                         const feedback = getFeedBack(parent)
                         const formControlFeedback = getFormControlFeedback(parent)
-                        const iconFeedback = formControlFeedback.children('i')
+                        const iconFeedback = $(formControlFeedback.children('i')[0])
 
                         parent.append(feedback).append(formControlFeedback)
                         let oldStatus = undefined
 
+                        const addClass = (e, cl, reg) => e.attr('class', `${e.attr('class').replace(reg, '')} ${cl}`)
                         this._setBmdError = function (error: string) {
                             feedback.html(error || '')
-                            if (error) {
+                            let formGroupClass
+                            let iconClass
+                            if (error === -1) {
+                                formGroupClass = ''
+                                iconClass = ''
+                                feedback.html('')
+                                oldStatus = undefined
+                            } else if (error) {
                                 if (oldStatus !== false) {
-                                    parent.removeClass('has-success').addClass('has-danger')
-                                    iconFeedback.addClass('fa-exclamation').removeClass('fa-check')
+                                    formGroupClass = 'has-danger'
+                                    iconClass = 'fa-exclamation'
+                                    oldStatus = false
                                 }
                             } else {
                                 if (oldStatus !== true) {
-                                    parent.addClass('has-success').removeClass('has-danger')
-                                    iconFeedback.removeClass('fa-exclamation').addClass('fa-check') 
+                                    formGroupClass = 'has-success'
+                                    iconClass = 'fa-check'
+                                    oldStatus = true
                                 }
                             }
+                            if (formGroupClass !== undefined) addClass(parent, formGroupClass, /has-.*?(\s|$)/g)
+                            if (iconClass !== undefined) addClass(iconFeedback, iconClass, /fa-.*?(\s|$)/g)
                         }
 
                         this._setBmdError(error)

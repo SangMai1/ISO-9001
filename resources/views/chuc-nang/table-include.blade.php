@@ -11,7 +11,7 @@
                                                                                 ( với cấu hình mặc định của ajaxSetting                                     
                                                                                     ( config trong file ( master-layout.ts -> find(\$.ajaxSetup) ) )        
                                                                         -> xóa record sau khi render                                                    -->
-    <x-table auto-index id="table-main" class="mobile" select 
+    <x-table auto-index id="table-main" class="mobile" load-more=""
         delete-href="{{ route('chucnang.delete') }}">
         @slot('head')
             <!-- field cho mobile:                                  - Không được tính index                                                             -->
@@ -65,7 +65,7 @@
                         <button class="btn btn-sm btn-icon btn-danger rounded-circle delete-btn"><i class="fas fa-trash"></i></button>
                         <!-- snippet:                               - @editLinkAction                                                                 -->         
                         <a class="btn btn-sm btn-info btn-icon rounded-circle" 
-                            href="{{ route('chucnang.edit') }}"><i class="fas fa-pencil-alt"></i></a>
+                            href="{{ route('chucnang.edit') }}?id={{$cn->id}}"><i class="fas fa-pencil-alt"></i></a>
                     </td>
                 </tr>
             @endforeach
