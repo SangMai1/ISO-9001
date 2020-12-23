@@ -1,88 +1,100 @@
-//@ts-nocheck
 // @ts-ignore
-const token = document.querySelector('.csrf-token > input').value;
-var Toast = Swal.mixin({
-    toast: true,
-    position: 'top-right',
-    showConfirmButton: false,
-    showCloseButton: true,
-    timer: undefined,
-    didOpen: (toast) => {
-        toast.addEventListener('mouseenter', window.Swal.stopTimer)
-        toast.addEventListener('mouseleave', window.Swal.resumeTimer)
-    }
-})
-var showLoading = function (message = "Chờ xí ...") { Toast.fire({ title: message, showCloseButton: false, didOpen: () => window.Swal.showLoading() }) };
-var getMessage = (html) => {
-    try {
-        let result = $('.alert-message', $(html)).text()
-        eval(`result = ${result}`)
-        return result
-    } catch (error) {
-        
-    }
-}; 
+//@ts-nocheck
+$(() => { window.token = document.querySelector('.csrf-token > input').value })
+const _swalConfig: { [key: string]: SweetAlertOptions } = {}
+var Toast: SwalInterface
+const showLoading = function (message = "Chờ xí ...") { Toast.fire({ title: message, showCloseButton: false, didOpen: () => Swal.showLoading() }) };
+const showAlert = function (html: JQuery<HTMLElement>) {
+    html = $(html)
+    let message = $(html).hasClass('alert-message') ? html.text() : $('.alert-message', $(html)).text()
+    const _typeAlert = _swalConfig[message]
+    if (_typeAlert) return Swal.fire(_typeAlert)
+    else if (message)
+        try {
+            message = eval(`(()=>(${message}))()`);
+            if (typeof message === 'object') return Swal.fire({ ... (_swalConfig[message._type] || _swalConfig.toast), ...message })
+        } catch (error) { console.log(message) }
+
+    Swal.close()
+};
+
 
 (function () {
     addJqueryValidationCustom()
     addJqueryTableAutoIndex()
     addSelectModeTable()
     addHTMLTableElementPrototype()
+    addPrototypeInput()
     addPrototypeFormData()
     fixTooltip()
-    fixMaterial()
+    configSweetAlert()
+
+    $(() => fixMaterial())
+
 
     $.ajaxSetup({
         "processData": false,
         "mimeType": "multipart/form-data",
         "contentType": false,
+        "method": 'POST',
+        "beforeSend": () => showLoading(),
+        "success": (resp) => showAlert(resp),
+        "error": () => Swal.fire(_swalConfig.errorAjax)
     })
 
+    function configSweetAlert() {
+        swal = Swal.mixin({
+            customClass: {
+                confirmButton: 'btn btn-success btn-sm',
+                cancelButton: 'btn btn-danger btn-sm',
+                denyButton: 'btn btn-primary btn-warning btn-sm'
+            },
+            didOpen: () => {
+                layoutAction.rebuild.autoBmd('.swal2-popup')
+            },
+            buttonsStyling: false
+        })
+
+        //#region swal_config
+        _swalConfig.toast = {
+            toast: true,
+            position: 'top-right',
+            showConfirmButton: false,
+            showCloseButton: true,
+            didOpen: (toast) => {
+                layoutAction.rebuild.autoBmd('.swal2-popup')
+                toast.addEventListener('mouseenter', window.Swal.stopTimer)
+                toast.addEventListener('mouseleave', window.Swal.resumeTimer)
+            },
+            buttonsStyling: false
+        }
+
+        _swalConfig.toastTime = { ..._swalConfig.toast, timer: 1500 }
+        _swalConfig.errorAjax = { ..._swalConfig.toastTime, title: 'Lỗi khi gửi Request', icon: 'error' }
+        _swalConfig.addSuccess = { ..._swalConfig.toastTime, title: 'Thêm thành công', icon: 'success' }
+        _swalConfig.addError = { ..._swalConfig.toastTime, title: 'Thêm thất bại', icon: 'error' }
+        _swalConfig.updateSuccess = { ..._swalConfig.toastTime, title: 'Cập nhật thành công', icon: 'success' }
+        _swalConfig.updateFailed = { ..._swalConfig.toastTime, title: 'Cập nhật thất bại', icon: 'error' }
+        _swalConfig.deleteSuccess = { ..._swalConfig.toastTime, title: 'Xóa thành công', icon: 'success' }
+        _swalConfig.deleteFailed = { ..._swalConfig.toastTime, title: 'Xóa thất bại', icon: 'error' }
+        //#endregion
+
+        Toast = Swal.mixin(_swalConfig.toast)
+    }
+
+    // fix lỗi màn hình đen menu không kéo hết :V
     function fixMaterial() {
-        $((function () {
-            $sidebar = $('.sidebar');
-            $sidebar_img_container = $sidebar.find('.sidebar-background');
-            $full_page = $('.full-page');
-            $sidebar_responsive = $('body > .navbar-collapse');
-            window_width = $(window).width();
-            fixed_plugin_open = $('.sidebar .sidebar-wrapper .nav li.active a p').html();
-            if (window_width > 767 && fixed_plugin_open == 'Dashboard') {
-                if ($('.fixed-plugin .dropdown').hasClass('show-dropdown')) {
-                    $('.fixed-plugin .dropdown').addClass('open');
-                }
-            }
-            $('.fixed-plugin a').click(function (event) { 
-                // Alex if we click on switch, stop propagation of the event, so the dropdown will not be hide, otherwise we set the  section active
-                if ($(this).hasClass('switch-trigger')) {
-                    if (event.stopPropagation) {
-                        event.stopPropagation();
-                    } else if (window.event) {
-                        window.event.cancelBubble = true;
-                    }
-                }
-            });
-            
-            $('.fixed-plugin .active-color span').click(function () {
-                $full_page_background = $('.full-page-background');
-                $(this).siblings().removeClass('active');
-                $(this).addClass('acti  ve');
-                var new_color = $(this).data('color');
-                if ($sidebar.length != 0) {
-                    $sidebar.attr('data-color', new_color);
-                }
-                if ($full_page.length != 0) {
-                    $full_page.attr('filter-color', new_color);
-                }
-                if ($sidebar_responsive.length != 0) {
-                    $sidebar_responsive.attr('data-color', new_color);
-                }
-            })
-        }))
+        const style = document.createElement('style')
+        document.head.append(style)
+        $('.navbar-toggler').on('click', function () {
+            style.innerHTML = `.close-layer.visible{ height: ${$('.main-panel')[0].scrollHeight}px !important`
+        })
     }
 
     function addPrototypeFormData() {
         FormData.prototype.fromObject = function (this: FormData, obj) {
             if (typeof obj !== 'object') return
+            obj._token = window.token
             for (let [key, value] of Object.entries(obj)) {
                 if (value instanceof Array) {
                     key += '[]'
@@ -105,12 +117,15 @@ var getMessage = (html) => {
     }
 
     function addHTMLTableElementPrototype() {
-        HTMLTableElement.prototype._loadBodyTable = function (this: HTMLTableElement, body) {
-            $(this).find('tbody').html(body)
-            if (this._eventsLoadBody instanceof Array)
-                for (let evt of this._eventsLoadBody)
-                    evt(this)
+        const addBody = (table, action, body) => {
+            $(table).find('tbody')[action](body)
+            if (table._eventsLoadBody instanceof Array)
+                for (let evt of table._eventsLoadBody)
+                    evt(table, body)
         }
+
+        HTMLTableElement.prototype._loadBodyTable = function (this: HTMLTableElement, body) { addBody(this, 'html', body) }
+        HTMLTableElement.prototype._appendBodyTable = function (this: HTMLTableElement, body) { addBody(this, 'append', body) }
         HTMLTableElement.prototype._onLoadTableBody = function (this: HTMLTableElement, eventHandler) {
             if (eventHandler instanceof Function) {
                 if (!(this._eventsLoadBody instanceof Array)) this._eventsLoadBody = []
@@ -130,11 +145,83 @@ var getMessage = (html) => {
             return output
         }
     }
+
+    function addPrototypeInput() {
+        const getFeedBack = (parent) => {
+            let feedback = $(parent).find('.invalid-feed-back')
+            feedback = feedback[0] ? feedback : $('<span class="invalid-feedback d-block"></span>')
+            feedback.html('')
+            return feedback
+        }
+        const getFormControlFeedback = (parent) => {
+            let controlFeedback = $(parent).find('.form-control-feedback')
+            controlFeedback = controlFeedback[0] ? controlFeedback : $('<span class="form-control-feedback"></span>')
+            controlFeedback.html($('<i class="fas fa-check"></i>'))
+            return controlFeedback
+        }
+
+        HTMLElement.prototype._setBmdError = function (this: HTMLElement, error: string) {
+            switch ($(this).attr('type')) {
+                case 'checkbox':
+                case 'radio':
+                    {
+                        const parent = $(this).closest('.form-check')
+                        if (!parent[0]) return
+
+                        const feedback = getFeedBack(parent)
+                        parent.append(feedback)
+
+                        this._setBmdError = function (error) {
+                            feedback.html(error || '')
+                        }
+                        this._setBmdError(error)
+                    }
+                    break
+                default:
+                    {
+                        const parent = $(this).closest('.form-group')
+                        if (!parent[0]) return
+
+                        const feedback = getFeedBack(parent)
+                        const formControlFeedback = getFormControlFeedback(parent)
+                        const iconFeedback = formControlFeedback.children('i')
+
+                        parent.append(feedback).append(formControlFeedback)
+                        let oldStatus = undefined
+
+                        this._setBmdError = function (error: string) {
+                            feedback.html(error || '')
+                            if (error) {
+                                if (oldStatus !== false) {
+                                    parent.removeClass('has-success').addClass('has-danger')
+                                    iconFeedback.addClass('fa-exclamation').removeClass('fa-check')
+                                }
+                            } else {
+                                if (oldStatus !== true) {
+                                    parent.addClass('has-success').removeClass('has-danger')
+                                    iconFeedback.removeClass('fa-exclamation').addClass('fa-check') 
+                                }
+                            }
+                        }
+
+                        this._setBmdError(error)
+                    }
+            }
+        }
+    }
     /**
      * Thêm $.fn.validateCustom ( dùng cho input viết từ component )
      */
     function addJqueryValidationCustom() {
-
+        // add regex
+        $.validator.addMethod(
+            "regex",
+            function (value, element, regexp) {
+                var re = new RegExp(regexp);
+                return this.optional(element) || re.test(value);
+            },
+            "Thông tin không hợp lệ"
+        )
         // Custom jquery validation sang tiếng việt
         $.extend($.validator.messages, {
             required: "Thông tin này là bắt buộc.",
@@ -158,87 +245,23 @@ var getMessage = (html) => {
 
         // Thêm hàm validate custom cho form của material ( viết từ component)
         $.fn.validateCustom = function (validate) {
-
-            // Thêm message và icon feed-back
-            for (let nameInput of Object.keys(validate.rules)) {
-                let element = this.find(`[name="${nameInput}"]`)
-                let invalidFeedback = $('<span class="invalid-feedback d-block"></span>')
-                switch (element.attr('type')) {
-                    case 'checkbox':
-                    case 'radio':
-                        element.closest('.form-check').attr('parent', '')
-                        invalidFeedback.insertAfter(element.parent())
-                        break
-                    default:
-                        element.closest('.form-group').attr('parent', '')
-                        $('<span class="form-control-feedback"><i class="fas"></i></span>')
-                            .insertAfter(element)
-                        invalidFeedback.insertAfter(element)
-                }
-            }
-
             const validator = this.validate({
                 ...validate,
                 ...{
                     lang: 'vi',
                     highlight: function (element) {
-                        const cacheValue = getCache(element)
-                        console.log(cacheValue, element)
-                        if (cacheValue) {
-                            cacheValue.parent.addClass('has-danger')
-                            cacheValue.iconFeedback.removeClass('fa-check')
-                                .addClass(
-                                    'fa-exclamation')
-                        }
+                        element._setBmdError(this.submitted[element.name])
+
+                        // Dùng để fix lỗi setError chồng lên nhau -> Thứ tự ưu tiên
+                        // element._errorLevel = 100 
                     },
                     unhighlight: function (element) {
-                        const cacheValue = getCache(element)
-                        if (cacheValue) {
-                            cacheValue.parent.removeClass('has-danger')
-                                .addClass('has-success')
-                            cacheValue.iconFeedback.addClass('fa-check')
-                                .removeClass(
-                                    'fa-exclamation')
-                        }
+                        element._setBmdError()
                     },
-                    errorPlacement: function (error, element) {
-                        element.closest('[parent]').find(
-                            '.invalid-feedback').append(error)
-                    }
+                    errorPlacement: (error) => { }
                 }
             })
 
-            /**
-             * cache lại các element (dùng cho event highlight/unhighlight của jquery validation)
-             * @param element 
-             */
-            function getCache(element) {
-                const cache = {};
-                getCache = function (element) {
-                    let cacheValue = cache[element.name]
-                    if (!cacheValue) {
-                        cacheValue = {}
-                        switch (element.type) {
-                            case 'checkbox':
-                            case 'radio':
-                                $(element).closest('.form-check').find('.invalid-feedback.default').remove()
-                                return
-                            default:
-                                cacheValue.parent = $(element).closest(
-                                    '.form-group')
-                                cacheValue.invalidFeedback = $(element).parent()
-                                    .next(
-                                        '.invalid-feedback')
-                                cacheValue.iconFeedback = $(element).parent().find('.form-control-feedback > .fas')
-                                cacheValue.parent.removeClass('has-danger').find('.invalid-feedback.default').remove()
-                                cacheValue.parent.find('.form-control-feedback.default').remove()
-                        }
-                        cache[element.name] = cacheValue
-                    }
-                    return cacheValue
-                }
-                return getCache(element)
-            }
             return validator
         }
     }

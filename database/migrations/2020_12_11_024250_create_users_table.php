@@ -20,7 +20,6 @@ class CreateUsersTable extends Migration
             $table->bigInteger('nhanvienid');
             $table->string('nguoitao');
             $table->string('nguoisua');
-            $table->smallInteger('daxoa');
             $table->timestamps();
             $table->timestamp('daxoa')->nullable();
         });

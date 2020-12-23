@@ -3,27 +3,42 @@
 @section('module', 'example')
 
 @section('content')
-
+    {{-- <script src="/js/utils.js"></script> --}}
     <div id="active-menu" href="/quan-li-xe/lich-sua-xe" active="khoiPhucTaiKhoan"></div>
-    <x-input type="radio" name="name" :checked="true" />
-    <x-input type="radio" name="name" :checked="true" />
-    <x-input type="text" name="name" title="this is float" float />
-    <x-input type="text" name="name" title="this is float" />
+    <button id="main-btn">BTN</button>
+    <script>
+        function cloneMassive(node) {
+            // Clone the node, don't clone the childNodes right now...
+            var dupNode = node.cloneNode(false);
+            var events = window.getEventListeners(node);
 
-    <x-cards.tab color="danger" find-header>
-        @slot('head')
-            <x-cards.tab.head-item>Hi1</x-cards.tab.head-item>
-            <x-cards.tab.head-item>Hi2</x-cards.tab.head-item>
-            <x-cards.tab.head-item>Hi3</x-cards.tab.head-item>
-            <x-cards.tab.head-item>Hi4</x-cards.tab.head-item>
-            <x-cards.tab.head-item>Hi5</x-cards.tab.head-item>
-        @endslot
-        @slot('body')
-            <div class="tab-pane">hi1</div>
-            <div class="tab-pane">hi2</div>
-            <div class="tab-pane">hi3</div>
-            <div class="tab-pane">hi4</div>
-            <div class="tab-pane">hi5</div>
-        @endslot
-    </x-cards.tab>
+            for (var p in events) {
+                // All events is in an array so iterate that array:
+                events[p].forEach(function(ev) {
+                    // {listener: Function, useCapture: Boolean}
+                    dupNode.addEventListener(p, ev.listener, ev.useCapture);
+                });
+            }
+            // Also do the same to all childNodes and append them.
+            if (node.childNodes.length) {
+                [].slice.call(node.childNodes).forEach(function(node) {
+                    dupNode.appendChild(cloneMassive(node));
+                });
+            }
+
+            return dupNode;
+        }
+        $(() => {
+
+            const btn = document.querySelector('#main-btn')
+            $(btn).on('click', function() {
+                alert('from jquery')
+            })
+            btn.addEventListener('click', function() {
+                alert('from dom')
+            })
+            document.body.appendChild(cloneMassive(btn))
+        })
+
+    </script>
 @endsection

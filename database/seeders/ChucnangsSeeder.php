@@ -25,6 +25,11 @@ class ChucnangsSeeder extends Seeder
             ['ten' => 'Xóa xe', 'url' => '/xe/xóa-xe', 'nguoitao' => 'sang', 'nguoisua' => 'sang', 'daxoa' => 0],
             ['ten' => 'Xóa xe', 'url' => '/xe/xóa-xe', 'nguoitao' => 'sang', 'nguoisua' => 'sang', 'daxoa' => 0],
             ['ten' => 'Xóa xe', 'url' => '/xe/xóa-xe', 'nguoitao' => 'sang', 'nguoisua' => 'sang', 'daxoa' => 0],
+            ['ten' => 'Xóa xe', 'url' => '/xe/xóa-xe', 'nguoitao' => 'sang', 'nguoisua' => 'sang', 'daxoa' => 0],
+            ['ten' => 'Xóa xe', 'url' => '/xe/xóa-xe', 'nguoitao' => 'sang', 'nguoisua' => 'sang', 'daxoa' => 0],
+            ['ten' => 'Xóa xe', 'url' => '/xe/xóa-xe', 'nguoitao' => 'sang', 'nguoisua' => 'sang', 'daxoa' => 0],
+            ['ten' => 'Xóa xe', 'url' => '/xe/xóa-xe', 'nguoitao' => 'sang', 'nguoisua' => 'sang', 'daxoa' => 0],
+            ['ten' => 'Xóa xe', 'url' => '/xe/xóa-xe', 'nguoitao' => 'sang', 'nguoisua' => 'sang', 'daxoa' => 0],
         ]);
     }
 }

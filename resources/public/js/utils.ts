@@ -1,15 +1,11 @@
 //@ts-no-check
 //@ts-ignore
-export const Utils = {
-    showMessage(message = 'no message') {
-        console.log(message)
-    },
-    randomString(length: number = 10): string {
+const Utils = {
+    randomString(length = 10): string {
         const characters = 'abcdefghijklmnopqrstuvwxyz'
         const charactersLength = characters.length;
         Utils.randomString = function () {
             let result = ''
-            let charactersLength = characters.length
             for (let i = 0; i < length; i++) {
                 result += characters.charAt(Math.floor(Math.random() * charactersLength))
             }
@@ -25,10 +21,21 @@ export const Utils = {
     loadScript(url) {
         const script = document.createElement('script')
         script.src = url
-        return new Promise((resolve) => {
-            script.onload = resolve
+        return new Promise<void>((resolve) => {
+            script.onload = function () { resolve(); script.remove() }
             document.head.append(script)
         })
-
     },
+    formToForm(form1, form2) {
+        let childs1: any[] = $(form1).find('input[name], textarea[name]') as any
+        let childs2: any[] = $(form2).find('input[name], textarea[name]') as any
+        if (childs1.length !== childs2.length) return
+        for (let i = 0; i < childs1.length; ++i) {
+            if (childs1[i].value) childs2[i].value = childs1[i].value
+            else if (childs1[i].checked) childs2[i].checked = childs1[i].checked
+        }
+    }
 }
+
+
+
