@@ -1,33 +1,9 @@
 @extends('layouts.master')
-
-@section('title', 'Quản lý nhân viên')
-@section('pageName', 'Thêm mới nhân viên')
+@section('title', 'Thêm mới nhân viên')
 @section('module','nhanvien/render')
 
 @section('content')
-<?php //Hiển thị thông báo thành công?>
-@if ( Session::has('success') )
-	<div class="alert alert-success alert-dismissible" role="alert">
-		<strong>{{ Session::get('success') }}</strong>
-		<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-			<span aria-hidden="true">&times;</span>
-			<span class="sr-only">Đóng</span>
-		</button>
-	</div>
-@endif
-
-<?php //Hiển thị thông báo lỗi?>
-@if ( Session::has('error') )
-	<div class="alert alert-danger alert-dismissible" role="alert">
-		<strong>{{ Session::get('error') }}</strong>
-		<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-			<span aria-hidden="true">&times;</span>
-			<span class="sr-only">Đóng</span>
-		</button>
-	</div>
-@endif
-
-<?php //Form thêm mới học sinh?>
+  @include('message')
     <form method="post" action="{{route('nhanvien.save')}}">
       {{csrf_field()}}
 

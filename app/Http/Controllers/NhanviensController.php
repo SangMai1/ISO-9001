@@ -20,8 +20,13 @@ class NhanviensController extends Controller
      */
     public function index()
     {
-        $nhanviens = Nhanviens::all()->where('daxoa',0);
-        return view('/nhan-vien/danh-sach',["nhanviens" => $nhanviens]);
+        $nhanViens = Nhanviens::all()->where('daxoa',0);
+        $chucDanhs = Danhmucs::all()->where('daxoa',0)->where('loai',0)->pluck("ten","id");
+        $phongBans = Danhmucs::all()->where('daxoa',0)->where('loai',1)->pluck("ten","id");
+        if (Session::get('no-layout') == true) {
+            return view('/nhan-vien/danh-sach', compact(['nhanViens','chucDanhs','phongBans']));
+        }
+        return view('/nhan-vien/danh-sach', compact(['nhanViens','chucDanhs','phongBans']));
     }
 
     /**
