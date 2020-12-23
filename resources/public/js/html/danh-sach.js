@@ -11,7 +11,7 @@ $(()=>{
 
     $('.buttonDelete').on('click', function(event) {
         event.preventDefault();
-        const table = $('#table')
+        const table = $('#table') 
         if(!table[0]) return
         var ids= []; 
         var i=0;
