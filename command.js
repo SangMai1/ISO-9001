@@ -11,13 +11,14 @@ async function main() {
     switch (command) {
         case 'seed':
             if (arg === '--all') Object.keys(seed).forEach(async (key) => await commandAction.seedAction(key))
+            else if(arg === 'bk') await execCommand('php artisan db:seed --class=' + 'BackupSeed')
             else await commandAction.seedAction(arg)
             break
         case 'clean':
             if (arg === '--all') {
                 fs.rmdirSync(path.dirname(__dirname + '\\public\\js\\**'), { recursive: true })
                 fs.rmdirSync(path.dirname(__dirname + '\\public\\css\\**'), { recursive: true })
-                await execCommand('npm run sass -- --no-source-map ./resources/public/sass/:./public/css && tsc && php artisan migrate:fresh && dev seed --all')
+                await execCommand('npm run sass -- --no-source-map ./resources/public/sass/:./public/css && npm run tsc && php artisan migrate:fresh && dev seed --all')
             } else if (arg === 'public') {
                 fs.rmdirSync(path.dirname(__dirname + '\\public\\js\\**'), { recursive: true })
                 fs.rmdirSync(path.dirname(__dirname + '\\public\\css\\**'), { recursive: true })
