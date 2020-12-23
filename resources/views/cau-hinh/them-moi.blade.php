@@ -1,50 +1,33 @@
 @extends('layouts.master')
-
-@section('title', 'Quản lý cấu hình')
-@section('pageName', 'Thêm mới cấu hình')
+@section('title', 'Thêm mới Cấu hình')
 
 @section('content')
-    @if (Session::get('success'))
-        <div class="alert alert-success">
-           {{Session::get('success')}}
-        </div>
-    @endif
-    @if (Session::get('fail'))
-        <div class="alert alert-danger">
-           {{Session::get('fail')}}
-        </div>
-    @endif
-    <br>
-    <form method="post" action="{{ url('/cau-hinh/luu') }}">
-      {{csrf_field()}}
-        
-      <div class="form-group">
-        <label>Mã :</label>
-        <input class="form-control" type="text" name="ma" id="ma" placehorder=" Nhập mã" /><br>
-      <span style="color:red">@error('ma'){{ $message }}  @enderror</span>
-      </div>
+    @include('message')
+    <form method="post" autocomplete="off" ajax-form>
+        @csrf
+        <x-input title="Mã" type="text" name="ma" float />
+        <x-input title="Tên" type="text" name="ten" float />
+        <x-input title="Giá trị" type="text" name="giatri" float />
+        <button class="btn btn-info " type="submit">Thêm</button>
+        <a class="btn btn-info" href="{{ route('cauhinh.list') }}" role="button">Danh sách</a>
+    </form>
+    <script>
+        $('form[ajax-form]').validateCustom({
+            rules: {
+                ma: {
+                    required: true,
+                    minlength: 5
+                },
+                ten: {
+                    required: true,
+                    minlength: 6
+                },
+                giatri: {
+                    required: true,
+                    minlength: 3
+                },
+            }
+        });
 
-      <div class="form-group">
-        <label>Tên :</label>
-        <input class="form-control" type="text" name="ten" id="ten" placehorder=" Nhập tên" /><br>
-        <span style="color:red">@error('ten'){{ $message }}  @enderror</span>
-      </div>
-    
-      <div class="form-group">
-        <label>Giá trị :</label>
-        <input class="form-control" type="text" name="giatri" id="giatri" placehorder=" Nhập giá trị" /><br>
-        <span style="color:red">@error('giatri'){{$message}} @enderror</span>
-      </div>
-
-      <div class="form-group">
-        <label>Người tạo :</label>
-        <input class="form-control" type="text" name="nguoitao" id="nguoitao" placehorder=" Nhập người tạo" /><br>
-        <span style="color:red">@error('nguoitao'){{$message}} @enderror</span>
-      </div>
-      
-
-      <input class="btn btn-primary" type="submit" value="Thêm" />
-            <a class="btn btn-primary" href="/cau-hinh/danh-sach" role="button">Danh sách</a>
-  </div>
-</form>
+    </script>
 @endsection

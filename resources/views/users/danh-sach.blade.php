@@ -65,7 +65,7 @@
                        
                     <a href="{{ route('user.edit', $value->id) }}"  title="Chỉnh sửa" style="color: none; ">
                         <i class="fa fa-pencil-square-o text-success" aria-hidden="true" ></i></a>    
-                    <a href="{{route('user.destroy',$value->id)}}" title="Xóa" style="color: red> ">
+                    <a href="{{route('user.destroy',$value->id)}}" onclick="return confirm('Chắc chắn xóa ?');" title="Xóa" style="color: red> ">
                         <i class="fa fa-trash-alt" aria-hidden="true" ></i></a>
                     </td>
             </tr>
