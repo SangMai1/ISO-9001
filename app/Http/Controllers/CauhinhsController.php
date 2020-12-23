@@ -19,7 +19,7 @@ class CauhinhsController extends Controller
      */
     public function index(Request $request)
     {
-        $cauHinhs = DB::table('Cauhinhs')->where('daxoa',null)->get();
+        $cauHinhs = DB::table('cauhinhs')->where('daxoa',null)->get();
         if (Session::get('no-layout') == true) {
             return view('cau-hinh.table-include', compact(['cauHinhs']));
         }
@@ -39,8 +39,8 @@ class CauhinhsController extends Controller
 
     public function search(Request $request){
         $search = $request->get('search');
-        $cauhinh = Cauhinhs::where('ten', 'like', '%'.$search.'%')->paginate(3);
-        return view('cau-hinh/danh-sach',['cauhinh'=> $cauhinh]);
+        $cauHinhs = Cauhinhs::where('ten', 'like', '%'.$search.'%')->paginate(3);
+        return view('cau-hinh/danh-sach',['cauHinhs'=> $cauHinhs]);
        
     }
    
@@ -89,7 +89,7 @@ class CauhinhsController extends Controller
     public function edit($id)
     {
         $cauhinh = Cauhinhs::find($id);
-        dd($cauhinh);
+        // dd($cauhinh);
         return view('/cau-hinh/cap-nhat', compact(['cauhinh']));
     }
 
@@ -118,15 +118,15 @@ class CauhinhsController extends Controller
         $cauhinh->giatri = $request->giatri;
         $cauhinh->nguoisua = "EDadmin";
         $cauhinh->updated_at = Carbon::now('Asia/Ho_Chi_Minh');
-
-        if ($cauhinh->update()) {
-            Session::flash('message', 'Cập nhật thành công');
-            Session::flash('alert-class', 'alert-success');
-            return redirect()->route('cauhinh.list');
-        } else {
-            Session::flash('message', 'Cập nhật thất bại');
-            Session::flash('alert-class', 'alert-danger');
-        }
+        Session::flash('message', $cauhinh->update() ? 'updateSuccess' : 'updateFailed');
+        // if ($cauhinh->update()) {
+        //     Session::flash('message', 'Cập nhật thành công');
+        //     Session::flash('alert-class', 'alert-success');
+        //     return redirect()->route('cauhinh.list');
+        // } else {
+        //     Session::flash('message', 'Cập nhật thất bại');
+        //     Session::flash('alert-class', 'alert-danger');
+        // }
         return Back();
         
 
