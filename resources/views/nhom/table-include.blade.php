@@ -1,4 +1,12 @@
 <div class="table-region">
+    <a href="/nhom/them-moi" class="btn btn-sm btn-info"><i class="fas fa-plus-circle"></i></a>
+    <form action="{{ route('nhom.search') }}" method="GET">
+                <div class="form-group">
+                    <x-input title="Tìm kiếm" type="text" name="search" float />
+                    <button type="submit" class="btn btn-sm btn-info">Tìm kiếm</button>
+
+                </div>
+            </form>
     @isset($message) <div class="alert">{{ $message }}</div> @endisset
 
     <!-- snippet:                                                   - @tableComponent                                                                   -->
@@ -12,17 +20,17 @@
                                                                                     ( config trong file ( master-layout.ts -> find(\$.ajaxSetup) ) )        
                                                                         -> xóa record sau khi render                                                    -->
     <x-table auto-index id="table-main" class="mobile" 
-        delete-href="{{ route('chucnang.delete') }}">
+        delete-href="{{ route('nhom.delete') }}">
         @slot('head')
             <!-- field cho mobile:                                  - Không được tính index                                                             -->
-            <th class="th-mobile">Chức năng</th>
+            <th class="th-mobile">Nhóm</th>
 
             <!-- field chính:                                       - Index mobile 1                                                                    -->
             <th>ID</th>
             <!-- field chính:                                       - Index mobile 2                                                                    -->
-            <th>Tên</th>
+            <th>Mã</th>
             <!-- field chính:                                       - Index mobile 3                                                                    -->
-            <th>Đường dẫn</th>
+            <th>Tên</th>
 
             <!-- field cho action:                                  - Không được tính index                                                             -->
             <!-- snippet :                                          - @thAction                                                                         -->
@@ -30,8 +38,8 @@
 
         @endslot
         @slot('body')
-            @foreach ($chucNangs as $cn)
-                <tr data-id="{{ $cn->id }}">
+            @foreach ($nhoms as $n)
+                <tr data-id="{{ $n->id }}">
                     <!--  Colum cho mobile:                         - Không được tính index                                                             -->
                     <td class="td-mobile">
                         <!-- snippet:                               - @collapseGroup                                                                    -->
@@ -53,11 +61,11 @@
                     </td>
 
                     <!-- Column chính:                              - Index là 1                                                                        -->
-                    <td>{{ $cn->id }}</td>
+                    <td>{{ $n->id }}</td>
                     <!-- Column chính:                              - Index là 2                                                                        -->
-                    <td>{{ $cn->ten }}</td>
+                    <td>{{ $n->ma }}</td>
                     <!-- Column chính:                              - Index là 3                                                                        -->
-                    <td>{{ $cn->url }}</td>
+                    <td>{{ $n->ten }}</td>
 
                     <!-- Column cho action:                         - Không được tính index                                                             -->
                     <td class="td-action">
@@ -65,7 +73,7 @@
                         <button class="btn btn-sm btn-icon btn-danger rounded-circle delete-btn"><i class="fas fa-trash"></i></button>
                         <!-- snippet:                               - @editLinkAction                                                                 -->         
                         <a class="btn btn-sm btn-info btn-icon rounded-circle" 
-                            href="{{ route('chucnang.edit') }}"><i class="fas fa-pencil-alt"></i></a>
+                            href="{{ route('nhom.edit', [$n->id]) }}"><i class="fas fa-pencil-alt"></i></a>
                     </td>
                 </tr>
             @endforeach
