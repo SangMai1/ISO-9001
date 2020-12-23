@@ -30,14 +30,14 @@ Route::get('/table/{table}', function($table){ return response(DB::table($table)
 Route::group(['prefix' => '/cau-hinh'], function () {
     Route::get('/danh-sach', 'App\Http\Controllers\CauhinhsController@index')->name('cauhinh.list'); // Hiển thị danh sách cấu hình
     Route::get('/them-moi', 'App\Http\Controllers\CauhinhsController@create')->name('cauhinh.create'); // Thêm mới cấu hình
-    Route::post('/luu', 'App\Http\Controllers\CauhinhsController@store')->name('cauhinh.store'); // Xử lý thêm mới cấu hình
+    Route::post('/them-moi', 'App\Http\Controllers\CauhinhsController@store')->name('cauhinh.store'); // Xử lý thêm mới cấu hình
     Route::get('/chinh-sua/{id}',  'App\Http\Controllers\CauhinhsController@edit')->name('cauhinh.edit'); // Sửa cấu hình
     Route::post('/cap-nhat',  'App\Http\Controllers\CauhinhsController@update')->name('cauhinh.update'); // Xử lý sửa cấu hình
     Route::get('/tim-kiem',  'App\Http\Controllers\CauhinhsController@search')->name('cauhinh.search'); // Xử lý tìm kiếm cấu hình
-    Route::get('/xoa/{id}', 'App\Http\Controllers\CauhinhsController@destroy')->name('cauhinh.destroy'); // Xử lý xóa cấu hình
-    Route::get('/da-xoa', 'App\Http\Controllers\CauhinhsController@getDeleteCauhinhs')->name('getDeleteCauhinhs'); // Hiển thị danh sách cấu hình đã xóa
-    Route::get('/da-xoa/{id}', 'App\Http\Controllers\CauhinhsController@deletePermanently')->name('deletePermanently'); // Xóa hoàn toàn cấu hình
-    Route::get('/khoi-phuc/{id}', 'App\Http\Controllers\CauhinhsController@restoreDeletedCauhinhs')->name('restoreDeletedCauhinhs'); // Khôi phục cấu hình đã xóa
+    Route::post('/xoa', 'App\Http\Controllers\CauhinhsController@destroy')->name('cauhinh.destroy'); // Xử lý xóa cấu hình
+    // Route::get('/da-xoa', 'App\Http\Controllers\CauhinhsController@getDeleteCauhinhs')->name('getDeleteCauhinhs'); // Hiển thị danh sách cấu hình đã xóa
+    // Route::get('/da-xoa/{id}', 'App\Http\Controllers\CauhinhsController@deletePermanently')->name('deletePermanently'); // Xóa hoàn toàn cấu hình
+    // Route::get('/khoi-phuc/{id}', 'App\Http\Controllers\CauhinhsController@restoreDeletedCauhinhs')->name('restoreDeletedCauhinhs'); // Khôi phục cấu hình đã xóa
 });
 
 Route::group(['prefix' => '/users'], function () {

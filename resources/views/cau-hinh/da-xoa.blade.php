@@ -62,7 +62,7 @@
                 <td><a href="{{ route('restoreDeletedCauhinhs', $value->id) }}" title="Khôi phục">
                     <i class="fas fa-window-restore text-success  fa-lg"></i>
                 </a></td>
-                <td> <a href="{{ route('deletePermanently', $value->id) }}" title="Xóa hoàn toàn">
+                <td> <a href="{{ route('deletePermanently', $value->id) }}" onclick="return confirm('Chắc chắn xóa ?');" title="Xóa hoàn toàn">
                     <i class="fas fa-trash text-danger  fa-lg"></i>
                 </a></td>
                 

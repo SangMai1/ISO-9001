@@ -6,6 +6,7 @@
 /public/css
 /vendor
 /.idea
+/database/seeders/seed-json/backup
 /.vscode/settings.json
 .env
 .env.backup

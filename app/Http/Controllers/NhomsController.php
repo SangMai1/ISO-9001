@@ -22,6 +22,9 @@ class NhomsController extends Controller
     {
         $nhoms = DB::table('nhoms')->where('daxoa', 0)->get();
         $idChucNang = DB::table('chucnangs')->where('daxoa', 0)->pluck('ten', 'id');
+        if(Session::get('no-layout') == true) {
+            return view('nhom.table.include', compact(['nhoms', 'idChucNang']));
+        }
         return view('/nhom/danh-sach', compact(['nhoms', 'idChucNang']));
     }
 
@@ -46,24 +49,14 @@ class NhomsController extends Controller
     {
         date_default_timezone_set("Asia/Ho_Chi_Minh");
 
-        $validator = Validator::make($request->all(), [
-            'ma' => 'required|string',
-            'ten' => 'required|string'
-        ]);
-
-        if ($validator->fails()) {
-            return redirect()->Back()->withInput()->withErrors($validator);
-        }
-
         $nhom = new nhoms();
         $nhom->ma = $request->ma;
         $nhom->ten = $request->ten;
         $nhom->nguoitao = "sang";
         $nhom->nguoisua = "sang";
         $nhom->daxoa = "0";
-
         
-        if ($nhom->save()) {
+        Session::flash('message', $nhom->save() ? 'addSuccess' : 'addFailed');
             $nhomid = $nhom->id;
             $chucnangid = $request->input('chucnangs');    
             foreach($chucnangid as $chucs){
@@ -71,17 +64,9 @@ class NhomsController extends Controller
                 $nhomsvachucnangs -> nhomid = $nhomid;
                 $nhomsvachucnangs -> chucnangid = $chucs;
                 $nhomsvachucnangs->save();
-                Session::flash('message', 'Thêm mới thành công');
-                Session::flash('alert-class', 'alert-sucess');
             }
             
-        }
-        
-       else {
-            Session::flash('message', 'Thêm mới thất bại!');
-            Session::flash('alert-class', 'alert-danger');
-        }
-        return Back();
+        return view('message');
     }
 
     /**
@@ -123,31 +108,19 @@ class NhomsController extends Controller
      * @param  \App\Models\nhoms  $nhoms
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, nhoms $nhoms, nhomsvachucnangs $nhomsvachucnangs)
+    public function update(Request $request)
     {
         date_default_timezone_set("Asia/Ho_Chi_Minh");
 
-        $validator = Validator::make($request->all(), [
-            'ma' => 'required|string|min:1',
-            'ten' => 'required|string|min:1'
-        ]);
-
-        if ($validator->fails()) {
-            return redirect()->Back()->withInput()->withErrors($validator);
-        }
 
         $nhom = nhoms::find($request->id);
         $nhom->ma = $request->ma;
         $nhom->ten = $request->ten;
         $nhom->nguoisua = "admin";
-        $nhom->ngaysua = Carbon::now();
         nhomsvachucnangs::where('nhomid', $request->id)->delete();
         
-        // foreach($nhomsvachucnangss as $nhomss){
-        //     $nhomss->delete();
-        // }
-        // $nhomsvachucnangss->delete();
-        if ($nhom->update()) {
+        
+         Session::flash('message', $nhom->update() ? 'updateSuccess' : 'updateFailed');
             $nhomid = $nhom->id;
             $chucnangid = $request->input('chucnangids');
             foreach ($chucnangid as $chucs) {
@@ -155,14 +128,10 @@ class NhomsController extends Controller
                 $nhomsvachucnangs->nhomid = $nhomid;
                 $nhomsvachucnangs->chucnangid = $chucs;
                 $nhomsvachucnangs->save();
-                Session::flash('message', 'Thêm mới thành công');
-                Session::flash('alert-class', 'alert-sucess');
+                
             }
-        } else {
-            Session::flash('message', 'Cập nhật thất bại');
-            Session::flash('alert-class', 'alert-danger');
-        }
-        return Back();
+       
+        return view('message');
     }
 
     /**
@@ -171,25 +140,19 @@ class NhomsController extends Controller
      * @param  \App\Models\nhoms  $nhoms
      * @return \Illuminate\Http\Response
      */
-    public function destroy(nhoms $nhoms)
-    {
-        //
-    }
 
     public function deleteAll(Request $request)
     {
 
         date_default_timezone_set("Asia/Ho_Chi_Minh");
-        $list_id = $request->input('idss');
-
-        foreach ($list_id as $list) {
-            nhoms::where('id', $list)->update([
-                "daxoa" => "1",
-                "nguoisua" => "ai do"
-
-            ]);
-        }
-        return redirect()->route('viewNhoms');
+        $id = $request->input('id');
+        $result = nhoms
+            ::where([['id', $id], ['daxoa', 0]])
+            ->update(
+                ["daxoa" => "1", "nguoisua" => "ai do",]
+            );
+        Session::flash("message", $result ? "deleteSuccess" : "deleteFailed");
+        return view('message');
     }
 
     public function search(Request $request)
