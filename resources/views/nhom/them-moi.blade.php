@@ -11,19 +11,18 @@
         @csrf
         <x-input title="Mã nhóm" type="text" name="ma" float />
         <x-input title="Tên nhóm" type="text" name="ten" float />
-
         <x-table auto-index select="setName">
             @slot('head')
-            <th>Tên chức năng</th>
+                <th>Tên chức năng</th>
             @endslot
             @slot('body')
 
-            @foreach ($idChucNang as $key => $value)
-                <tr data-id="{{ $key }}">
-                    <td>{{ $value }}</td>
+                @foreach ($idChucNang as $key => $value)
+                    <tr data-id="{{ $key }}">
+                        <td>{{ $value }}</td>
 
-                </tr>
-            @endforeach
+                    </tr>
+                @endforeach
 
             @endslot
         </x-table>
@@ -50,35 +49,8 @@
             })
         })
 
-        // check tất cả
-        $(function() {
-
-            // Header Master Checkbox Event
-            $("#masterCheck").on("click", function() {
-                if ($("input:checkbox").prop("checked")) {
-                    $("input:checkbox[name='chucnangs[]']").prop("checked", true);
-                } else {
-                    $("input:checkbox[name='chucnangs[]']").prop("checked", false);
-                }
-            });
-
-            // Check event on each table row checkbox
-            $("input:checkbox[name='chucnangs[]']").on("change", function() {
-                var total_check_boxes = $("input:checkbox[name='chucnangs[]']").length;
-                var total_checked_boxes = $("input:checkbox[name='chucnangs[]']:checked").length;
-
-                // If all checked manually then check master checkbox
-                if (total_check_boxes === total_checked_boxes) {
-                    $("#masterCheck").prop("checked", true);
-                } else {
-                    $("#masterCheck").prop("checked", false);
-                }
-            });
-        });
-
         function setName(input) {
-            console.log(input)
-            input.setAttribute('name', 'chucnangs[]');
+            input.setAttribute('name', 'chucnangs[]')
         }
 
     </script>

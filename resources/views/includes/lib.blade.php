@@ -14,10 +14,10 @@
 
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script src="/assets/js/core/popper.min.js"></script>
-<script src="/assets/js/core/bootstrap-material-design.min.js"></script>
-{{-- <script
+{{-- <script src="/assets/js/core/bootstrap-material-design.min.js"></script> --}}
+<script
     src="https://cdn.jsdelivr.net/npm/bootstrap-material-design@4.1.3/dist/js/bootstrap-material-design.min.js">
-</script> --}}
+</script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.css" id="theme-styles">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.6.13/js/perfect-scrollbar.jquery.min.js">
 </script>

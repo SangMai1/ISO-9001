@@ -11,7 +11,7 @@
                                                                                 ( với cấu hình mặc định của ajaxSetting                                     
                                                                                     ( config trong file ( master-layout.ts -> find(\$.ajaxSetup) ) )        
                                                                         -> xóa record sau khi render                                                    -->
-    <x-table auto-index id="table-main" class="mobile" select load-more=""
+    <x-table auto-index id="table-main" class="mobile" load-more=""
         delete-href="{{ route('chucnang.delete') }}">
         @slot('head')
             <!-- field cho mobile:                                  - Không được tính index                                                             -->
@@ -36,7 +36,7 @@
                     <td class="td-mobile">
                         <!-- snippet:                               - @collapseGroup                                                                    -->
                         <!-- class['auto-icon']:                    - Để icon toggle về cuối về sát cuối                                                -->
-                        <a data-toggle="collapse" class="dropdown-toggle btn-info btn auto-icon">
+                        <a data-toggle="collapse" class="dropdown-toggle btn-info btn auto-icon px-3">
                             <!-- class['.cell']:                    - Đánh dấu element sẽ tự động thêm content từ <td>  vào bên trong,                  
                                                                         thêm header vào phía trước                                                   
                                                                             -> dựa vào attribute[index]                                                 -->
