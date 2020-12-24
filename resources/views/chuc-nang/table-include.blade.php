@@ -11,7 +11,7 @@
                                                                                 ( với cấu hình mặc định của ajaxSetting                                     
                                                                                     ( config trong file ( master-layout.ts -> find(\$.ajaxSetup) ) )        
                                                                         -> xóa record sau khi render                                                    -->
-    <x-table auto-index id="table-main" class="mobile" 
+    <x-table auto-index id="table-main" class="mobile" load-more=""
         delete-href="{{ route('chucnang.delete') }}">
         @slot('head')
             <!-- field cho mobile:                                  - Không được tính index                                                             -->
@@ -36,7 +36,7 @@
                     <td class="td-mobile">
                         <!-- snippet:                               - @collapseGroup                                                                    -->
                         <!-- class['auto-icon']:                    - Để icon toggle về cuối về sát cuối                                                -->
-                        <a data-toggle="collapse" class="dropdown-toggle btn-info btn auto-icon">
+                        <a data-toggle="collapse" class="dropdown-toggle btn-info btn auto-icon px-3">
                             <!-- class['.cell']:                    - Đánh dấu element sẽ tự động thêm content từ <td>  vào bên trong,                  
                                                                         thêm header vào phía trước                                                   
                                                                             -> dựa vào attribute[index]                                                 -->
@@ -65,7 +65,7 @@
                         <button class="btn btn-sm btn-icon btn-danger rounded-circle delete-btn"><i class="fas fa-trash"></i></button>
                         <!-- snippet:                               - @editLinkAction                                                                 -->         
                         <a class="btn btn-sm btn-info btn-icon rounded-circle" 
-                            href="{{ route('chucnang.edit') }}"><i class="fas fa-pencil-alt"></i></a>
+                            href="{{ route('chucnang.edit') }}?id={{$cn->id}}"><i class="fas fa-pencil-alt"></i></a>
                     </td>
                 </tr>
             @endforeach

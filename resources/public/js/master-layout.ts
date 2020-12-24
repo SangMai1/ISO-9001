@@ -148,7 +148,7 @@ const showAlert = function (html: JQuery<HTMLElement>) {
 
     function addPrototypeInput() {
         const getFeedBack = (parent) => {
-            let feedback = $(parent).find('.invalid-feed-back')
+            let feedback = $(parent).find('.invalid-feedback')
             feedback = feedback[0] ? feedback : $('<span class="invalid-feedback d-block"></span>')
             feedback.html('')
             return feedback
@@ -184,24 +184,36 @@ const showAlert = function (html: JQuery<HTMLElement>) {
 
                         const feedback = getFeedBack(parent)
                         const formControlFeedback = getFormControlFeedback(parent)
-                        const iconFeedback = formControlFeedback.children('i')
+                        const iconFeedback = $(formControlFeedback.children('i')[0])
 
                         parent.append(feedback).append(formControlFeedback)
                         let oldStatus = undefined
 
+                        const addClass = (e, cl, reg) => e.attr('class', `${e.attr('class').replace(reg, '')} ${cl}`)
                         this._setBmdError = function (error: string) {
                             feedback.html(error || '')
-                            if (error) {
+                            let formGroupClass
+                            let iconClass
+                            if (error === -1) {
+                                formGroupClass = ''
+                                iconClass = ''
+                                feedback.html('')
+                                oldStatus = undefined
+                            } else if (error) {
                                 if (oldStatus !== false) {
-                                    parent.removeClass('has-success').addClass('has-danger')
-                                    iconFeedback.addClass('fa-exclamation').removeClass('fa-check')
+                                    formGroupClass = 'has-danger'
+                                    iconClass = 'fa-exclamation'
+                                    oldStatus = false
                                 }
                             } else {
                                 if (oldStatus !== true) {
-                                    parent.addClass('has-success').removeClass('has-danger')
-                                    iconFeedback.removeClass('fa-exclamation').addClass('fa-check') 
+                                    formGroupClass = 'has-success'
+                                    iconClass = 'fa-check'
+                                    oldStatus = true
                                 }
                             }
+                            if (formGroupClass !== undefined) addClass(parent, formGroupClass, /has-.*?(\s|$)/g)
+                            if (iconClass !== undefined) addClass(iconFeedback, iconClass, /fa-.*?(\s|$)/g)
                         }
 
                         this._setBmdError(error)
@@ -289,7 +301,7 @@ const showAlert = function (html: JQuery<HTMLElement>) {
 
     function addSelectModeTable() {
         const checkbox = `<div class="form-check"><label class="form-check-label"><input class="form-check-input " type="checkbox"><span class="form-check-sign"><span class="check"></span></span></label></div>`;
-        $.fn._addSelectRows = function () {
+        $.fn._addSelectRows = function (callback) {
             this.each(function (i, e) {
                 const table = $(e);
                 const trHead = table.find('thead > tr');
@@ -302,7 +314,7 @@ const showAlert = function (html: JQuery<HTMLElement>) {
                             // Thêm tooltip attribute
                             cbSelectAll.attr('data-toggle', 'tooltip').attr('data-html', 'true').attr('title', selectToolTipText[1])
                             // Chọn hoặc hủy tất cả lựa chọn trong table
-                            cbSelectAll.find('input').on('change', function (evt) {
+                            cbSelectAll.find('input').on('input', function (evt) {
                                 const check = this.checked
                                 const message = selectToolTipText[check ? 0 : 1]
                                 cbSelectAll.attr('data-original-title', message)
@@ -313,13 +325,15 @@ const showAlert = function (html: JQuery<HTMLElement>) {
                             cbSelectAll.tooltip()
                             return cbSelectAll
                         })()))
-                    e._onLoadTableBody(function () { table._addSelectRows() })
+                    e._onLoadTableBody(function () { table._addSelectRows(callback) })
                 }
+                callback = callback instanceof Function ? callback : () => { }
                 table.children('tbody').children('tr').each((i, e) => {
                     if (!e._select) {
                         const jCheckbox = $(checkbox)
                         e._select = jCheckbox.find('input');
                         e.prepend($('<td sl></td>').append(jCheckbox)[0])
+                        callback(e._select[0])
                     }
                 })
             });

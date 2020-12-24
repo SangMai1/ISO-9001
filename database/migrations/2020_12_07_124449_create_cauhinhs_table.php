@@ -21,7 +21,7 @@ class CreateCauhinhsTable extends Migration
             $table->string('giatri');
             $table->string('nguoitao');
             $table->string('nguoisua')->nullable();
-            $table->timestamp('daxoa')->nullable();
+            $table->softDeletes();
         });
     }
 

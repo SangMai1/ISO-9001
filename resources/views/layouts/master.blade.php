@@ -26,6 +26,7 @@
             <!-- End Navbar -->
             <div class="content">
                 <div class="container-fluid">
+                    {{-- {{ dd(Auth::user()) }} --}}
                     @section('content')
                     @show
                 </div>

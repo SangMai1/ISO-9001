@@ -2,6 +2,9 @@ $bodyColor: rgb(253, 253, 252);
 body {
     background: $bodyColor;
 }
+.nav-link {
+    cursor: pointer;
+}
 .alert-message {
     display: none;
 }
@@ -74,8 +77,11 @@ table {
         margin: 0 !important;
     }
     thead > tr > th.auto-index-head,
-    thead > tr > th.select {
+    thead > tr > th.select,
+    tbody > tr > td[ai],
+    tbody > tr > td[sl] {
         width: 1px;
+        padding-right: 40px;
     }
     &.mobile {
         > thead > tr {
@@ -114,6 +120,13 @@ table {
             > td:not(.td-mobile):not(.td-action):not([ai]):not([sl]) {
                 display: none;
             }
+        }
+        thead > tr > th.auto-index-head,
+        thead > tr > th.select,
+        tbody > tr > td[ai],
+        tbody > tr > td[sl] {
+            width: 1px;
+            padding-right: 15px;
         }
     }
 }
@@ -192,7 +205,7 @@ ul:not(.navbar-nav):not([role="presentation"]):not(.nav-tabs) {
                 font-size: 14px !important;
                 display: flex;
                 align-items: center;
-                padding: 3px 4px !important;
+                padding: 3px 6px !important;
             }
         }
     }
@@ -209,6 +222,9 @@ ul:not(.navbar-nav):not([role="presentation"]):not(.nav-tabs) {
         left: 0px !important;
         right: unset !important;
         transform: unset !important;
+    }
+    .screen-sm-hide {
+        display: none;
     }
 }
 .navbar#navbar {

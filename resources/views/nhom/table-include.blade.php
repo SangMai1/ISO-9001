@@ -22,19 +22,7 @@
     <x-table auto-index id="table-main" class="mobile" 
         delete-href="{{ route('nhom.delete') }}">
         @slot('head')
-            <!-- field cho mobile:                                  - Không được tính index                                                             -->
-            <th class="th-mobile">Nhóm</th>
-
-            <!-- field chính:                                       - Index mobile 1                                                                    -->
-            <th>ID</th>
-            <!-- field chính:                                       - Index mobile 2                                                                    -->
-            <th>Mã</th>
-            <!-- field chính:                                       - Index mobile 3                                                                    -->
-            <th>Tên</th>
-
-            <!-- field cho action:                                  - Không được tính index                                                             -->
-            <!-- snippet :                                          - @thAction                                                                         -->
-            <th class="th-action"><i class="fas fa-cogs"></i></th>
+            
 
         @endslot
         @slot('body')
@@ -56,12 +44,9 @@
                             <!-- snippet:                           - @cellDivMobile                                                                    -->
                             <div class="cell" index="1"></div>
                             <div class="cell" index="2"></div>
-                            <div class="cell" index="3"></div>
                         </div>
                     </td>
 
-                    <!-- Column chính:                              - Index là 1                                                                        -->
-                    <td>{{ $n->id }}</td>
                     <!-- Column chính:                              - Index là 2                                                                        -->
                     <td>{{ $n->ma }}</td>
                     <!-- Column chính:                              - Index là 3                                                                        -->

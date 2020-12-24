@@ -23,7 +23,7 @@ class CreateMenusesTable extends Migration
             $table->string('nguoitao');
             $table->string('nguoisua');
             $table->timestamps();
-            $table->integer('daxoa');
+            $table->softDeletes();
         });
     }
 

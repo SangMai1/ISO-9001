@@ -21,7 +21,7 @@ class CreateNguoingoaisTable extends Migration
             $table->smallInteger('gioitinh');
             $table->string('nguoitao');
             $table->string('nguoisua');
-            $table->smallInteger('daxoa');
+            $table->softDeletes();
         });
     }
 
