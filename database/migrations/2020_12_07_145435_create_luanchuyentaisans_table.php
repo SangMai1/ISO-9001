@@ -22,7 +22,7 @@ class CreateLuanchuyentaisansTable extends Migration
             $table->timestamp('thoigian')->nullable()->default(null);
             $table->string('nguoitao');
             $table->string('nguoisua');
-            $table->smallInteger('daxoa');
+            $table->softDeletes();
         });
     }
 

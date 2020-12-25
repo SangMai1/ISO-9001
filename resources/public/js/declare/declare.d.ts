@@ -2,6 +2,7 @@ interface HTMLElement {
     _eachSelected: (callback: (tr: HTMLTableCellElement) => void) => void
     _mapSelected: <K>(callback: (tr: HTMLTableCellElement) => K) => K[]
     _loadBodyTable: (body: any) => void
+    _appendBodyTable: (body: any) => void
     _onLoadTableBody: (evt: (table: HTMLTableElement, body: HTMLTableRowElement[]) => void) => void
     _setBmdError: (message: string) => void
 }

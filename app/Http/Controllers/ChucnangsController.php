@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\RequestChucNang;
 use App\Models\chucnangs;
+use App\Util\CommonUtil;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
@@ -18,11 +19,11 @@ class ChucnangsController extends Controller
      */
     public function index(Request $request)
     {
-        $chucNangs = DB::table('chucnangs')->where('daxoa', 0)->get();
-        if (Session::get('no-layout') == true) {
+        $chucNangs = CommonUtil::readViewConfig(chucnangs::class, $request)->get();
+        if ($request->has('no-layout')) {
             return view('chuc-nang.table-include', compact(['chucNangs']));
         }
-        return view('/chuc-nang/danh-sach', compact(['chucNangs']));
+        return view('chuc-nang.danh-sach', compact(['chucNangs']));
     }
 
     /**
@@ -51,22 +52,10 @@ class ChucnangsController extends Controller
         $chucNang->url = $request->url;
         $chucNang->nguoitao = "sang";
         $chucNang->nguoisua = "sang";
-        $chucNang->daxoa = "0";
 
         Session::flash('message', $chucNang->save() ? 'addSuccess' : 'addFailed');
 
         return view('message');
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\chucnangs  $chucnangs
-     * @return \Illuminate\Http\Response
-     */
-    public function show(chucnangs $chucnangs)
-    {
-        //
     }
 
     /**
@@ -75,10 +64,10 @@ class ChucnangsController extends Controller
      * @param  \App\Models\chucnangs  $chucnangs
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request)
     {
-        $chucnang = chucnangs::find($id);
-        dd($chucnang);
+        $chucnang = chucnangs::find($request->id);
+        if (!$chucnang) return abort(404);
         return view('/chuc-nang/cap-nhat', compact(['chucnang']));
     }
 
@@ -89,32 +78,22 @@ class ChucnangsController extends Controller
      * @param  \App\Models\chucnangs  $chucnangs
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, chucnangs $chucnangss)
+    public function update(RequestChucNang $request)
     {
         date_default_timezone_set("Asia/Ho_Chi_Minh");
 
-        $validator = Validator::make($request->all(), [
-            'ten' => 'required|string',
-            'url' => 'required|string'
-        ]);
-
-        if ($validator->fails()) {
-            return redirect()->Back()->withInput()->withErrors($validator);
-        }
         $chucnang = chucnangs::find($request->id);
-        $chucnang->ten = $request->ten;
-        $chucnang->url = $request->url;
-        $chucnang->nguoisua = "admin";
 
-        if ($chucnang->update()) {
-            Session::flash('message', 'Cập nhật thành công');
-            Session::flash('alert-class', 'alert-success');
-            return redirect()->route('chucnang.list');
+        if (!$chucnang) {
+            Session::flash('message', 'notFoundItem');
         } else {
-            Session::flash('message', 'Cập nhật thất bại');
-            Session::flash('alert-class', 'alert-danger');
+            $chucnang->ten = $request->ten;
+            $chucnang->url = $request->url;
+            $chucnang->nguoisua = "admin";
+            Session::flash('message', $chucnang->update() ? 'updateSuccess' : 'updateFailed');
         }
-        return Back();
+
+        return view('message');
     }
 
     /**
@@ -129,11 +108,7 @@ class ChucnangsController extends Controller
 
         date_default_timezone_set("Asia/Ho_Chi_Minh");
         $id = $request->input('id');
-        $result = chucnangs
-            ::where([['id', $id], ['daxoa', 0]])
-            ->update(
-                ["daxoa" => "1", "nguoisua" => "ai do",]
-            );
+        $result = chucnangs::find($id)->delete();
         Session::flash("message", $result ? "deleteSuccess" : "deleteFailed");
         return view('message');
     }

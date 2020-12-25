@@ -24,7 +24,7 @@ class RequestChucNang extends FormRequest
     public function rules()
     {
         return  [
-            'ten' => 'required|string|min:6',
+            'ten' => 'required|string|min:8',
             'url' => 'required|string|min:1'
         ];
     }

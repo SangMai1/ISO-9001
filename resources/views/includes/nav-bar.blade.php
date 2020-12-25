@@ -2,11 +2,10 @@
     <div class="container-fluid">
         <div class="navbar-wrapper">
             <a class="navbar-brand px-3">
-                {{ View::hasSection('pageName') ? $__env->yieldContent('pageName') : ( View::hasSection('title') ? $__env->yieldContent('title') : 'ISO-9001') }}
+                {{ View::hasSection('pageName') ? $__env->yieldContent('pageName') : (View::hasSection('title') ? $__env->yieldContent('title') : 'ISO-9001') }}
             </a>
         </div>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" aria-controls="navigation-index"
-            aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
             <span class="sr-only">Toggle navigation</span>
             <span class="navbar-toggler-icon icon-bar"></span>
             <span class="navbar-toggler-icon icon-bar"></span>
@@ -32,8 +31,7 @@
                     </a>
                 </li>
                 {{-- <li class="nav-item dropdown">
-                    <a class="nav-link" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown"
-                        aria-haspopup="true" aria-expanded="false">
+                    <a class="nav-link" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class="material-icons">notifications</i>
                         <span class="notification">5</span>
                         <p class="d-lg-none d-md-block">
@@ -49,18 +47,19 @@
                     </div>
                 </li> --}}
                 <li class="nav-item dropdown">
-                    <a class="nav-link" href="javascript:;" id="navbarDropdownProfile" data-toggle="dropdown"
-                        aria-haspopup="true" aria-expanded="false">
+                    <a class="nav-link" data-toggle="dropdown">
                         <i class="material-icons">person</i>
+                        <span class="screen-sm-hide">{{ Auth::user()->username }}</span>
                         <p class="d-lg-none d-md-block">
-                            Account
+                            {{ Auth::user()->username }}
                         </p>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownProfile">
-                        <a class="dropdown-item" href="#">Profile</a>
-                        <a class="dropdown-item" href="#">Settings</a>
+                        <a class="dropdown-item" href="#">Tài khoản</a>
+                        <a class="dropdown-item" href="#">Cài đặt</a>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">Log out</a>
+                        <a class="dropdown-item" href="javascript:$('#logoutForm')[0].submit()">Đăng xuất</a>
+                        <form action="{{ route('logout') }}" id="logoutForm" method="POST"> @csrf</form>
                     </div>
                 </li>
             </ul>

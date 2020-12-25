@@ -18,8 +18,6 @@ class users extends Model
         'nhanvienid',
         'nguoitao',
         'nguoisua'
-       
-    
     ];
 
 }

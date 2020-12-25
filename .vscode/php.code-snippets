@@ -1,0 +1,7 @@
+{
+	"Set Message": {
+		"scope": "php",
+		"body": "Session::flash('message', \"${1:message}\");",
+		"prefix": "@message"
+	},
+}

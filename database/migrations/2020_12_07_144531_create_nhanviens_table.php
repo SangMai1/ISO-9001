@@ -26,7 +26,7 @@ class CreateNhanviensTable extends Migration
             $table->bigInteger('phongbanid');
             $table->string('nguoitao');
             $table->string('nguoisua');
-            $table->smallInteger('daxoa');
+            $table->softDeletes();
         });
     }
 

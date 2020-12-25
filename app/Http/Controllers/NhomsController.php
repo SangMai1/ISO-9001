@@ -20,8 +20,8 @@ class NhomsController extends Controller
      */
     public function index()
     {
-        $nhoms = DB::table('nhoms')->where('daxoa', 0)->get();
-        $idChucNang = DB::table('chucnangs')->where('daxoa', 0)->pluck('ten', 'id');
+        $nhoms = DB::table('nhoms')->get();
+        $idChucNang = DB::table('chucnangs')->pluck('ten', 'id');
         if(Session::get('no-layout') == true) {
             return view('nhom.table.include', compact(['nhoms', 'idChucNang']));
         }
@@ -35,7 +35,7 @@ class NhomsController extends Controller
      */
     public function create()
     {
-        $idChucNang = DB::table('chucnangs')->where('daxoa', 0)->pluck('ten', 'id');
+        $idChucNang = DB::table('chucnangs')->pluck('ten', 'id');
         return view('/nhom/them-moi', compact(['idChucNang']));
     }
 
