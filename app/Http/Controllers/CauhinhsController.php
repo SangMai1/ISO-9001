@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\RequestCauHinh;
 use App\Models\Cauhinhs;
+use App\Util\CommonUtil;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
@@ -19,11 +20,11 @@ class CauhinhsController extends Controller
      */
     public function index(Request $request)
     {
-        $cauHinhs = DB::table('cauhinhs')->where('daxoa',null)->get();
-        if (Session::get('no-layout') == true) {
+        $cauHinhs = CommonUtil::readViewConfig(cauHinhs::class, $request)->where('deleted_at')->get();
+        if ($request->has('no-layout')) {
             return view('cau-hinh.table-include', compact(['cauHinhs']));
         }
-        return view('/cau-hinh/danh-sach', compact(['cauHinhs']));
+        return view('cau-hinh.danh-sach', compact(['cauHinhs']));
     }
 
     /**
@@ -86,13 +87,12 @@ class CauhinhsController extends Controller
      * @param  \App\Models\Cauhinhs  $cauhinhs
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request)
     {
-        $cauhinh = Cauhinhs::find($id);
-        // dd($cauhinh);
+        $cauhinh = Cauhinhs::find($request->id);
+        if (!$cauhinh) return abort(404);
         return view('/cau-hinh/cap-nhat', compact(['cauhinh']));
     }
-
     /**
      * Update the specified resource in storage.
      *
@@ -100,36 +100,21 @@ class CauhinhsController extends Controller
      * @param  \App\Models\Cauhinhs  $cauhinhs
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Cauhinhs $cauhinhs)
-    {
-        $validator = Validator::make($request->all(), [
-            'ma' => 'required|string',
-            'ten' => 'required|string',
-            'giatri' => 'required|string'
-        ]);
-
-        if ($validator->fails()) {
-            return redirect()->Back()->withInput()->withErrors($validator);
-        }
- 
+    public function update(RequestCauHinh $request ){
+        
         $cauhinh = Cauhinhs::find($request->id);
+        if (!$cauhinh) {
+            Session::flash('message', 'notFoundItem');
+        } else
+        { 
         $cauhinh->ma = $request->ma;
         $cauhinh->ten = $request->ten;
         $cauhinh->giatri = $request->giatri;
         $cauhinh->nguoisua = "EDadmin";
         $cauhinh->updated_at = Carbon::now('Asia/Ho_Chi_Minh');
         Session::flash('message', $cauhinh->update() ? 'updateSuccess' : 'updateFailed');
-        // if ($cauhinh->update()) {
-        //     Session::flash('message', 'Cập nhật thành công');
-        //     Session::flash('alert-class', 'alert-success');
-        //     return redirect()->route('cauhinh.list');
-        // } else {
-        //     Session::flash('message', 'Cập nhật thất bại');
-        //     Session::flash('alert-class', 'alert-danger');
-        // }
-        return Back();
-        
-
+        }
+        return view('message');
     }
 
     /**
@@ -140,14 +125,23 @@ class CauhinhsController extends Controller
      */
     public function destroy(Request $request )
     {
-     date_default_timezone_set("Asia/Ho_Chi_Minh");    
-     $id = $request->input('id');
-     $result = Cauhinhs::where([['id', $id], ['daxoa', null]]) ->update(
-             ["daxoa" => Carbon::now('Asia/Ho_Chi_Minh'), "nguoisua" => "DESadmin",]
-         );
-     Session::flash("message", $result ? "deleteSuccess" : "deleteFailed");
+    //  date_default_timezone_set("Asia/Ho_Chi_Minh");    
+    //     //  $cauhinhs = users::where('id');
+    //     //  $cauhinhs -> nguoisua = "Del Admin";
+    //     // // $id = $request->input('id');
+    //     // $result = chucnangs::find($id)->delete();
+    // $cauhinhs -> delete();
+    $cauhinh = Cauhinhs::find($request->id);
+    if (!$cauhinh) {
+          Session::flash('message', 'notFoundItem');
+    } else
+     { 
+    $cauhinh->nguoisua = "DELadmin";
+    $cauhinh->deleted_at = Carbon::now('Asia/Ho_Chi_Minh');
+     Session::flash("message", $cauhinh->update() ? "deleteSuccess" : "deleteFailed");
      return view('message');
     }
+}
 
     
     // public function getDeleteCauhinhs() 

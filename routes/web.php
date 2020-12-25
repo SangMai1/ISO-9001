@@ -4,7 +4,6 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Http\REQUEST;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\CauhinhsController;
 
 
 /*
@@ -31,7 +30,7 @@ Route::group(['prefix' => '/cau-hinh'], function () {
     Route::get('/danh-sach', 'App\Http\Controllers\CauhinhsController@index')->name('cauhinh.list'); // Hiển thị danh sách cấu hình
     Route::get('/them-moi', 'App\Http\Controllers\CauhinhsController@create')->name('cauhinh.create'); // Thêm mới cấu hình
     Route::post('/them-moi', 'App\Http\Controllers\CauhinhsController@store')->name('cauhinh.store'); // Xử lý thêm mới cấu hình
-    Route::get('/chinh-sua/{id}',  'App\Http\Controllers\CauhinhsController@edit')->name('cauhinh.edit'); // Sửa cấu hình
+    Route::get('/chinh-sua',  'App\Http\Controllers\CauhinhsController@edit')->name('cauhinh.edit'); // Sửa cấu hình
     Route::post('/cap-nhat',  'App\Http\Controllers\CauhinhsController@update')->name('cauhinh.update'); // Xử lý sửa cấu hình
     Route::get('/tim-kiem',  'App\Http\Controllers\CauhinhsController@search')->name('cauhinh.search'); // Xử lý tìm kiếm cấu hình
     Route::post('/xoa', 'App\Http\Controllers\CauhinhsController@destroy')->name('cauhinh.destroy'); // Xử lý xóa cấu hình
@@ -43,14 +42,14 @@ Route::group(['prefix' => '/cau-hinh'], function () {
 Route::group(['prefix' => '/users'], function () {
     Route::get('/danh-sach', 'App\Http\Controllers\UsersController@index')->name('user.list'); // Hiển thị danh sách user
     Route::get('/them-moi', 'App\Http\Controllers\UsersController@create')->name('user.create'); // Thêm mới user
-    Route::post('/luu', 'App\Http\Controllers\UsersController@store')->name('user.store'); // Xử lý thêm mới user 
+    Route::post('/them-moi', 'App\Http\Controllers\UsersController@store')->name('user.store'); // Xử lý thêm mới user 
     Route::get('/tim-kiem', 'App\Http\Controllers\UsersController@search')->name('user.search'); // Xử lý tìm kiếm user
-    Route::get('/chinh-sua/{id}', 'App\Http\Controllers\UsersController@edit')->name('user.edit'); // Sửa user
+    Route::get('/chinh-sua', 'App\Http\Controllers\UsersController@edit')->name('user.edit'); // Sửa user
     Route::post('/cap-nhat', 'App\Http\Controllers\UsersController@update')->name('user.update'); // Xử lý cập nhật user
-    Route::get('/xoa/{id}', 'App\Http\Controllers\UsersController@destroy')->name('user.destroy'); // Xóa user
-    Route::get('/da-xoa', 'App\Http\Controllers\UsersController@getDeleteUsers')->name('getDeleteUsers'); // Hiển thị danh sách user đã xóa
-    Route::get('/da-xoa/{id}', 'App\Http\Controllers\UsersController@deletePermanentlyUser')->name('deletePermanentlyUser'); // Xóa hoàn toàn user
-    Route::get('/khoi-phuc/{id}', 'App\Http\Controllers\UsersController@restoreDeletedUser')->name('restoreDeletedUser'); // Khôi phục user
+    Route::get('/xoa', 'App\Http\Controllers\UsersController@destroy')->name('user.destroy'); // Xóa user
+    // Route::get('/da-xoa', 'App\Http\Controllers\UsersController@getDeleteUsers')->name('getDeleteUsers'); // Hiển thị danh sách user đã xóa
+    // Route::get('/da-xoa/{id}', 'App\Http\Controllers\UsersController@deletePermanentlyUser')->name('deletePermanentlyUser'); // Xóa hoàn toàn user
+    // Route::get('/khoi-phuc/{id}', 'App\Http\Controllers\UsersController@restoreDeletedUser')->name('restoreDeletedUser'); // Khôi phục user
 
 
 });

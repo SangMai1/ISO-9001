@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\RequestUsers;
+use App\Util\CommonUtil;
 use App\Models\users;
 use App\Models\nhanviens;
 use Illuminate\Http\Request;
@@ -15,10 +17,14 @@ class UsersController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $users = users::all()->where('daxoa',null);
-        return view('/users/danh-sach',['users'=>$users]);
+        $users = CommonUtil::readViewConfig(users::class, $request)->where('deleted_at')->get();
+        $idNhanVien = DB::table('nhanviens')->pluck('ten', 'id');
+        if ($request->has('no-layout')) {
+            return view('users.table-include', compact(['users', 'idNhanVien']));
+        }
+        return view('users.danh-sach', compact(['users', 'idNhanVien']));
     }
 
     /**
@@ -28,8 +34,8 @@ class UsersController extends Controller
      */
     public function create()
     {
-        $nhanviens = nhanviens::all()->toArray();
-        return view('/users/them-moi');
+        $idNhanVien = DB::table('nhanviens')->pluck('ten', 'id');
+        return view('/users/them-moi', compact(['idNhanVien']));
     }
 
     public function search(Request $request){
@@ -45,26 +51,19 @@ class UsersController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(RequestUsers $request)
     {
         date_default_timezone_set("Asia/Ho_Chi_Minh");
-        $request->validate([
-            'name' => 'required|unique:users',
-            'password' => 'required',
-        ],[
-            'name.required' => 'Name không được bỏ trống',
-            'name.unique' =>'Name này đã tồn tại',
-            'password.required' => 'Password không được bỏ trống',
-        ]);
-        users::create([
-            'name' => $request ->input('name'),
-            'password' => $request ->input('password'),
-            'nhanvienid' => $request ->input('nhanvienid'),
-            'nguoitao' => 'admin',
-            'nguoisua' => 'Chưa thực hiện cập nhật'
-        ]);
-        return redirect()->route('user.list')
-            ->with('success', 'Thêm mới user thành công !!');
+        $users = new users();
+        $users->username = $request->username;
+        $users->email = $request->email;
+        $users->password = $request->password;
+        $users->nhanvienid = $request->nhanvienid;
+        $users->nguoitao = "admin";
+        $users->nguoisua = "admin";
+        Session::flash('message', $users->save() ? 'addSuccess' : 'addFailed');
+
+        return view('message');
     }
 
     /**
@@ -84,11 +83,12 @@ class UsersController extends Controller
      * @param  \App\Models\users  $users
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request)
     {
-        $nhanviens = nhanviens::all()->toArray();
-        $users = users::find($id)->toArray();
-        return view('/users/chinh-sua', compact('users'));
+        $users = users::find($request->id);
+        $idNhanVien = DB::table('nhanviens')->where('deleted_at', null)->pluck('ten', 'id');
+        if (!$users) return abort(404);
+        return view('/users/cap-nhat', compact(['users', 'idNhanVien']));
     }
 
     /**
@@ -98,24 +98,23 @@ class UsersController extends Controller
      * @param  \App\Models\users  $users
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, users $users)
+    public function update(RequestUsers $request)
     {
-        $request->validate([
-            'name' => 'required',
-            'password' => 'required',
-        ],[
-            'name.required' =>'Name không được bỏ trống',
-            'password.required' => 'Password không được bỏ trống',
-        ]);
-        $users = users::where('id', $request->input('cid'))->update([
-        	'name' => $request ->input('name'),
-            'password' => $request ->input('password'),
-            'nhanvienid' => $request ->input('nhanvienid'),
-            'nguoisua' => 'canh',
-            'updated_at' => Carbon::now('Asia/Ho_Chi_Minh')
-        ]);
-        return redirect()->route('user.list')
-        ->with('success', 'Cập nhật user thành công !!');
+
+        $users = users::find($request->id);
+        if (!$users) {
+            Session::flash('message', 'notFoundItem');
+        } else
+             {
+                $users->username = $request->username;
+                $users->email = $request->email;
+                $users->password = $request->password;
+                $users->nhanvienid = $request->nhanvienid;
+                $users->nguoisua = "EDadmin";
+                $users->updated_at = Carbon::now('Asia/Ho_Chi_Minh');
+                Session::flash('message', $users->update() ? 'updateSuccess' : 'updateFailed');
+            }
+        return view('message');
     }
 
     /**
@@ -124,35 +123,39 @@ class UsersController extends Controller
      * @param  \App\Models\users  $users
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        $users = users::find($id);
-        $users -> daxoa = Carbon::now('Asia/Ho_Chi_Minh');
-        $users -> nguoisua = "Del Admin";
-        $users->update();
-        return redirect()->route('user.list')
-        ->with('success', 'Xóa user thành công !!');
+    $users = users::find($request->id);
+    if (!$users) {
+          Session::flash('message', 'notFoundItem');
+    } else
+        { 
+        $users->nguoisua = "DELadmin";
+        $users->deleted_at = Carbon::now('Asia/Ho_Chi_Minh');
+        Session::flash("message", $users->update() ? "deleteSuccess" : "deleteFailed");
+        return view('message');
+        }
     }
 
-    public function getDeleteUsers() 
-    {
-        $users = users::all()->where('daxoa');
-        return view('/users/da-xoa',['users'=>$users]);
+    // public function getDeleteUsers() 
+    // {
+    //     $users = users::all()->where('daxoa');
+    //     return view('/users/da-xoa',['users'=>$users]);
           
-    }
+    // }
 
-    public function deletePermanentlyUser($id)
-    {
-        $users = users::find($id)->delete();
-        return redirect()->route('user.list')
-            ->with('success', 'User đã được xóa hoàn toàn !!');
-    }
+    // public function deletePermanentlyUser($id)
+    // {
+    //     $users = users::find($id)->delete();
+    //     return redirect()->route('user.list')
+    //         ->with('success', 'User đã được xóa hoàn toàn !!');
+    // }
 
-    public function restoreDeletedUser($id){
-        $users = users::find($id);
-        $users -> daxoa = null;
-        $users->update();
-        return redirect()->route('user.list')
-        ->with('success', 'Khôi phục user thành công !!');
-    }
+    // public function restoreDeletedUser($id){
+    //     $users = users::find($id);
+    //     $users -> daxoa = null;
+    //     $users->update();
+    //     return redirect()->route('user.list')
+    //     ->with('success', 'Khôi phục user thành công !!');
+    // }
 }
