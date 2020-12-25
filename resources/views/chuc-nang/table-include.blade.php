@@ -5,6 +5,9 @@
     <!-- auto-index:                                                - Tự động đánh index cho table sau khi render                                       -->
     <!-- select:                                                    - Tự động thêm cột select cho table                                                 -->
     <!-- class['moblile']:                                          - Đánh dấu table được được viết cho table -> kèm css, js render config theo         -->
+    <!-- attribute[load-more]:                                      - Đánh dấu table sau khi được render ra thì sẽ chức năng xem thêm, đường dẫn call
+                                                                        call ajax mặc định là giá trị của attribute này hoăc chính đường dẫn hiên tại
+                                                                        của trang được tải                                                              -->
     <!-- delete-href:                                               - Đánh dấu table có có chức năng delete                                                 
                                                                         -> js sẽ tự động tim tới selector element ('.delete-btn') gắn event:                
                                                                             -> call ajax-delete                                                             

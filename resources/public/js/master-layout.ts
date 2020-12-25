@@ -132,7 +132,7 @@ const showAlert = function (html: JQuery<HTMLElement>) {
                 urlAjax: this.getAttribute('load-more') || window.location.pathname,
                 limit: 20,
                 offset: $(this).find('tbody > tr').length,
-                tableQuery: 'table[load-more]'
+                tableQuery: $(this).data('id') ? `table[data-id="${$(this).data('id')}"]` : 'table[load-more]'
             }
 
             let oldConfig = { ...configDefault, ...config }
