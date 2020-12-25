@@ -1,6 +1,6 @@
 // @ts-ignore
 //@ts-nocheck
-$(() => { window.token = document.querySelector('.csrf-token > input').value })
+$(() => { window.token = $('meta[name="csrf-token"]').attr('content') })
 const _swalConfig: { [key: string]: SweetAlertOptions } = {}
 var Toast: SwalInterface
 const showLoading = function (message = "Chờ xí ...") { Toast.fire({ title: message, showCloseButton: false, didOpen: () => Swal.showLoading() }) };
@@ -31,8 +31,10 @@ const showAlert = function (html: JQuery<HTMLElement>) {
 
     $(() => fixMaterial())
 
-
     $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
         "processData": false,
         "mimeType": "multipart/form-data",
         "contentType": false,
@@ -77,6 +79,7 @@ const showAlert = function (html: JQuery<HTMLElement>) {
         _swalConfig.updateFailed = { ..._swalConfig.toastTime, title: 'Cập nhật thất bại', icon: 'error' }
         _swalConfig.deleteSuccess = { ..._swalConfig.toastTime, title: 'Xóa thành công', icon: 'success' }
         _swalConfig.deleteFailed = { ..._swalConfig.toastTime, title: 'Xóa thất bại', icon: 'error' }
+        _swalConfig.notFoundMoreData = { ..._swalConfig.toastTime, title: 'Còn gì nữa đâu mà xem!', icon: 'warning' }
         //#endregion
 
         Toast = Swal.mixin(_swalConfig.toast)
@@ -84,17 +87,15 @@ const showAlert = function (html: JQuery<HTMLElement>) {
 
     // fix lỗi màn hình đen menu không kéo hết :V
     function fixMaterial() {
-        const style = document.createElement('style')
-        document.head.append(style)
-        $('.navbar-toggler').on('click', function () {
-            style.innerHTML = `.close-layer.visible{ height: ${$('.main-panel')[0].scrollHeight}px !important`
+        $('.navbar-toggler').on('click', async function () {
+            await new Promise((resolve) => { let interval = setInterval(() => $('.close-layer.visible')[0] && resolve(clearInterval(interval)), 100) })
+            $('body').append($('.close-layer.visible').addClass('done'))
         })
     }
 
     function addPrototypeFormData() {
         FormData.prototype.fromObject = function (this: FormData, obj) {
             if (typeof obj !== 'object') return
-            obj._token = window.token
             for (let [key, value] of Object.entries(obj)) {
                 if (value instanceof Array) {
                     key += '[]'
@@ -123,7 +124,47 @@ const showAlert = function (html: JQuery<HTMLElement>) {
                 for (let evt of table._eventsLoadBody)
                     evt(table, body)
         }
+        HTMLTableElement.prototype._setLoadMore = function (config) {
+            declare type _typeConfig = typeof config
 
+            const loadMoreButton = $('<button class="btn btn-info w-100 mx-0">Xem thêm ...</button>')
+            const configDefault = {
+                urlAjax: this.getAttribute('load-more') || window.location.pathname,
+                limit: 20,
+                offset: $(this).find('tbody > tr').length,
+                tableQuery: 'table[load-more]'
+            }
+
+            let oldConfig = { ...configDefault, ...config }
+            let isMaxRecord = false
+            loadMoreButton.insertAfter(this)
+            this._isLoadMore = true
+            this._setLoadMore = (config: _typeConfig) => {
+                if (config instanceof Function) config = config({ ...oldConfig })
+                oldConfig = { ...oldConfig, ...config }
+                if (Number.parseInt(oldConfig.offset) === 0) {
+                    isMaxRecord = false
+                    $(this).children('tbody').html('')
+                }
+                if (config.isLoadNow) loadMoreButton[0].click()
+            }
+
+            loadMoreButton.on('click', () => {
+                if (isMaxRecord) return Swal.fire(_swalConfig.notFoundMoreData)
+                let c = oldConfig
+                $.ajax({ url: c.urlAjax, method: "GET", data: `no-layout&limit=${c.limit}&offset=${c.offset}` }).done((resp) => {
+                    const trArr = $(resp).find(c.tableQuery).find('tbody > tr')
+                    if (trArr.length === 0) {
+                        isMaxRecord = true
+                        return Swal.fire(_swalConfig.notFoundMoreData)
+                    }
+                    c.offset += trArr.length
+                    this._appendBodyTable(trArr)
+                })
+            })
+        }
+
+        HTMLTableElement.prototype._loadMore = function () { throw ('Chạy hàm _setLoadMore trước đi bạn ơi!') }
         HTMLTableElement.prototype._loadBodyTable = function (this: HTMLTableElement, body) { addBody(this, 'html', body) }
         HTMLTableElement.prototype._appendBodyTable = function (this: HTMLTableElement, body) { addBody(this, 'append', body) }
         HTMLTableElement.prototype._onLoadTableBody = function (this: HTMLTableElement, eventHandler) {
@@ -137,6 +178,7 @@ const showAlert = function (html: JQuery<HTMLElement>) {
                 if (tr._select[0].checked) callback(tr)
             }
         }
+
         HTMLTableElement.prototype._mapSelected = function (this: HTMLTableElement, callback) {
             const output = []
             for (let tr of $(this).children('tbody').children('tr')) {

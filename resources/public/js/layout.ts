@@ -44,26 +44,34 @@ const layoutAction = {
             selector.find('table[delete-href]').each(function (i, table: JQuery<HTMLElement>) {
                 table = $(table)
                 const deleteHref = table.attr('delete-href')
-                table.find('tbody > tr > td.td-action .delete-btn').on('click', function (evt) {
-                    const tr = $(this).closest('tr')
-                    const id = tr.data('id')
-                    $.ajax({ url: deleteHref, data: (new FormData()).fromObject({ id: id, _token: token }) })
-                        .done(() => {
-                            tr.remove()
-                            if (table.find('thead > tr > .auto-index-head')[0]) table._autoIndexTable()
-                        })
-                })
 
+                const setEvent = (body) => {
+                    body.find('td.td-action .delete-btn').on('click', function (evt) {
+                        const tr = $(this).closest('tr')
+                        const id = tr.data('id')
+                        $.ajax({ url: deleteHref, data: (new FormData()).fromObject({ id: id, _token: token }) })
+                            .done(() => {
+                                tr.remove()
+                                if (table[0]._isLoadMore) table[0]._setLoadMore((config) => ({ offset: config.offset - 1 }))
+                                if (table.find('thead > tr > .auto-index-head')[0]) table._autoIndexTable()
+                            })
+                    })
+                }
+
+                table[0]._onLoadTableBody((table, body) => setEvent($(body)))
+                setEvent(table.find('tbody > tr'))
             })
         },
         /**
          * Tự động thêm cột select cho table
          */
-        autoAddSelectColumn(selector = $('body')) { selector.find('table[select]').each(function(index, table){
-            const callbackName = table.getAttribute('select')
-            if(callbackName) $(table)._addSelectRows(window[callbackName])
-            else $(table)._addSelectRows().removeClass('select')
-        }) },
+        autoAddSelectColumn(selector = $('body')) {
+            selector.find('table[select]').each(function (index, table) {
+                const callbackName = table.getAttribute('select')
+                if (callbackName) $(table)._addSelectRows(window[callbackName])
+                else $(table)._addSelectRows().removeClass('select')
+            })
+        },
         /**
          * Tự động thêm cột index cho table có attribute auto-index
         */
@@ -200,17 +208,10 @@ const layoutAction = {
         },
         addLoadMore(jElement = $('body')) {
             jElement.find('table[load-more]').each(function (index, table) {
-                const loadMoreHref = table.getAttribute('load-more') || window.location.pathname
-                const loadMoreButton = $('<button class="btn btn-info w-100">Xem thêm ...</button>')
-                const queryTable = 'table[load-more]' // config thêm
-                loadMoreButton.insertAfter(table)
-                window.btn = loadMoreButton
-                loadMoreButton.on('click', function () {
-                    $.ajax({ url: loadMoreHref, method: "GET", data: "no-layout&limit=4" }).done((resp) => {
-                        const trArr = $(resp).find('table[load-more]').find('tbody > tr')
-                        table._appendBodyTable(trArr)
-                    })
-                })
+                const config = {}
+                const limit = table.getAttribute('load-more-limit')
+                if (limit) config.limit = limit
+                table._setLoadMore(config)
             })
         }
     }
