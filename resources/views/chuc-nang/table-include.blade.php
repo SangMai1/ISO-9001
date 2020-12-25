@@ -5,13 +5,16 @@
     <!-- auto-index:                                                - Tự động đánh index cho table sau khi render                                       -->
     <!-- select:                                                    - Tự động thêm cột select cho table                                                 -->
     <!-- class['moblile']:                                          - Đánh dấu table được được viết cho table -> kèm css, js render config theo         -->
+    <!-- attribute[load-more]:                                      - Đánh dấu table sau khi được render ra thì sẽ chức năng xem thêm, đường dẫn call
+                                                                        call ajax mặc định là giá trị của attribute này hoăc chính đường dẫn hiên tại
+                                                                        của trang được tải                                                              -->
     <!-- delete-href:                                               - Đánh dấu table có có chức năng delete                                                 
                                                                         -> js sẽ tự động tim tới selector element ('.delete-btn') gắn event:                
                                                                             -> call ajax-delete                                                             
                                                                                 ( với cấu hình mặc định của ajaxSetting                                     
                                                                                     ( config trong file ( master-layout.ts -> find(\$.ajaxSetup) ) )        
                                                                         -> xóa record sau khi render                                                    -->
-    <x-table auto-index id="table-main" class="mobile" load-more=""
+    <x-table auto-index id="table-main" class="mobile" load-more="{{route('chucnang.list')}}"
         delete-href="{{ route('chucnang.delete') }}">
         @slot('head')
             <!-- field cho mobile:                                  - Không được tính index                                                             -->
