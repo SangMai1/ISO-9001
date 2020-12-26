@@ -13,6 +13,7 @@
 <script src="/js/utils.js"> </script>
 
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.devbridge-autocomplete/1.4.10/jquery.autocomplete.min.js"></script>
 <script src="/assets/js/core/popper.min.js"></script>
 {{-- <script src="/assets/js/core/bootstrap-material-design.min.js"></script> --}}
 <script
