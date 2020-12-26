@@ -25,9 +25,8 @@ class RequestMenu extends FormRequest
     public function rules()
     {
         return [
-            'idcha' => "nullable|exists:menus",
+            'idcha' => "nullable|exists:menus,id",
             'ten' => "required|min:5|max:100",
-            'url' => "required|min:5|max:100",
             'vitri' => "required|Integer",
         ];
     }

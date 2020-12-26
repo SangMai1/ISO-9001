@@ -18,6 +18,8 @@
 </head>
 
 <body class="">
+    @php $menu = App\Models\Menu::all()@endphp
+
     <div class="wrapper ">
         @include('includes.sidebar')
         <div class="main-panel">

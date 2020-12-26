@@ -17,11 +17,11 @@ class CreateMenusesTable extends Migration
             $table->bigIncrements('id');
             $table->bigInteger('idcha')->nullable(true);
             $table->string('ten');
-            $table->string('url');
+            $table->string('url')->nullable(true);
             $table->integer('vitri');
             $table->string('nguoitao');
             $table->string('nguoisua');
-            $table->string('icon');
+            $table->string('icon')->nullable(true);
             $table->timestamps();
             $table->softDeletes();
         });

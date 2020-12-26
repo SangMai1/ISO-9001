@@ -10,7 +10,8 @@ class BackupSeed extends Seeder
     static $tables = [
         'users',
         'chucnangs',
-        'nhoms'
+        'nhoms',
+        'menus',
     ];
     static $pathBackup = './database/seeders/seed-json/backup/';
     /**

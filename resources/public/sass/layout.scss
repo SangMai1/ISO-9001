@@ -2,6 +2,12 @@ $bodyColor: rgb(253, 253, 252);
 body {
     background: $bodyColor;
 }
+.list-unstyled ul {
+    list-style: none;
+}
+.font-weight-bold{
+    font-weight: 900!important;
+}
 .close-layer.visible.done {
     position: fixed !important;
     width: 100%;

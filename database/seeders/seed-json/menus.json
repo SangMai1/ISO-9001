@@ -1,0 +1,28 @@
+[
+    {
+        "id": 1,
+        "idcha": null,
+        "ten": "Qu\u1ea3n tr\u1ecb h\u1ec7 th\u1ed1ng",
+        "url": "#",
+        "vitri": 0,
+        "nguoitao": "admin",
+        "nguoisua": "admin",
+        "icon": "<i class=\"material-icons\">admin_panel_settings<\/i>",
+        "created_at": "2020-12-26 03:52:28",
+        "updated_at": "2020-12-26 03:52:28",
+        "deleted_at": null
+    },
+    {
+        "id": 2,
+        "idcha": 1,
+        "ten": "Ch\u1ee9c n\u0103ng",
+        "url": "#",
+        "vitri": 0,
+        "nguoitao": "admin",
+        "nguoisua": "admin",
+        "icon": "<i class=\"fas fa-shield-alt\"><\/i>",
+        "created_at": "2020-12-26 03:53:43",
+        "updated_at": "2020-12-26 03:53:43",
+        "deleted_at": null
+    }
+]

@@ -4,13 +4,14 @@ Tip 1: You can change the color of the sidebar using: data-color="purple | azure
 
 Tip 2: you can also add an image using data-image tag
 -->
+    
     <div class="logo"><span class="simple-text logo-normal">
             ISO-9001
         </span></div>
     <div class="sidebar-wrapper">
 
         {{-- sidebar group --}}
-        <ul class="nav">
+        <ul class="nav nav-render">
             <li class="nav-item ">
                 <a data-toggle="collapse" class="nav-link dropdown-toggle auto-icon">
                     <i class="material-icons">admin_panel_settings</i>Quản trị hệ thống

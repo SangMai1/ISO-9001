@@ -1,6 +1,7 @@
 // @ts-ignore
 //@ts-nocheck
 $(() => { window.token = $('meta[name="csrf-token"]').attr('content') })
+console.log('sidebar', $('.sidebar').html())
 const _swalConfig: { [key: string]: SweetAlertOptions } = {}
 var Toast: SwalInterface
 const showLoading = function (message = "Chờ xí ...") { Toast.fire({ title: message, showCloseButton: false, didOpen: () => Swal.showLoading() }) };

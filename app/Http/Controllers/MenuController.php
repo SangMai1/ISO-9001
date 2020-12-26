@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Http\Requests\RequestMenu;
 use App\Models\Menu;
 use App\Util\CommonUtil;
+use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
+use Illuminate\View\View;
 
 class MenuController extends Controller
 {
@@ -29,7 +31,7 @@ class MenuController extends Controller
      */
     public function create()
     {
-        return view('menu.them-moi');
+        return view('menu.them-moi', ['menus' => Menu::all()]);
     }
 
     /**
@@ -61,7 +63,6 @@ class MenuController extends Controller
      */
     public function edit()
     {
-        //
     }
 
     /**

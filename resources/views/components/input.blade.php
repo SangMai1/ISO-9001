@@ -48,8 +48,8 @@
             <span class="invalid-feedback default" role="alert">{{ $error }}</span>
         </div>
     @endif
-    @break
 
+    @break
     @case('textarea')
     @if (!isset($error) || !$error)
         <div class="form-group bmd-form-group">
