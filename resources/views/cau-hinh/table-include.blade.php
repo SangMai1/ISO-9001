@@ -1,4 +1,25 @@
 <div class="table-region">
+    <div class="row">
+        <div class="col-md-6">
+            <a class="btn btn-sm btn-info btn-icon rounded-circle" 
+                                    href="{{ route('cauhinh.create') }}"><i class="fas fa-plus"></i></a>
+        </div>
+        
+        
+      
+        <div class="col-md-5">
+            <form action="{{ route('cauhinh.search') }}" method="GET">
+                <div class="input-group ">
+                    <x-input  type="search" name="search" float />
+                    <span class="input-group-prepend">
+                        <button type="submit" class="btn btn-sm btn-info btn-icon rounded-circle"><i class="fas fa-search"></i></button>
+                    </span>
+                </div>
+            </form>
+            
+        </div>
+       
+    </div>
     @isset($message) <div class="alert">{{ $message }}</div> @endisset
 
     <!-- snippet:                                                   - @tableComponent                                                                   -->
@@ -28,8 +49,7 @@
 
             <!-- field cho action:                                  - Không được tính index                                                             -->
             <!-- snippet :                                          - @thAction                                                                         -->
-            <a class="btn btn-sm btn-primary btn-icon rounded-circle" 
-                            href="{{ route('cauhinh.create') }}"><i class="fas fa-plus"></i></a>
+            
             <th class="th-action"><i class="fas fa-cogs"></i></th>
 
         @endslot

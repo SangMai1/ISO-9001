@@ -14,6 +14,6 @@ class NhomsSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('')
+       //
     }
 }

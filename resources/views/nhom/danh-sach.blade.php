@@ -1,7 +1,7 @@
 @extends('layouts.master')
 @section('title', 'Danh sách nhóm')
-@section('module', 'nhom/danh-sach')
 
 @section('content')
-    @include('nhom.table-include');
+    <div id="active-menu" href="{{ route('nhom.list') }}"></div>
+    @include('nhom.table-include')
 @endsection

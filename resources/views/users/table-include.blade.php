@@ -14,18 +14,22 @@
                                                                                 ( với cấu hình mặc định của ajaxSetting                                     
                                                                                     ( config trong file ( master-layout.ts -> find(\$.ajaxSetup) ) )        
                                                                         -> xóa record sau khi render                                                    -->
-    <x-table auto-index id="table-main" class="mobile" load-more="{{route('chucnang.list')}}"
-        delete-href="{{ route('chucnang.delete') }}">
+    <x-table auto-index id="table-main" class="mobile" load-more="{{route('user.list')}}"
+        delete-href="{{ route('user.destroy') }}">
         @slot('head')
             <!-- field cho mobile:                                  - Không được tính index                                                             -->
-            <th class="th-mobile">Chức năng</th>
+            <th class="th-mobile">User</th>
 
             <!-- field chính:                                       - Index mobile 1                                                                    -->
             <th>ID</th>
             <!-- field chính:                                       - Index mobile 2                                                                    -->
-            <th>Tên</th>
+            <th>Username</th>
             <!-- field chính:                                       - Index mobile 3                                                                    -->
-            <th>Đường dẫn</th>
+            <th>Email</th>
+            <!-- field chính:                                       - Index mobile 4                                                                    -->
+            <th>Password</th>
+            <!-- field chính:                                       - Index mobile 5                                                                    -->
+            <th>Nhân viên</th>
 
             <!-- field cho action:                                  - Không được tính index                                                             -->
             <!-- snippet :                                          - @thAction                                                                         -->
@@ -33,8 +37,8 @@
 
         @endslot
         @slot('body')
-            @foreach ($chucNangs as $cn)
-                <tr data-id="{{ $cn->id }}">
+            @foreach ($users as $u)
+                <tr data-id="{{ $u->id }}">
                     <!--  Colum cho mobile:                         - Không được tính index                                                             -->
                     <td class="td-mobile">
                         <!-- snippet:                               - @collapseGroup                                                                    -->
@@ -52,15 +56,21 @@
                             <div class="cell" index="1"></div>
                             <div class="cell" index="2"></div>
                             <div class="cell" index="3"></div>
+                            <div class="cell" index="4"></div>
+                            <div class="cell" index="5"></div>
                         </div>
                     </td>
 
                     <!-- Column chính:                              - Index là 1                                                                        -->
-                    <td>{{ $cn->id }}</td>
+                    <td>{{ $u->id }}</td>
                     <!-- Column chính:                              - Index là 2                                                                        -->
-                    <td>{{ $cn->ten }}</td>
+                    <td>{{ $u->username }}</td>
                     <!-- Column chính:                              - Index là 3                                                                        -->
-                    <td>{{ $cn->url }}</td>
+                    <td>{{ $u->email }}</td>
+                    <!-- Column chính:                              - Index là 3                                                                        -->
+                    <td>{{ $u->password }}</td>
+                    <!-- Column chính:                              - Index là 3                                                                        -->
+                    <td>{{ $idNhanVien[$u->nhanvienid] }}</td>
 
                     <!-- Column cho action:                         - Không được tính index                                                             -->
                     <td class="td-action">
@@ -68,7 +78,7 @@
                         <button class="btn btn-sm btn-icon btn-danger rounded-circle delete-btn"><i class="fas fa-trash"></i></button>
                         <!-- snippet:                               - @editLinkAction                                                                 -->         
                         <a class="btn btn-sm btn-info btn-icon rounded-circle" 
-                            href="{{ route('chucnang.edit') }}?id={{$cn->id}}"><i class="fas fa-pencil-alt"></i></a>
+                            href="{{ route('user.edit') }}?id={{$u->id}}"><i class="fas fa-pencil-alt"></i></a>
                     </td>
                 </tr>
             @endforeach

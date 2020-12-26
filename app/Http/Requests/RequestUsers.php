@@ -4,9 +4,9 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class RequestNhom extends FormRequest {
-
-  /**
+class RequestCauHinh extends FormRequest
+{
+    /**
      * Determine if the user is authorized to make this request.
      *
      * @return bool
@@ -24,16 +24,19 @@ class RequestNhom extends FormRequest {
     public function rules()
     {
         return  [
-            'ma' => 'required|string|min:1',
-            'ten' => 'required|string|min:3'
+            'username' => 'required|string|min:3',
+            'email' => 'required|string|min:8',
+            'password' => 'required|string|min:6'
         ];
     }
 
     public function attributes()
     {
         return [
-            'ma' => 'Mã nhóm',
-            'ten' => 'Tên nhóm'
+            'username' => 'Tên tài khoản',
+            'email' => 'Email',
+            'password' => 'Mật khẩu'
         ];
     }
+    
 }

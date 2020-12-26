@@ -7,11 +7,16 @@ const command = process.argv[2]
 const NOT_FOUND_COMMAND = 'Not found command'
 const arg = process.argv.slice(3, process.env.length).join(' ').trim()
 
+const seedJsonBackupPath = path.dirname(__dirname + '\\database\\seeders\\seed-json\\backup\\**')
+if (!fs.existsSync(seedJsonBackupPath)) fs.mkdirSync(seedJsonBackupPath)
+
 async function main() {
     switch (command) {
         case 'seed':
             if (arg === '--all') Object.keys(seed).forEach(async (key) => await commandAction.seedAction(key))
-            else if(arg === 'bk') await execCommand('php artisan db:seed --class=' + 'BackupSeed')
+            else if (arg === 'bk') {
+                await execCommand('php artisan db:seed --class=' + 'BackupSeed')
+            }
             else await commandAction.seedAction(arg)
             break
         case 'clean':
