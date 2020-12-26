@@ -77,7 +77,7 @@ Route::group(['prefix' => '/nhom'], function () {
     Route::get('/danh-sach', 'App\Http\Controllers\NhomsController@index')->name('nhom.list'); // Hiển thị danh sách nhóm
     Route::get('/them-moi', 'App\Http\Controllers\NhomsController@create')->name('nhom.create'); // Thêm mới nhóm
     Route::post('/them-moi', 'App\Http\Controllers\NhomsController@store')->name('nhom.store'); // Xử lý thêm mới nhóm
-    Route::get('/chinh-sua/{id}', 'App\Http\Controllers\NhomsController@edit')->name('nhom.edit'); // Cập nhật nhóm
+    Route::get('/chinh-sua', 'App\Http\Controllers\NhomsController@edit')->name('nhom.edit'); // Cập nhật nhóm
     Route::post('/cap-nhat', 'App\Http\Controllers\NhomsController@update')->name('nhom.update'); // Xử lý cập nhật nhóm
     Route::post('/xoa', 'App\Http\Controllers\NhomsController@deleteAll')->name('nhom.delete'); // Xóa nhóm
     Route::get('/search', 'App\Http\Controllers\NhomsController@search')->name('nhom.search'); // Tìm kiếm nhóm
