@@ -27,12 +27,12 @@
 @endif
 
 <?php //Form thêm mới học sinh?>
-    <form method="post" action="{{route('nhanvien.update')}}">
+    <form method="post" action="{{route('nhanvien.update')}}" ajax-form>
       {{csrf_field()}}
       <input class="form-control" type="hidden" name="id" value="{{$nhanvien['id']}}" /><br>
-      <x-input title="Tên" type="text" name="ten" onchange="render()" id="ten" value="{{$nhanvien['ten']}}" float/>
+      <x-input title="Tên" type="text" name="ten" id="ten" value="{{$nhanvien['ten']}}" float/>
       <x-input title="Mã" type="text" name="ma" float value="{{$nhanvien['ma']}}"/>
-      <x-input title="Email" type="email" name="email" value="{{$nhanvien['email']}}" float/>
+      <x-input title="Email" type="email" name="email" value="{{$nhanvien['email']}}" readonly float/>
 
       <x-input title="Nam" type="radio" name="gioitinh" value="0" :checked="$nhanvien['gioitinh'] == 0" float/>
       <x-input title="Nữ" type="radio" name="gioitinh" value="1" :checked="$nhanvien['gioitinh'] == 1" float/>
@@ -44,7 +44,7 @@
       <div class="form-group">
         <label>Chức danh </label>
         <select title="" class="form-control" name="chucdanhid">
-          @foreach($chucdanhs as $key => $value)
+          @foreach($chucDanhs as $key => $value)
             <option value="{{$key}}" {{$key == $nhanvien['chucdanhid'] ? 'selected':''}}>{{$value}}</option>
           @endforeach
         </select>
@@ -53,13 +53,13 @@
       <div class="form-group">
         <label>Phòng ban </label>
         <select class="form-control" name="phongbanid">
-          @foreach($phongbans as $key => $value)
+          @foreach($phongBans as $key => $value)
             <option value="{{$key}}" {{$key == $nhanvien['phongbanid'] ? 'selected':''}}>{{$value}}</option>
           @endforeach
         </select>
       </div>
 
-      <input class="btn btn-primary" type="submit" value="Cập nhật" />
+      <input class="btn btn-sm btn-info" type="submit" value="Lưu" />
   </div>
 </form>
 @endsection

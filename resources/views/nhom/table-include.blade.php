@@ -13,7 +13,14 @@
     <x-table auto-index id="table-main" class="mobile" load-more="{{route('nhom.list')}}"
         delete-href="{{ route('nhom.delete') }}">
         @slot('head')
-            
+                                                                        
+            <th class="th-mobile">Nhóm</th>
+                                                                   
+            <th>Mã</th>
+                                                                    
+            <th>Tên</th>
+                                                                  
+            <th class="th-action"><i class="fas fa-cogs"></i></th>   
 
         @endslot
         @slot('body')
@@ -44,7 +51,7 @@
                         <button class="btn btn-sm btn-icon btn-danger rounded-circle delete-btn"><i class="fas fa-trash"></i></button>
                                                                                       
                         <a class="btn btn-sm btn-info btn-icon rounded-circle" 
-                            href="{{ route('nhom.edit', [$n->id]) }}"><i class="fas fa-pencil-alt"></i></a>
+                            href="{{ route('nhom.edit') }}?id={{$n->id}}"><i class="fas fa-pencil-alt"></i></a>
                     </td>
                 </tr>
             @endforeach

@@ -12,6 +12,9 @@ class BackupSeed extends Seeder
         'chucnangs',
         'nhoms',
         'menus',
+        'danhmucs',
+        'nhanviens',
+        'cauhinhs'
     ];
     static $pathBackup = './database/seeders/seed-json/backup/';
     /**

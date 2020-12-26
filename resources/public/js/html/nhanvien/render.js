@@ -1,14 +1,20 @@
-function render(){
-    $.ajax({
-      method:"post",
-      url : '/nhan-vien/render' ,
-      data : {
-        action : 'render',
-        ten : $('#ten').val(),
+$(() => {
+  $('form[ajax-form]').validateCustom({
+    rules: {
+      ten: {
+        required: true,
+        minlength: 1
       },
-      dataType:"json",
-      success : function(data){
-        alert(data);
+      url: {
+        required: true,
+        minlength: 1
       },
-    });
-  }
+      acs: {
+        required: true,
+        minlength: 1
+      }
+    }
+  });
+  $('#phongban').autocomplete();
+  $('#chucdanh').autocomplete();
+})

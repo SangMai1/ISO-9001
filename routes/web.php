@@ -67,13 +67,13 @@ Route::group(['prefix' => '/users'], function () {
 });
 
 Route::group(['prefix' => '/danh-muc'], function () {
-    Route::get('/danh-sach', 'App\Http\Controllers\DanhmucsController@index')->name('danhmuc.list'); // Hiển thị danh sách danh mục
-    Route::get('/them-moi', 'App\Http\Controllers\DanhmucsController@create')->name('danhmuc.add'); // màn hình thêm mới danh mục
-    Route::post('/them-moi', 'App\Http\Controllers\DanhmucsController@store')->name('danhmuc.save'); // Xử lý thêm mới danh mục
-    Route::get('/chinh-sua/{id}', 'App\Http\Controllers\DanhmucsController@edit')->name('danhmuc.edit'); // Màn hình sửa danh mục
+    Route::get('/danh-sach', 'App\Http\Controllers\DanhmucsController@index')->name('danhmuc.list'); // Hiển thị danh sách danh mục chức danh
+    Route::get('/them-moi', 'App\Http\Controllers\DanhmucsController@create')->name('danhmuc.create'); // màn hình thêm mới danh mục
+    Route::post('/them-moi', 'App\Http\Controllers\DanhmucsController@store')->name('danhmuc.store'); // Xử lý thêm mới danh mục
+    Route::get('/chinh-sua', 'App\Http\Controllers\DanhmucsController@edit')->name('danhmuc.edit'); // Màn hình sửa danh mục
     Route::post('/cap-nhat', 'App\Http\Controllers\DanhmucsController@update')->name('danhmuc.update'); // Xử lý sửa danh mục
-    Route::get('/xoa/{id}', 'App\Http\Controllers\DanhmucsController@destroy')->name('danhmuc.delete'); // Xóa danh mục
-    Route::get('/search', 'App\Http\Controllers\DanhmucsController@find')->name('danhmuc.find'); // Tìm kiếm danh mục
+    Route::get('/xoa', 'App\Http\Controllers\DanhmucsController@destroy')->name('danhmuc.delete'); // Xóa danh mục
+    Route::get('/search', 'App\Http\Controllers\DanhmucsController@search')->name('danhmuc.search'); // Tìm kiếm danh mục
 });
 
 Route::group(['prefix' => '/chuc-nang',], function () {
@@ -108,11 +108,11 @@ Route::group(['prefix' => '/nhom'], function () {
 
 Route::group(['prefix' => '/nhan-vien'], function () {
     Route::get('/danh-sach', 'App\Http\Controllers\NhanviensController@index')->name('nhanvien.list'); // Hiển thị danh sách nhân viên
-    Route::get('/them-moi', 'App\Http\Controllers\NhanviensController@create')->name('nhanvien.add'); // màn hình thêm mới nhân viên
-    Route::post('/them-moi', 'App\Http\Controllers\NhanviensController@store')->name('nhanvien.save'); // Xử lý thêm mới nhân viên
-    Route::get('/chinh-sua/{id}', 'App\Http\Controllers\NhanviensController@edit')->name('nhanvien.edit'); // Màn hình sửa nhân viên
+    Route::get('/them-moi', 'App\Http\Controllers\NhanviensController@create')->name('nhanvien.create'); // màn hình thêm mới nhân viên
+    Route::post('/them-moi', 'App\Http\Controllers\NhanviensController@store')->name('nhanvien.store'); // Xử lý thêm mới nhân viên
+    Route::get('/chinh-sua', 'App\Http\Controllers\NhanviensController@edit')->name('nhanvien.edit'); // Màn hình sửa nhân viên
     Route::post('/cap-nhat', 'App\Http\Controllers\NhanviensController@update')->name('nhanvien.update'); // Xử lý sửa nhân viên
     Route::post('/xoa', 'App\Http\Controllers\NhanviensController@destroy')->name('nhanvien.delete'); // Xóa  nhân viên
-    Route::get('/search', 'App\Http\Controllers\NhanviensController@find')->name('nhanvien.find'); // Tìm kiếm  nhân viên
-    Route::post('/render', 'App\Util\CommonUtil@render')->name('nhanvien.render');
+    Route::get('/search', 'App\Http\Controllers\NhanviensController@search')->name('nhanvien.search'); // Tìm kiếm  nhân viên
+    Route::post('/render', 'App\Http\Controllers\NhanviensController@render')->name('nhanvien.render');
 });

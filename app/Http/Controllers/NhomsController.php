@@ -90,10 +90,9 @@ class NhomsController extends Controller
      */
     public function edit(Request $request)
     {
-        $nhoms = nhoms::find($request-> id);
+        $nhoms = nhoms::find($request->id);
         $idChucNang = DB::table('chucnangs')->pluck('ten', 'id');
         $chucNangCheck = DB::table('nhomsvachucnangs')->where('nhomid', $request->id)->get();
-        
         return view('/nhom/cap-nhat', compact(['nhoms', 'idChucNang', 'chucNangCheck']));
     }
 

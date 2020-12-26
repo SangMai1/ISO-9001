@@ -7,7 +7,7 @@
 
     <form method="post" action="{{ route('nhom.update') }}" ajax-form>
         @csrf
-        <input type="hidden" name="id" value="{{ $nhoms->id }}" />
+        <input type="hidden" name="id" value="{{ $nhoms->id}}" />
 
         <x-input title="Mã" type="text" name="ma" value="{{ $nhoms->ma }}" float />
 
