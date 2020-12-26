@@ -2,14 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\RequestNhom;
 use App\Models\chucnangs;
 use App\Models\nhoms;
 use App\Models\nhomsvachucnangs;
+use App\Util\CommonUtil;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
+
 
 class NhomsController extends Controller
 {
@@ -18,14 +21,14 @@ class NhomsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $nhoms = DB::table('nhoms')->get();
-        $idChucNang = DB::table('chucnangs')->pluck('ten', 'id');
-        if(Session::get('no-layout') == true) {
-            return view('nhom.table.include', compact(['nhoms', 'idChucNang']));
+        $nhoms = CommonUtil::readViewConfig(nhoms::class, $request)->get();
+        // $idChucNang = DB::table('chucnangs')->pluck('ten', 'id');
+        if($request->has('no-layout')) {
+            return view('nhom.table-include', compact(['nhoms']));
         }
-        return view('/nhom/danh-sach', compact(['nhoms', 'idChucNang']));
+        return view('nhom.danh-sach', compact(['nhoms']));
     }
 
     /**
@@ -45,7 +48,7 @@ class NhomsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(RequestNhom $request)
     {
         date_default_timezone_set("Asia/Ho_Chi_Minh");
 
@@ -54,7 +57,6 @@ class NhomsController extends Controller
         $nhom->ten = $request->ten;
         $nhom->nguoitao = "sang";
         $nhom->nguoisua = "sang";
-        $nhom->daxoa = "0";
         
         Session::flash('message', $nhom->save() ? 'addSuccess' : 'addFailed');
             $nhomid = $nhom->id;
@@ -86,17 +88,11 @@ class NhomsController extends Controller
      * @param  \App\Models\nhoms  $nhoms
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request)
     {
-        
-        // $nhoms = DB::select("select n.id as id, n.ma, n.ten as tennhom,cn.id as idchucnang, cn.ten as tenchucnang FROM nhoms n
-        //             LEFT JOIN nhomsvachucnangs nvcn ON nvcn.nhomid = n.id 
-        //             LEFT JOIN chucnangs cn ON cn.id = nvcn.chucnangid
-        //             where n.id=$id and n.daxoa = 0 AND cn.daxoa = 0
-        //             ");
-        $nhoms = nhoms::find($id);
-        $idChucNang = DB::table('chucnangs')->where('daxoa', 0)->pluck('ten', 'id');
-        $chucNangCheck = DB::table('nhomsvachucnangs')->where('nhomid', $id)->get();
+        $nhoms = nhoms::find($request-> id);
+        $idChucNang = DB::table('chucnangs')->pluck('ten', 'id');
+        $chucNangCheck = DB::table('nhomsvachucnangs')->where('nhomid', $request->id)->get();
         
         return view('/nhom/cap-nhat', compact(['nhoms', 'idChucNang', 'chucNangCheck']));
     }
@@ -108,7 +104,7 @@ class NhomsController extends Controller
      * @param  \App\Models\nhoms  $nhoms
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request)
+    public function update(RequestNhom $request)
     {
         date_default_timezone_set("Asia/Ho_Chi_Minh");
 
@@ -146,11 +142,7 @@ class NhomsController extends Controller
 
         date_default_timezone_set("Asia/Ho_Chi_Minh");
         $id = $request->input('id');
-        $result = nhoms
-            ::where([['id', $id], ['daxoa', 0]])
-            ->update(
-                ["daxoa" => "1", "nguoisua" => "ai do",]
-            );
+        $result = nhoms::find($id)->delete();
         Session::flash("message", $result ? "deleteSuccess" : "deleteFailed");
         return view('message');
     }

@@ -4,10 +4,8 @@
 
 @section('content')
 
-    <!-- Alert message (start) -->
-    @include('message');
-    <!-- Alert message (end) -->
 
+    @include('message');
     <form method="post" action="{{ route('cauhinh.update') }}" autocomplete="off" ajax-form>
         @csrf
         <input type="hidden" name="id" value="{{ $cauhinh['id'] }}" />

@@ -83,6 +83,7 @@ const showAlert = function (html: JQuery<HTMLElement>) {
         //#endregion
 
         Toast = Swal.mixin(_swalConfig.toast)
+      
     }
 
     // fix lỗi màn hình đen menu không kéo hết :V
