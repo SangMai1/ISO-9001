@@ -46,13 +46,16 @@ Tip 2: you can also add an image using data-image tag
                         </ul>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="nav-link"><i class="fas fa-list"></i><span>Nhóm chức năng</span></a>
+                        <a href="{{ route('danhmuc.list') }}?loai=1" active="listPhongBan" class="nav-link"><i class="fas fa-list"></i><span>Phòng ban</span></a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ route('danhmuc.list') }}" class="nav-link"><i class="fas fa-list"></i><span>Danh mục</span></a>
+                        <a href="{{ route('danhmuc.list') }}?loai=0" active="listChucDanh" class="nav-link"><i class="fas fa-list"></i><span>Chức danh</span></a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ route('cauhinh.list') }}" class="nav-link"><i class="fas fa-list"></i><span>Cấu hình</span></a>
+                        <a href="{{ route('danhmuc.list') }}?loai=2" class="nav-link"><i class="fas fa-list"></i><span>Loại tài sản</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('cauhinh.list') }}" active="listLoaiTaiSan" class="nav-link"><i class="fas fa-list"></i><span>Cấu hình</span></a>
                     </li>
                 </ul>
             </li>

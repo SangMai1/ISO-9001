@@ -3,27 +3,28 @@
 @section('module','danh-sach')
 
 @section('content')
-    <a href="{{route('nhanvien.add')}}" class="btn btn-sm btn-info btn-icon rounded-circle" style="float: right"><i class="fas fa-plus-circle"></i></a>
+    <a href="{{route('nhanvien.create')}}" class="btn btn-sm btn-info btn-icon rounded-circle" style="float: right"><i class="fas fa-plus-circle"></i></a>
     <button class="btn btn-sm btn-info btn-icon rounded-circle viewFind" style="float: right"><i class="fa fa-search"></i></button>
 
     {{-- Search --}}
     <div class="viewForm">
-        <form action="{{route('nhanvien.find')}}" method="GET">
-            <button type="submit" class="btn btn-primary">Tìm kiếm</button>
+        <form action="{{route('nhanvien.search')}}" method="GET">
+            {{-- <x-input title="Tên nhân viên" type="text" name="name" value="{{$ten}}" float/> --}}
+            <button type="submit" class="btn btn-sm btn-info btn-icon rounded-circle"><i class="fa fa-search"></i></button>
         </form>
     </div>
 
     <div class="table-region">
         @isset($message) <div class="alert">{{ $message }}</div> @endisset
-        <x-table auto-index id="table-main" class="mobile" delete-href="{{ route('nhanvien.delete') }}">
+        <x-table auto-index id="table-main" class="mobile" delete-href="{{ route('nhanvien.delete') }}" load-more="">
             @slot('head')
-                <th class="th-mobile">Nhân viên</th>
-                <th>Mã</th>
-                <th>Tên</th>
-                <th>Email</th>
-                <th>Phòng ban</th>
-                <th>Chức danh</th>
-                <th class="th-action"><i class="fas fa-cogs"></i></th>
+            <th class="th-mobile">Nhân viên</th>
+            <th>Mã</th>
+            <th>Tên</th>
+            <th>Email</th>
+            <th>Phòng</th>
+            <th>Chức danh</th>
+            <th class="th-action"><i class="fas fa-cogs"></i></th>
             @endslot
             @slot('body')
                 @foreach ($nhanViens as $item)
@@ -48,7 +49,7 @@
                         <td class="td-action">
                             <button class="btn btn-sm btn-icon btn-danger rounded-circle delete-btn"><i class="fas fa-trash"></i></button>
                             <a class="btn btn-sm btn-info btn-icon rounded-circle" 
-                            href="{{ route('nhanvien.edit') }}"><i class="fas fa-pencil-alt"></i></a>
+                            href="{{ route('nhanvien.edit') }}?id={{$item->id}}"><i class="fas fa-pencil-alt"></i></a>
                         </td>
 
                     </tr>

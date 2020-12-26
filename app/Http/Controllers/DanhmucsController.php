@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\RequestDanhMuc;
 use App\Models\Danhmucs;
 use App\Util\CommonUtil;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 
@@ -16,10 +18,10 @@ class DanhmucsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $danhmucs = Danhmucs::all()->where('daxoa',0);
-        return view('/danh-muc/danh-sach',["danhmucs" => $danhmucs,"temdm"=>"","loaiDm"=>"-1"]);
+        $danhMucs = CommonUtil::readViewConfig(Danhmucs::class, $request)->where('loai',$request->loai)->get();
+        return view('/danh-muc/danh-sach',["danhMucs" => $danhMucs,"tendm"=>"","loaiDm"=>$request->loai]);
     }
 
     /**
@@ -27,10 +29,10 @@ class DanhmucsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
         //Hiển thị trang thêm danh mục
-	    return view('/danh-muc/them-moi');
+	    return view('/danh-muc/them-moi',['loaiDm'=>$request->loai]);
     }
 
     /**
@@ -39,40 +41,20 @@ class DanhmucsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(RequestDanhMuc $request)
     {
         date_default_timezone_set("Asia/Ho_Chi_Minh");     
-    
-        $request->validate([
-            'ma' => 'required',
-            'ten' => 'required',
-            'loai' => 'required',
-        ],[
-            'ma.required' => 'Mã không được bỏ trống',
-            'ten.required' => 'Tên không được bỏ trống',
-            'loai.required' => 'Loại không được bỏ trống',
-        ]);
+	
+        $danhMuc = new Danhmucs();
+        $danhMuc -> ten = $request->ten;
+        $danhMuc -> ma = $request->ma;
+        $danhMuc -> loai = $request->loai;
+        $danhMuc -> nguoitao = Auth::user()->username;
+        $danhMuc -> nguoisua = Auth::user()->username;
 
-        $allRequest  = $request->all();
-        $ma = $allRequest['ma'];
-        $ten = $allRequest['ten'];
-        $loai = $allRequest['loai'];
-	
-        $danhmuc = new Danhmucs();
-        $danhmuc -> ten = $ten;
-        $danhmuc -> ma = $ma;
-        $danhmuc -> loai = $loai;
-        $danhmuc -> nguoitao = CommonUtil::getValueCauhinh("USER_ADMIN");
-        $danhmuc -> nguoisua = CommonUtil::getValueCauhinh("USER_ADMIN");
-        $danhmuc -> daxoa = "0";
-        if($danhmuc->save()){
-            Session::flash('success', 'Thêm mới thành công');
-        } else {
-            Session::flash('error', 'Thêm mới thất bại!');
-        }
-	
-        //Thực hiện chuyển trang
-        return redirect()->Route('danhmuc.add');
+        Session::flash('message', $danhMuc->save() ? 'addSuccess' : 'addFailed');
+
+        return view('message');
     }
 
     /**
@@ -92,9 +74,10 @@ class DanhmucsController extends Controller
      * @param  \App\Models\Danhmucs  $danhmucs
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request)
     {
-        $danhmuc = Danhmucs::find($id);
+        $danhmuc = Danhmucs::find($request->id);
+        if (!$danhmuc) return abort(404);
         return view('/danh-muc/chinh-sua', compact('danhmuc'));
     }
 
@@ -105,39 +88,24 @@ class DanhmucsController extends Controller
      * @param  \App\Models\Danhmucs  $danhmucs
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Danhmucs $danhmucs)
+    public function update(RequestDanhMuc $request)
     {
         date_default_timezone_set("Asia/Ho_Chi_Minh");
 
-        $request->validate([
-            'ma' => 'required',
-            'ten' => 'required',
-            'loai' => 'required',
-        ],[
-            'ma.required' => 'Mã không được bỏ trống',
-            'ten.required' => 'Tên không được bỏ trống',
-            'loai.required' => 'Loại không được bỏ trống',
-        ]);
-
-        $allRequest  = $request->all();
-        $ma = $allRequest['ma'];
-        $ten = $allRequest['ten'];
-        $loai = $allRequest['loai'];
-
         $danhmuc = Danhmucs::find($request->id);
-        $danhmuc -> ten = $ten;
-        $danhmuc -> ma = $ma;
-        $danhmuc -> loai = $loai;
-        $danhmuc -> nguoisua = CommonUtil::getValueCauhinh("USER_ADMIN");
- 
-        if($danhmuc->update()){
-            Session::flash('success', 'Cập nhật thành công');
-        } else {
-            Session::flash('error', 'Cập nhật thất bại');
-        }
         
-        //Thực hiện chuyển trang
-        return  redirect()->Route('danhmuc.list');
+ 
+        if (!$danhmuc) {
+            Session::flash('message', 'notFoundItem');
+        } else {
+            $danhmuc -> ten = $request->ten;
+            $danhmuc -> ma = $request->ma;
+            $danhmuc -> loai = $request->loai;
+            $danhmuc -> nguoisua = Auth::user()->username ;
+            Session::flash('message', $danhmuc->update() ? 'updateSuccess' : 'updateFailed');
+        }
+
+        return view('message');
     }
 
     /**
@@ -146,28 +114,20 @@ class DanhmucsController extends Controller
      * @param  \App\Models\Danhmucs  $danhmucs
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
         date_default_timezone_set("Asia/Ho_Chi_Minh");
-        //Thực hiện câu lệnh xóa với giá trị id = $id trả về
-        $danhmuc = Danhmucs::find($id);
-        $danhmuc -> nguoisua = CommonUtil::getValueCauhinh("USER_ADMIN");
-        $danhmuc -> daxoa = 1;
  
-        if($danhmuc->update()){
-            Session::flash('success', 'Xóa  thành công!');
-        } else {
-            Session::flash('error', 'Xóa thất bại!');
-        }
-        
-        //Thực hiện chuyển trang
-        return redirect()->Route('danhmuc.list');
+        $id = $request->input('id');
+        $result = Danhmucs::find($id)->delete();
+        Session::flash("message", $result ? "deleteSuccess" : "deleteFailed");
+        return view('message');
     }
 
-    public function find(Request $request){
+    public function search(Request $request){
         $tendm = $request -> tendm ;
         $loaiDm = $request -> loaidm;
-        $sql = " SELECT * FROM danhmucs WHERE daxoa = 0 ";
+        $sql = " SELECT * FROM danhmucs WHERE 1=1 ";
         if(isset($request -> tendm) && $tendm != ""){
             $sql = $sql . " AND ten like '%" . $tendm ."%' ";
         }
@@ -175,7 +135,7 @@ class DanhmucsController extends Controller
             $sql = $sql . " AND loai = " . $loaiDm ." ";
         }
 
-        $danhmucs = DB::select($sql);
-        return view('/danh-muc/danh-sach',["danhmucs" => $danhmucs,"tendm"=>$tendm,"loaiDm"=>$loaiDm]);
+        $danhMucs = DB::select($sql);
+        return view('/danh-muc/danh-sach',["danhMucs" => $danhMucs,"tendm"=>$tendm,"loaiDm"=>$loaiDm]);
     }
 }

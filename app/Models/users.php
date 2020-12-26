@@ -13,7 +13,7 @@ class users extends Model
     protected $timestamp = ['daxoa'];
 
     protected $fillable = [
-        'name',
+        'username',
         'password',
         'nhanvienid',
         'nguoitao',
