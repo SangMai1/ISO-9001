@@ -14,7 +14,6 @@
         <x-input title="Vị trí" type="text" name="vitri" float />
         <x-input title="Tên menu" type="text" name="ten" float />
         <x-input title="Đường dẫn" type="text" name="url" float />
-        <x-input title="Menu cha" type="text" name="idcha" float />
         <x-input title="Icon" type="textarea" name="icon" rows="4" float />
         <a data-toggle="collapse" class="dropdown-toggle btn-info btn auto-icon" style="max-width: 200px">
             <span class="cell" index="2">Chọn menu cha</span>
@@ -33,10 +32,12 @@
                 <li data-parent="{{ $m->idcha }}" data-id="{{ $m->id }}">
                     <x-input type="radio" name="idcha" float value="{{ $m->id }}">
                         @slot('title')
-                            <div class="btn btn-info btn-sm m-0 w-100 text-left" type="button">
-                                <div class="font-weight-bold">{{ $m->ten }}</div>
-                                <div>Đường dẫn: {{ $m->url }}</div>
-                            </div>
+                            <a class="btn btn-info btn-sm m-0 w-100 text-left" type="button" data-toggle="collapse" href="#">
+                                <div>
+                                    <div class="font-weight-bold">{{ $m->ten }}</div>
+                                    <div>Đường dẫn: {{ $m->url }}</div>
+                                </div>
+                            </a>
                         @endslot
                     </x-input>
                 </li>

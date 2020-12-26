@@ -4,13 +4,24 @@ Tip 1: You can change the color of the sidebar using: data-color="purple | azure
 
 Tip 2: you can also add an image using data-image tag
 -->
-    
+
     <div class="logo"><span class="simple-text logo-normal">
             ISO-9001
         </span></div>
     <div class="sidebar-wrapper">
 
+        <ul class="list-unstyled nav d-none" data-id="menu-parent-ul">
+            @foreach ($menus as $m)
+                <li data-parent="{{ $m->idcha }}" class="nav-item" data-id="{{ $m->id }}">
+                    <a class="nav-link" type="button" href="{{ $m->url }}">
+                        <div class="icon-menu">{{ $m->icon }}</div>
+                        {{ $m->ten }}
+                    </a>
+                </li>
+            @endforeach
+        </ul>
         {{-- sidebar group --}}
+        {{--
         <ul class="nav nav-render">
             <li class="nav-item ">
                 <a data-toggle="collapse" class="nav-link dropdown-toggle auto-icon">
@@ -39,38 +50,43 @@ Tip 2: you can also add an image using data-image tag
                         </a>
                         <ul class="collapse list-unstyled">
                             <li class="nav-item">
-                                <a href="{{ route('chucnang.list') }}" class="nav-link"><i class="fas fa-list"></i>Danh sách</a>
+                                <a href="{{ route('chucnang.list') }}" class="nav-link"><i class="fas fa-list"></i>Danh
+                                    sách</a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{ route('chucnang.create') }}" class="nav-link"><i class="fas fa-plus-circle"></i>Thêm chức năng</a>
+                                <a href="{{ route('chucnang.create') }}" class="nav-link"><i
+                                        class="fas fa-plus-circle"></i>Thêm chức năng</a>
                             </li>
                         </ul>
                     </li>
                     <li class="nav-item">
-<<<<<<< HEAD
-                        <a href="{{ route('danhmuc.list') }}?loai=1" active="listPhongBan" class="nav-link"><i class="fas fa-list"></i><span>Phòng ban</span></a>
-=======
+                        <a href="{{ route('danhmuc.list') }}?loai=1" active="listPhongBan" class="nav-link"><i
+                                class="fas fa-list"></i><span>Phòng ban</span></a>
                         <a data-toggle="collapse" class="nav-link dropdown-toggle auto-icon">
                             <i class="fas fa-users-cog"></i>Nhóm chức năng
                         </a>
                         <ul class="collapse list-unstyled">
                             <li class="nav-item">
-                                <a href="{{ route('nhom.list') }}" class="nav-link"><i class="fas fa-list"></i>Danh sách</a>
+                                <a href="{{ route('nhom.list') }}" class="nav-link"><i class="fas fa-list"></i>Danh
+                                    sách</a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{ route('nhom.create') }}" class="nav-link"><i class="fas fa-plus-circle"></i>Thêm chức năng</a>
+                                <a href="{{ route('nhom.create') }}" class="nav-link"><i
+                                        class="fas fa-plus-circle"></i>Thêm chức năng</a>
                             </li>
                         </ul>
->>>>>>> 1a03cae458ea842f567fb3ba38d7a7e7fde1a226
                     </li>
                     <li class="nav-item">
-                        <a href="{{ route('danhmuc.list') }}?loai=0" active="listChucDanh" class="nav-link"><i class="fas fa-list"></i><span>Chức danh</span></a>
+                        <a href="{{ route('danhmuc.list') }}?loai=0" active="listChucDanh" class="nav-link"><i
+                                class="fas fa-list"></i><span>Chức danh</span></a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ route('danhmuc.list') }}?loai=2" class="nav-link"><i class="fas fa-list"></i><span>Loại tài sản</span></a>
+                        <a href="{{ route('danhmuc.list') }}?loai=2" class="nav-link"><i
+                                class="fas fa-list"></i><span>Loại tài sản</span></a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ route('cauhinh.list') }}" active="listLoaiTaiSan" class="nav-link"><i class="fas fa-list"></i><span>Cấu hình</span></a>
+                        <a href="{{ route('cauhinh.list') }}" active="listLoaiTaiSan" class="nav-link"><i
+                                class="fas fa-list"></i><span>Cấu hình</span></a>
                     </li>
                 </ul>
             </li>
@@ -116,5 +132,6 @@ Tip 2: you can also add an image using data-image tag
             </li>
 
         </ul>
+        --}}
     </div>
 </div>

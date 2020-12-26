@@ -26,7 +26,7 @@ class RequestMenu extends FormRequest
     {
         return [
             'idcha' => "nullable|exists:menus,id",
-            'ten' => "required|min:5|max:100",
+            'ten' => "required|min:2|max:100",
             'vitri' => "required|Integer",
         ];
     }
