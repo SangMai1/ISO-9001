@@ -55,9 +55,19 @@ class CommonUtil
 
         return json_encode(['username' => $username, 'password' => $password]);
     }
-    
+
     static function readViewConfig($model, $request)
-    {   
+    {
         return $model::limit($request->limit ?? 10)->offset($request->offset);
+    }
+    static function seederJson($table)
+    {
+        try {
+            DB::table($table)->truncate();
+            $content = file_get_contents("./database/seeders/seed-json/{$table}.json", true);
+            DB::table($table)->insert(json_decode($content, true));
+        } catch (\Throwable $th) {
+            error_log('Lỗi xảy ra khi đọc file ' . $table);
+        }
     }
 }

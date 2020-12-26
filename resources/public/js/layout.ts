@@ -189,7 +189,7 @@ const layoutAction = {
                     const tds = $(tr).children('td:not([ai]):not([sl]):not(.td-mobile):not(.td-action)')
                     $(tr).find('.cell').each(function (i, cell) {
                         const index = cell.getAttribute('index') - 1
-                        cell.innerHTML = (tds[index] && tds[index].innerHTML) || `<div class="text-danger">Not Found Cell Index ${index}</div>`
+                        cell.innerHTML = (tds[index] && tds[index].innerHTML) || $(cell).addClass('d-none')
                         tr._cellRender = true
                     })
                 })

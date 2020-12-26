@@ -134,11 +134,14 @@ const showAlert = function (html: JQuery<HTMLElement>) {
                 offset: $(this).find('tbody > tr').length,
                 tableQuery: $(this).data('id') ? `table[data-id="${$(this).data('id')}"]` : 'table[load-more]'
             }
+            // Hàm layoutAction.rebuild.autoAddDeleteEventTable (thêm event xóa item trong table cho nút .delete-btn) cần điều này để giảm offset xuống
+            this._isLoadMore = true
 
             let oldConfig = { ...configDefault, ...config }
+            // Để xác định table đã load hết hay chưa
             let isMaxRecord = false
             loadMoreButton.insertAfter(this)
-            this._isLoadMore = true
+
             this._setLoadMore = (config: _typeConfig) => {
                 if (config instanceof Function) config = config({ ...oldConfig })
                 oldConfig = { ...oldConfig, ...config }
@@ -154,10 +157,15 @@ const showAlert = function (html: JQuery<HTMLElement>) {
                 let c = oldConfig
                 $.ajax({ url: c.urlAjax, method: "GET", data: `no-layout&limit=${c.limit}&offset=${c.offset}` }).done((resp) => {
                     const trArr = $(resp).find(c.tableQuery).find('tbody > tr')
+
+                    // đánh dấu dã load hết record lên
                     if (trArr.length === 0) {
                         isMaxRecord = true
                         return Swal.fire(_swalConfig.notFoundMoreData)
+                    } else if (trArr.length !== c.limit) {
+                        isMaxRecord = true
                     }
+
                     c.offset += trArr.length
                     this._appendBodyTable(trArr)
                 })

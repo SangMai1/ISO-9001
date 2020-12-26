@@ -2,19 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\menus;
+use App\Http\Requests\RequestMenu;
+use App\Models\Menu;
+use App\Util\CommonUtil;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
-class MenusController extends Controller
+class MenuController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $req)
     {
-        //
+        return view('menu/danh-sach' . ($req->has('no-layout') ? '-table-include' : ''), [
+            'menus' => CommonUtil::readViewConfig(Menu::class, $req)->get()
+        ]);
     }
 
     /**
@@ -24,27 +29,27 @@ class MenusController extends Controller
      */
     public function create()
     {
-        //
+        return view('menu.them-moi');
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\RequestMenu  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(RequestMenu $request)
     {
-        //
+        Session::flash('message', (new Menu())->create($request->all()) ? 'addSuccess' : 'addFailed');
+        return view('message');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\menus  $menus
      * @return \Illuminate\Http\Response
      */
-    public function show(menus $menus)
+    public function show()
     {
         //
     }
@@ -52,10 +57,9 @@ class MenusController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\menus  $menus
      * @return \Illuminate\Http\Response
      */
-    public function edit(menus $menus)
+    public function edit()
     {
         //
     }
@@ -64,10 +68,9 @@ class MenusController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\menus  $menus
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, menus $menus)
+    public function update(Request $request)
     {
         //
     }
@@ -75,11 +78,11 @@ class MenusController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\menus  $menus
      * @return \Illuminate\Http\Response
      */
-    public function destroy(menus $menus)
+    public function destroy(Request $req)
     {
-        //
+        Session::flash('message', Menu::destroy($req->id) ? 'deleteSuccess' : 'deleteFailed');
+        return view('message');
     }
 }

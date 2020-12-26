@@ -13,15 +13,15 @@ class CreateMenusesTable extends Migration
      */
     public function up()
     {
-        Schema::create('menuses', function (Blueprint $table) {
+        Schema::create('menus', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->bigInteger('idcha');
+            $table->bigInteger('idcha')->nullable(true);
             $table->string('ten');
             $table->string('url');
             $table->integer('vitri');
-            $table->bigInteger('chucnangid');
             $table->string('nguoitao');
             $table->string('nguoisua');
+            $table->string('icon');
             $table->timestamps();
             $table->softDeletes();
         });
@@ -34,6 +34,6 @@ class CreateMenusesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('menuses');
+        Schema::dropIfExists('menus');
     }
 }

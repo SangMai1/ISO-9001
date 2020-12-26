@@ -78,7 +78,8 @@
 		"scope": "blade",
 		"body": "<div class=\"cell\" index=\"${1:1}\"></div>",
 		"prefix": "@cellmobile"
-	},"Set Message": {
+	},
+	"Set Message": {
 		"scope": "blade",
 		"body": "<div class=\"cell\" index=\"${1:1}\"></div>",
 		"prefix": "@message"

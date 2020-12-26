@@ -48,7 +48,23 @@
             <span class="invalid-feedback default" role="alert">{{ $error }}</span>
         </div>
     @endif
+    @break
 
+    @case('textarea')
+    @if (!isset($error) || !$error)
+        <div class="form-group bmd-form-group">
+            <label @php if(isset($float)) echo 'class="bmd-label-floating"' @endphp>{{ $title ?? '' }}</label>
+            <textarea class="form-control {{ $attributes['class'] }}" {{ $attributes }}></textarea>
+        </div>
+
+    @else
+        <div class="form-group bmd-form-group has-danger">
+            <label @php if(isset($float)) echo 'class="bmd-label-floating"' @endphp>{{ $title ?? '' }}</label>
+            <textarea class="form-control {{ $attributes['class'] }}" {{ $attributes }}></textarea>
+            <span class="invalid-feedback default" role="alert" class="default">{{ $error }}</span>
+            <span class="form-control-feedback default"><i class="fas fa-exclamation"></i></span>
+        </div>
+    @endif
     @break
 
     @default

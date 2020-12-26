@@ -1,0 +1,4 @@
+{
+    "iconAdd": { "scope": "blade", "prefix": "@iconAdd", "body": "<i class=\"fas fa-plus-circle\"></i>"},
+    "iconDelete": { "scope": "blade", "prefix": "@iconDelete", "body": "<i class=\"fas fa-plus-trash\"></i>"},
+}

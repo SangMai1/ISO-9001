@@ -26,6 +26,8 @@
             <th>Tên</th>
             <!-- field chính:                                       - Index mobile 3                                                                    -->
             <th>Đường dẫn</th>
+            <!-- field chính:                                       - Index mobile 3                                                                    -->
+            <th>Cập nhật</th>
 
             <!-- field cho action:                                  - Không được tính index                                                             -->
             <!-- snippet :                                          - @thAction                                                                         -->
@@ -52,6 +54,7 @@
                             <div class="cell" index="1"></div>
                             <div class="cell" index="2"></div>
                             <div class="cell" index="3"></div>
+                            <div class="cell" index="4"></div>
                         </div>
                     </td>
 
@@ -61,6 +64,8 @@
                     <td>{{ $cn->ten }}</td>
                     <!-- Column chính:                              - Index là 3                                                                        -->
                     <td>{{ $cn->url }}</td>
+                    <!-- Column chính:                              - Index là 4                                                                        -->
+                    <td>{{ $cn->nguoisua }}</td>
 
                     <!-- Column cho action:                         - Không được tính index                                                             -->
                     <td class="td-action">

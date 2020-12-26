@@ -9,5 +9,5 @@ class Nhanviens extends Model
 {
     public $timestamps = true;
     protected $table = "nhanviens";
-    protected $fillable = ["id", "ten","ma","email","ngaysinh","gioitinh","hesoluong","chucdanhid","phongbanid", "nguoitao", "nguoisua", "daxoa"];
+    protected $fillable = ["id", "ten", "ma", "ngaysinh", "gioitinh", "hesoluong", "chucdanhid", "phongbanid", "nguoitao", "nguoisua"];
 }

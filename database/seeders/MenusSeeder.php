@@ -2,7 +2,9 @@
 
 namespace Database\Seeders;
 
+use App\Util\CommonUtil;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class MenusSeeder extends Seeder
 {
@@ -13,6 +15,6 @@ class MenusSeeder extends Seeder
      */
     public function run()
     {
-        //
+        CommonUtil::seederJson('menus');
     }
 }

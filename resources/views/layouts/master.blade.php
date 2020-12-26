@@ -19,7 +19,6 @@
 
 <body class="">
     <div class="wrapper ">
-        <div class="csrf-token">@csrf</div>
         @include('includes.sidebar')
         <div class="main-panel">
             <!-- Navbar -->

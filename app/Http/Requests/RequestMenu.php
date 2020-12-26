@@ -2,9 +2,10 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Menu;
 use Illuminate\Foundation\Http\FormRequest;
 
-class RequestChucNang extends FormRequest
+class RequestMenu extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,18 +24,11 @@ class RequestChucNang extends FormRequest
      */
     public function rules()
     {
-        return  [
-            'ten' => 'required|string|min:5',
-            'url' => 'required|string|min:1'
-        ];
-    }
-
-    public function attributes()
-    {
         return [
-            'ten' => 'Tên chức năng',
-            'url' => 'Đường dẫn URL'
+            'idcha' => "nullable|exists:menus",
+            'ten' => "required|min:5|max:100",
+            'url' => "required|min:5|max:100",
+            'vitri' => "required|Integer",
         ];
     }
-    
 }

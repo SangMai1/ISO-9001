@@ -18,14 +18,26 @@ use App\Http\Controllers\CauhinhsController;
 |
 */
 
-Route::get('/doc', function () { return view('doc'); }); // Thêm documentation cho layout
-Route::get('/', function () {  return view('home'); });
-Route::get('/home', function(){ return redirect('/');})->name('home');
+Route::get('/doc', function () {
+    return view('doc');
+}); // Thêm documentation cho layout
+Route::get('/', function () {
+    return view('home');
+});
+Route::get('/home', function () {
+    return redirect('/');
+})->name('home');
 Auth::routes(['register' => true]);
-Route::get('/example', function () { return view('example');});
+Route::get('/example', function () {
+    return view('example');
+});
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-Route::get('/list', function () { return view('/layouts/default-form/demo'); });
-Route::get('/table/{table}', function($table){ return response(DB::table($table)->get(), 200, ['content-type'=> 'application/json']);});
+Route::get('/list', function () {
+    return view('/layouts/default-form/demo');
+});
+Route::get('/table/{table}', function ($table) {
+    return response(DB::table($table)->get(), 200, ['content-type' => 'application/json']);
+});
 
 Route::group(['prefix' => '/cau-hinh'], function () {
     Route::get('/danh-sach', 'App\Http\Controllers\CauhinhsController@index')->name('cauhinh.list'); // Hiển thị danh sách cấu hình
@@ -64,15 +76,26 @@ Route::group(['prefix' => '/danh-muc'], function () {
     Route::get('/xoa/{id}', 'App\Http\Controllers\DanhmucsController@destroy')->name('danhmuc.delete'); // Xóa danh mục
     Route::get('/search', 'App\Http\Controllers\DanhmucsController@find')->name('danhmuc.find'); // Tìm kiếm danh mục
 });
+
 Route::group(['prefix' => '/chuc-nang',], function () {
     Route::get('/danh-sach', 'App\Http\Controllers\ChucnangsController@index')->name('chucnang.list'); // Hiển thị danh sách chức năng
     Route::get('/them-moi', 'App\Http\Controllers\ChucnangsController@create')->name('chucnang.create'); // Thêm mới chức năng
     Route::post('/them-moi', 'App\Http\Controllers\ChucnangsController@store')->name('chucnang.store'); // Xử lý thêm mới chức năng
     Route::get('/chinh-sua', 'App\Http\Controllers\ChucnangsController@edit')->name('chucnang.edit');; // Cập nhật chức năng
     Route::post('/cap-nhat', 'App\Http\Controllers\ChucnangsController@update')->name('chucnang.update'); // Xử lý cập nhật chức năng
-    Route::post('/xoa', 'App\Http\Controllers\ChucnangsController@deleteAll')->name('chucnang.delete'); // Xóa chức năng
+    Route::post('/xoa', 'App\Http\Controllers\ChucnangsController@delete')->name('chucnang.delete'); // Xóa chức năng
     Route::get('/search', 'App\Http\Controllers\ChucnangsController@search')->name('chucnang.search'); // Tìm kiếm chức năng
 });
+
+Route::group(['prefix' => '/menu',], function () {
+    Route::get('/danh-sach', 'App\Http\Controllers\MenuController@index')->name('menu.list'); // Hiển thị danh sách menu
+    Route::get('/them-moi', 'App\Http\Controllers\MenuController@create')->name('menu.create'); // Thêm mới menu
+    Route::post('/them-moi', 'App\Http\Controllers\MenuController@store')->name('menu.store'); // Xử lý thêm mới menu
+    Route::get('/chinh-sua', 'App\Http\Controllers\MenuController@edit')->name('menu.edit');; // Cập nhật menu
+    Route::post('/cap-nhat', 'App\Http\Controllers\MenuController@update')->name('menu.update'); // Xử lý cập nhật menu
+    Route::post('/xoa', 'App\Http\Controllers\MenuController@destroy')->name('menu.delete'); // Xóa menu
+});
+
 
 Route::group(['prefix' => '/nhom'], function () {
     Route::get('/danh-sach', 'App\Http\Controllers\NhomsController@index')->name('nhom.list'); // Hiển thị danh sách nhóm

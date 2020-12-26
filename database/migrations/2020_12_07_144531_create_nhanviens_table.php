@@ -18,7 +18,6 @@ class CreateNhanviensTable extends Migration
             $table->timestamps();
             $table->string('ma');
             $table->string('ten');
-            $table->string('email');
             $table->date('ngaysinh');
             $table->smallInteger('gioitinh')->comment("0: nam, 1:nữ, 2:khác");
             $table->double('hesoluong');

@@ -20,10 +20,10 @@ class ChucnangsController extends Controller
     public function index(Request $request)
     {
         $chucNangs = CommonUtil::readViewConfig(chucnangs::class, $request)->get();
-        if ($request->has('no-layout')) {
-            return view('chuc-nang.table-include', compact(['chucNangs']));
-        }
-        return view('chuc-nang.danh-sach', compact(['chucNangs']));
+        return view(
+            $request->has('no-layout') ? 'chuc-nang.table-include' : 'chuc-nang.danh-sach',
+            compact(['chucNangs'])
+        );
     }
 
     /**
@@ -50,8 +50,6 @@ class ChucnangsController extends Controller
         $chucNang = new chucnangs();
         $chucNang->ten = $request->ten;
         $chucNang->url = $request->url;
-        $chucNang->nguoitao = "sang";
-        $chucNang->nguoisua = "sang";
 
         Session::flash('message', $chucNang->save() ? 'addSuccess' : 'addFailed');
 
@@ -89,7 +87,6 @@ class ChucnangsController extends Controller
         } else {
             $chucnang->ten = $request->ten;
             $chucnang->url = $request->url;
-            $chucnang->nguoisua = "admin";
             Session::flash('message', $chucnang->update() ? 'updateSuccess' : 'updateFailed');
         }
 
@@ -103,7 +100,7 @@ class ChucnangsController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    public function deleteAll(Request $request)
+    public function delete(Request $request)
     {
 
         date_default_timezone_set("Asia/Ho_Chi_Minh");

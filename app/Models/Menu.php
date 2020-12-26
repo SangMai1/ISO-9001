@@ -7,10 +7,10 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class chucnangs extends Model
+class Menu extends Model
 {
     use SoftDeletes, UpdateUser;
     public $timestamps = true;
-    protected $table = "chucnangs";
-    protected $fillable = ["id", "ten", "url", "nguoitao", "nguoisua"];
+    protected $table = "menus";
+    protected $fillable = ["id", "idcha", "url", "ten", "nguoitao", "nguoisua", "icon"];
 }
