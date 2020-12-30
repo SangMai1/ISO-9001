@@ -2,8 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\RequestLichXuatXe;
 use App\Models\Lichxuatxes;
+use App\Models\Nhanviens;
+use App\Models\taisans;
+use App\Models\xes;
+use App\Util\CommonUtil;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class LichxuatxesController extends Controller
 {
@@ -12,9 +18,16 @@ class LichxuatxesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $lichxuatxes = CommonUtil::readViewConfig(Lichxuatxes::class, $request)->get();
+        $xes = xes::join('taisans', 'xes.taisanid', '=', 'taisans.id')
+                    ->pluck('taisans.tentaisan', 'xes.id')->all();
+        $nhanviens = Nhanviens::pluck('ten', 'id');
+        if($request->has('no-layout')) {
+            return view('lich-xuat-xe.table-include', compact(['lichxuatxes', 'xes', 'nhanviens']));
+        }
+        return view('lich-xuat-xe.danh-sach', compact(['lichxuatxes', 'xes', 'nhanviens']));
     }
 
     /**
@@ -24,7 +37,10 @@ class LichxuatxesController extends Controller
      */
     public function create()
     {
-        //
+        $idXe = xes::join('taisans', 'xes.taisanid', '=', 'taisans.id')
+                    ->pluck('taisans.tentaisan', 'xes.id')->all();
+        $idNhanVien = Nhanviens::pluck('ten', 'id');
+        return view('/lich-xuat-xe/them-moi', compact(['idXe', 'idNhanVien']));
     }
 
     /**
@@ -33,9 +49,24 @@ class LichxuatxesController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(RequestLichXuatXe $request)
     {
-        //
+        date_default_timezone_set("Asia/Ho_Chi_Minh");
+
+        $lichxuatxes = new Lichxuatxes();
+        $lichxuatxes->xeid = $request->xeid;
+        $lichxuatxes->cuochopid = $request->cuochopid;
+        $lichxuatxes->thoigiandidukien = $request->thoigiandidukien;
+        $lichxuatxes->thoigianvedukien = $request->thoigianvedukien;
+        $lichxuatxes->nhanvienid = $request->nhanvienid;
+        $lichxuatxes->diadiemdi = $request->diadiemdi;
+        $lichxuatxes->ghichu = $request->ghichu;
+        $lichxuatxes->thoigiandithucte = '0000-00-00 00:00:00';
+        $lichxuatxes->thoigianvethucte = '0000-00-00 00:00:00';
+        $lichxuatxes->sokmtruockhidi ='0';
+        $lichxuatxes->sokmsaukhidi ='0';
+        Session::flash('message', $lichxuatxes->save() ? 'addSuccess' : 'addFailed');
+        return view('message');
     }
 
     /**
@@ -55,9 +86,16 @@ class LichxuatxesController extends Controller
      * @param  \App\Models\Lichxuatxes  $lichxuatxes
      * @return \Illuminate\Http\Response
      */
-    public function edit(Lichxuatxes $lichxuatxes)
+    public function edit(Request $request)
     {
-        //
+        $lichxuatxe = Lichxuatxes::find($request->id);
+        $idXe = xes::join('taisans', 'xes.taisanid', '=', 'taisans.id')
+                    ->pluck('taisans.tentaisan', 'xes.id')->all();
+        $idNhanVien = Nhanviens::pluck('ten', 'id');
+        if(!$lichxuatxe) abort(404);
+        return view('/lich-xuat-xe/cap-nhat', compact(['lichxuatxe', 'idXe', 'idNhanVien']));
+
+        
     }
 
     /**
@@ -67,9 +105,28 @@ class LichxuatxesController extends Controller
      * @param  \App\Models\Lichxuatxes  $lichxuatxes
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Lichxuatxes $lichxuatxes)
+    public function update(RequestLichXuatXe $request)
     {
-        //
+        date_default_timezone_set("Asia/Ho_Chi_Minh");
+        $lichxuatxe = Lichxuatxes::find($request->id);
+        if(!$lichxuatxe){
+            Session::falsh('message', 'notFoundItem');
+        } else {
+            $lichxuatxe->xeid = $request->xeid;
+            $lichxuatxe->cuochopid = $request->cuochopid;
+            $lichxuatxe->thoigiandidukien = $request->thoigiandidukien;
+            $lichxuatxe->thoigianvedukien = $request->thoigianvedukien;
+            $lichxuatxe->nhanvienid = $request->nhanvienid;
+            $lichxuatxe->diadiemdi = $request->diadiemdi;
+            $lichxuatxe->ghichu = $request->ghichu;
+            $lichxuatxe->thoigiandithucte = $request->thoigiandithucte;
+            $lichxuatxe->thoigianvethucte = $request->thoigianvethucte;
+            $lichxuatxe->sokmtruockhidi = $request->sokmtruockhidi;
+            $lichxuatxe->sokmsaukhidi = $request->sokmsaukhidi;
+            Session::flash('message', $lichxuatxe->update() ? 'updateSuccess' : 'updateFailed');
+        }
+
+        return view('message');
     }
 
     /**
@@ -78,8 +135,12 @@ class LichxuatxesController extends Controller
      * @param  \App\Models\Lichxuatxes  $lichxuatxes
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Lichxuatxes $lichxuatxes)
+    public function destroy(Request $request)
     {
-        //
+        date_default_timezone_set("Asia/Ho_Chi_Minh");
+        $id = $request->input('id');
+        $result = Lichxuatxes::find($id)->delete();
+        Session::flash('message', $result ? 'deleteSuccess' : 'deleteFailed');
+        return view('message');
     }
 }

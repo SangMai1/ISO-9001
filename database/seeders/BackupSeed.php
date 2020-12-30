@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\DB;
 
 class BackupSeed extends Seeder
 {
-
     static $pathBackup = './database/seeders/seed-json/backup/';
 
     protected function customBackupTable($db, $table)
@@ -29,7 +28,7 @@ class BackupSeed extends Seeder
             try {
                 $file = fopen("{$this::$pathBackup}{$t}.json", "w");
                 fwrite($file, json_encode($this->customBackupTable(DB::table($t), $t)->get()));
-                error_log('backup table => '.$t);
+                error_log('backup table => ' . $t);
             } catch (\Throwable $th) {
                 error_log("Cannot backup table {" . $t . "}: {$th->getMessage()}");
             }
