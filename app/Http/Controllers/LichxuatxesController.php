@@ -139,7 +139,7 @@ class LichxuatxesController extends Controller
     {
         date_default_timezone_set("Asia/Ho_Chi_Minh");
         $id = $request->input('id');
-        $result = Lichxuatxes::find($id)->delete();
+        $result = Lichxuatxes::fbind($id)->delete();
         Session::flash('message', $result ? 'deleteSuccess' : 'deleteFailed');
         return view('message');
     }
