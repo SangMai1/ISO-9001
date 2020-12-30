@@ -48,7 +48,7 @@ class DanhmucsController extends Controller
         $danhMuc = new Danhmucs();
         $danhMuc -> ten = $request->ten;
         $danhMuc -> ma = $request->ma;
-        $danhMuc -> loai = $request->loai;
+        $danhMuc -> loai = $request->loai; 
         $danhMuc -> nguoitao = Auth::user()->username;
         $danhMuc -> nguoisua = Auth::user()->username;
 

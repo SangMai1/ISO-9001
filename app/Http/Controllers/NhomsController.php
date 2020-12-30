@@ -24,7 +24,6 @@ class NhomsController extends Controller
     public function index(Request $request)
     {
         $nhoms = CommonUtil::readViewConfig(nhoms::class, $request)->get();
-        // $idChucNang = DB::table('chucnangs')->pluck('ten', 'id');
         if($request->has('no-layout')) {
             return view('nhom.table-include', compact(['nhoms']));
         }
@@ -55,8 +54,6 @@ class NhomsController extends Controller
         $nhom = new nhoms();
         $nhom->ma = $request->ma;
         $nhom->ten = $request->ten;
-        $nhom->nguoitao = "sang";
-        $nhom->nguoisua = "sang";
         
         Session::flash('message', $nhom->save() ? 'addSuccess' : 'addFailed');
             $nhomid = $nhom->id;
@@ -111,7 +108,6 @@ class NhomsController extends Controller
         $nhom = nhoms::find($request->id);
         $nhom->ma = $request->ma;
         $nhom->ten = $request->ten;
-        $nhom->nguoisua = "admin";
         nhomsvachucnangs::where('nhomid', $request->id)->delete();
         
         
@@ -150,7 +146,7 @@ class NhomsController extends Controller
     {
         $search = $request->input('search');
         $nhoms = nhoms::where('ten', 'like', '%' . $search . '%')->get();
-        $idChucNang = DB::table('chucnangs')->where('daxoa', 0)->pluck('ten', 'id');
+        $idChucNang = DB::table('chucnangs')->pluck('ten', 'id');
         return view('/nhom/danh-sach', compact(['nhoms', 'idChucNang']));
     }
 }

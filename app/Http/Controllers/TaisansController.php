@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\RequestTaisan;
+use App\Models\Danhmucs;
 use App\Models\taisans;
+use App\Util\CommonUtil;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class TaisansController extends Controller
 {
@@ -12,9 +16,13 @@ class TaisansController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $taisans = CommonUtil::readViewConfig(taisans::class, $request)->get();
+        if($request->has('no-layout')) {
+            return view('tai-san.include', compact(['taisans']));
+        }
+        return view('tai-san.danh-sach', compact(['taisans']));
     }
 
     /**
@@ -24,7 +32,8 @@ class TaisansController extends Controller
      */
     public function create()
     {
-        //
+        $danhMucs = Danhmucs::all()->where('loai', 2)->pluck('ten', 'id');
+        return view('/tai-san/them-moi', compact(['danhMucs']));
     }
 
     /**
@@ -33,9 +42,18 @@ class TaisansController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(RequestTaisan $request)
     {
-        //
+        date_default_timezone_set("Asia/Ho_Chi_Minh");
+        $taisan = new taisans();
+        $taisan->mataisan = $request->mataisan;
+        $taisan->tentaisan = $request->tentaisan;
+        $taisan->loaitaisanid = $request->loaitaisanid;
+        $taisan->giatien = $request->giatien;
+        $taisan->khauhao = $request->khauhao;
+        $taisan->trangthai = $request->trangthai;
+        Session::flash('message', $taisan->save() ? 'addSuccess' : 'addFailed');
+        return view('message');
     }
 
     /**
@@ -55,9 +73,12 @@ class TaisansController extends Controller
      * @param  \App\Models\taisans  $taisans
      * @return \Illuminate\Http\Response
      */
-    public function edit(taisans $taisans)
+    public function edit(Request $request)
     {
-        //
+        $taisans = taisans::find($request->id);
+        $danhMucs = Danhmucs::all()->where('loai', 2)->pluck('ten', 'id');
+        if(!$taisans) return abort(404);
+        return view('/tai-san/cap-nhat', compact(['taisans', 'danhMucs']));
     }
 
     /**
@@ -67,9 +88,24 @@ class TaisansController extends Controller
      * @param  \App\Models\taisans  $taisans
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, taisans $taisans)
+    public function update(RequestTaisan $request)
     {
-        //
+        date_default_timezone_set("Asia/Ho_Chi_Minh");
+
+        $taisan = taisans::find($request->id);
+        if(!$taisan){
+            Session::flash('message', 'notFoundItem');
+        } else {
+            $taisan->mataisan = $request->mataisan;
+            $taisan->tentaisan = $request->tentaisan;
+            $taisan->loaitaisanid = $request->loaitaisanid;
+            $taisan->giatien = $request->giatien;
+            $taisan->khauhao = $request->khauhao;
+            Session::flash('message', $taisan->update() ? 'updateSuccess' : 'updateFailed');
+        }
+        
+        return view('message');
+
     }
 
     /**
@@ -78,8 +114,14 @@ class TaisansController extends Controller
      * @param  \App\Models\taisans  $taisans
      * @return \Illuminate\Http\Response
      */
-    public function destroy(taisans $taisans)
+    public function destroy(Request $request)
     {
-        //
+        date_default_timezone_set("Asia/Ho_Chi_Minh");
+        $id = $request->input('id');
+        $result = taisans::find($id)->delete();
+        Session::flash('message', $result ? 'deleteSuccess' : 'deleteFailed');
+        return view('message');
     }
+
+    
 }

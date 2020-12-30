@@ -18,7 +18,8 @@
         <a data-toggle="collapse" class="dropdown-toggle btn-info btn auto-icon" style="max-width: 200px">
             <span class="cell" index="2">Chọn menu cha</span>
         </a>
-        <ul class="collapse list-unstyled w-100 icc p-2" data-id="menu-parent-ul">
+
+        <ul class="collapse list-unstyled w-100 icc p-2" data-id="menu-parent-ul" >
             <li>
                 <x-input type="radio" name="idcha" float value="" checked>
                     @slot('title')

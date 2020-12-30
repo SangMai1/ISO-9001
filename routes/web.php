@@ -116,3 +116,43 @@ Route::group(['prefix' => '/nhan-vien'], function () {
     Route::get('/search', 'App\Http\Controllers\NhanviensController@search')->name('nhanvien.search'); // Tìm kiếm  nhân viên
     Route::post('/render', 'App\Http\Controllers\NhanviensController@render')->name('nhanvien.render');
 });
+
+Route::group(['prefix' => '/tai-san'], function () {
+    Route::get('/danh-sach', 'App\Http\Controllers\TaisansController@index')->name('taisan.list'); // Hiển thị danh sách tài sản
+    Route::get('/them-moi', 'App\Http\Controllers\TaisansController@create')->name('taisan.create'); // Thêm mới tài sản
+    Route::post('/them-moi', 'App\Http\Controllers\TaisansController@store')->name('taisan.store'); // Xử lý thêm mới tài sản
+    Route::get('/chinh-sua', 'App\Http\Controllers\TaisansController@edit')->name('taisan.edit'); // Cập nhật tài sản
+    Route::post('/cap-nhat', 'App\Http\Controllers\TaisansController@update')->name('taisan.update'); // Xử lý cập nhật tài sản
+    Route::post('/xoa', 'App\Http\Controllers\TaisansController@destroy')->name('taisan.delete'); // Xóa tài sản
+    // Route::get('/search', 'App\Http\Controllers\NhomsController@search')->name('nhom.search'); // Tìm kiếm tài sản
+});
+
+Route::group(['prefix' => '/xe'], function () {
+    Route::get('/danh-sach', 'App\Http\Controllers\XesController@index')->name('xe.list'); // Hiển thị danh sách xe
+    Route::get('/them-moi', 'App\Http\Controllers\XesController@create')->name('xe.create'); // Thêm mới xe
+    Route::post('/them-moi', 'App\Http\Controllers\XesController@store')->name('xe.store'); // Xử lý thêm mới xe
+    Route::get('/chinh-sua', 'App\Http\Controllers\XesController@edit')->name('xe.edit'); // Cập nhật xe
+    Route::post('/cap-nhat', 'App\Http\Controllers\XesController@update')->name('xe.update'); // Xử lý cập nhật xe
+    Route::post('/xoa', 'App\Http\Controllers\XesController@destroy')->name('xe.delete'); // Xóa xe
+    Route::get('/search', 'App\Http\Controllers\XesController@search')->name('xe.search'); // Tìm kiếm xe
+});
+
+Route::group(['prefix' => '/lich-su-sua-chua'], function () {
+    Route::get('/danh-sach', 'App\Http\Controllers\LichsusuachuasController@index')->name('lichsusuachua.list'); // Hiển thị danh sách lịch sử sửa chữa
+    Route::get('/them-moi', 'App\Http\Controllers\LichsusuachuasController@create')->name('lichsusuachua.create'); // Thêm mới lịch sử sửa chữa
+    Route::post('/them-moi', 'App\Http\Controllers\LichsusuachuasController@store')->name('lichsusuachua.store'); // Xử lý thêm mới lịch sử sửa chữa
+    Route::get('/chinh-sua', 'App\Http\Controllers\LichsusuachuasController@edit')->name('lichsusuachua.edit'); // Cập nhật lịch sử sửa chữa
+    Route::post('/cap-nhat', 'App\Http\Controllers\LichsusuachuasController@update')->name('lichsusuachua.update'); // Xử lý cập nhật lịch sử sửa chữa
+    Route::post('/xoa', 'App\Http\Controllers\LichsusuachuasController@destroy')->name('lichsusuachua.delete'); // Xóa lịch sử sửa chữa
+    // Route::get('/search', 'App\Http\Controllers\NhomsController@search')->name('nhom.search'); // Tìm kiếm lịch sử sửa chữa
+});
+
+Route::group(['prefix' => '/lich-xuat-xe'], function () {
+    Route::get('/danh-sach', 'App\Http\Controllers\LichxuatxesController@index')->name('lichxuatxe.list'); // Hiển thị danh sách lịch xuất xe
+    Route::get('/them-moi', 'App\Http\Controllers\LichxuatxesController@create')->name('lichxuatxe.create'); // Thêm mới lịch xuất xe
+    Route::post('/them-moi', 'App\Http\Controllers\LichxuatxesController@store')->name('lichxuatxe.store'); // Xử lý thêm mới lịch xuất xe
+    Route::get('/chinh-sua', 'App\Http\Controllers\LichxuatxesController@edit')->name('lichxuatxe.edit'); // Cập nhật lịch xuất xe
+    Route::post('/cap-nhat', 'App\Http\Controllers\LichxuatxesController@update')->name('lichxuatxe.update'); // Xử lý cập nhật lịch xuất xe
+    Route::post('/xoa', 'App\Http\Controllers\LichxuatxesController@destroy')->name('lichxuatxe.delete'); // Xóa lịch xuất xe
+    // Route::get('/search', 'App\Http\Controllers\NhomsController@search')->name('nhom.search'); // Tìm kiếm lịch xuất xe
+});
