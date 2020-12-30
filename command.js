@@ -13,9 +13,11 @@ if (!fs.existsSync(seedJsonBackupPath)) fs.mkdirSync(seedJsonBackupPath)
 async function main() {
     switch (command) {
         case 'seed':
-            if (arg === '--all') Object.keys(seed).forEach(async (key) => await commandAction.seedAction(key))
-            else if (arg === 'bk') {
+            if (arg === '--all') Object.keys(seed).forEach((key) => { commandAction.seedAction(key) })
+            else if (process.argv[3] === 'bk') {
+                fs.writeFileSync('./share.json', JSON.stringify(process.argv.slice(4, process.env.length)))
                 await execCommand('php artisan db:seed --class=' + 'BackupSeed')
+                fs.unlinkSync('./share.json')
             }
             else await commandAction.seedAction(arg)
             break

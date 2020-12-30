@@ -5,8 +5,8 @@ body {
 .list-unstyled ul {
     list-style: none;
 }
-.font-weight-bold{
-    font-weight: 900!important;
+.font-weight-bold {
+    font-weight: 900 !important;
 }
 .close-layer.visible.done {
     position: fixed !important;
@@ -66,7 +66,7 @@ body {
     }
 }
 .form-group {
-    margin-bottom: 15px;
+    margin-top: 15px;
 }
 .bmd-label-floating {
     @extend .text-one-line;
@@ -136,6 +136,14 @@ table {
             > td:not(.td-mobile):not(.td-action):not([ai]):not([sl]) {
                 display: none;
             }
+            > td {
+                > [data-toggle="collapse"].btn {
+                    padding: 12px 15px;
+                    white-space: inherit;
+                    text-align: left;
+                    min-width: 100%;
+                }
+            }
         }
         thead > tr > th.auto-index-head,
         thead > tr > th.select,
@@ -155,7 +163,7 @@ td[ai] {
 .btn-icon {
     width: 30px !important;
     height: 30px !important;
-    font-size: 16px;
+    font-size: 16px !important;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -165,8 +173,8 @@ ul:not(.navbar-nav):not([role="presentation"]):not(.nav-tabs) {
     margin-top: 10px !important;
     li {
         i {
-            font-size: 18px !important;
-            margin-right: 8px !important;
+            font-size: 18px;
+            margin-right: 8px;
         }
         .nav-link {
             font-size: 14px !important;
@@ -190,11 +198,13 @@ ul:not(.navbar-nav):not([role="presentation"]):not(.nav-tabs) {
 }
 
 .dropdown-toggle {
+    position: relative;
     &.auto-icon {
-        display: flex;
-        align-items: center;
         &::after {
+            position: absolute;
             margin-left: auto !important;
+            right: 10px;
+            top: calc(50% - 2px);
         }
     }
     &::after {
@@ -292,4 +302,55 @@ ul:not(.navbar-nav):not([role="presentation"]):not(.nav-tabs) {
 }
 .nav-tabs-navigation > {
     width: 100%;
+}
+.autocomplete-select {
+    width: 100%;
+    .form-group {
+        width: 100%;
+        position: relative;
+        padding-right: 10px;
+        margin-right: 15px;
+        .input-complete {
+            width: 100%;
+        }
+        .show-more-btn {
+            position: absolute;
+            top: 10px;
+            right: -10px;
+            padding: 2px 5px;
+            margin-bottom: 10px;
+            &:hover {
+                color: #9c27b0;
+            }
+        }
+    }
+    .popup-complete {
+        position: absolute;
+        background-color: white;
+        box-shadow: 1px 1px 3px;
+        z-index: 99999;
+        max-height: 200px;
+        overflow-y: auto;
+        cursor: pointer;
+        width: 100%;
+        > * {
+            border-bottom: 1px solid #eee;
+        }
+        > .active {
+            background-color: #00bcd4;
+            color: white;
+        }
+        > .empty.active {
+            background-color: #ddd;
+            color: black;
+        }
+    }
+}
+
+.collapsing {
+    transition: height 0.2s;
+}
+
+.main-panel > .content {
+    padding: 15px 10px;
 }

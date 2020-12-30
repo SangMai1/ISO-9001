@@ -12,7 +12,7 @@ Tip 2: you can also add an image using data-image tag
 
         <ul class="list-unstyled nav d-none" data-id="menu-parent-ul">
             @foreach ($menus as $m)
-                <li data-parent="{{ $m->idcha }}" class="nav-item" data-id="{{ $m->id }}">
+                <li data-parent="{{ $m->idcha }}" class="nav-item" data-id="{{ $m->id }}" position="{{$m->vitri}}">
                     <a class="nav-link" type="button" href="{{ $m->url }}">
                         <div class="icon-menu">{{ $m->icon }}</div>
                         {{ $m->ten }}

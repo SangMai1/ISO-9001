@@ -1,13 +1,11 @@
 //@ts-nocheck
 // @ts-ignore
 const DATA_CONFIG_ATTRIBUTE = "data-config";
-
+$('ac').auto
 const layoutAction = {
     rebuild: {
-        tooltip: (selector = $("body")) =>
-            selector.find('[data-toggle="tooltip"]').tooltip(),
-        popover: (selector = $("body")) =>
-            selector.find('[data-toggle="popover"]').popover(),
+        tooltip: (selector = $("body")) => selector.find('[data-toggle="tooltip"]').tooltip(),
+        popover: (selector = $("body")) => selector.find('[data-toggle="popover"]').popover(),
         autoBmd(selector = $("body")) {
             if ((selector = $(selector))[0]) {
                 selector.find(".btn").bmdRipples();
@@ -16,8 +14,10 @@ const layoutAction = {
             }
         },
         autoFormEvent(selector = $("body")) {
-            selector.find("form[ajax-form]").on("submit", function(evt) {
+            selector.find("form[ajax-form]").on("submit", function (evt) {
                 evt.preventDefault();
+                let callback = window[$(this).attr('ajax-form')]
+                if (!(callback instanceof Function)) callback = () => { }
                 if (!$(this).valid()) return;
                 const postHref = this.getAttribute("action");
                 $.ajax({
@@ -25,24 +25,17 @@ const layoutAction = {
                     data: new FormData(this),
                     error: resp => {
                         Swal.close();
-                        if (
-                            resp
-                                .getResponseHeader("content-type")
-                                .toLowerCase() !== "application/json"
-                        )
-                            return;
+                        if (resp.getResponseHeader("content-type").toLowerCase() !== "application/json") return $.ajaxSettings.error();
                         const result = JSON.parse(resp.responseText);
                         if (result.message !== "The given data was invalid.")
-                            return;
-                        for (let [fieldName, error] of Object.entries(
-                            result.errors
-                        )) {
+                            return Swal.fire({ ..._swagConfig.toast, title: result.message, icon: 'error' });
+                        for (let [fieldName, error] of Object.entries(result.errors)) {
                             const input = $(this).find(`[name="${fieldName}"]`);
                             if (input[0]) input[0]._setBmdError(error);
                         }
                         layoutAction.renders.removeErrorInput($(this));
                     }
-                });
+                }).done(callback);
             });
         },
         /**
@@ -53,14 +46,14 @@ const layoutAction = {
         autoAddDeleteEventTable(selector = $("body")) {
             selector
                 .find("table[delete-href]")
-                .each(function(i, table: JQuery<HTMLElement>) {
+                .each(function (i, table: JQuery<HTMLElement>) {
                     table = $(table);
                     const deleteHref = table.attr("delete-href");
 
                     const setEvent = body => {
                         body.find("td.td-action .delete-btn").on(
                             "click",
-                            function(evt) {
+                            function (evt) {
                                 const tr = $(this).closest("tr");
                                 const id = tr.data("id");
                                 $.ajax({
@@ -96,13 +89,12 @@ const layoutAction = {
          * Tự động thêm cột select cho table
          */
         autoAddSelectColumn(selector = $("body")) {
-            selector.find("table[select]").each(function(index, table) {
+            selector.find("table[select]").each(function (index, table) {
                 const callbackName = table.getAttribute("select");
                 if (callbackName) $(table)._addSelectRows(window[callbackName]);
-                else
-                    $(table)
-                        ._addSelectRows()
-                        .removeClass("select");
+                else $(table)
+                    ._addSelectRows()
+                    .removeClass("select");
             });
         },
         /**
@@ -132,7 +124,7 @@ const layoutAction = {
      */
     activeMenu(menu: string | { href: string }) {
         const navBar = $(".nav:not(.navbar-nav)");
-        layoutAction.activeMenu = function(menu) {
+        layoutAction.activeMenu = function (menu) {
             navBar.find(".active").removeClass("active");
             const activeTag =
                 menu instanceof Object && menu.href
@@ -163,7 +155,7 @@ const layoutAction = {
                     const key = Utils.randomString(15);
                     config[key] = eval(configTag.html());
                     configForTag.attr(DATA_CONFIG_ATTRIBUTE, key);
-                } catch (error) {}
+                } catch (error) { }
             }
             configTag.remove();
         });
@@ -177,10 +169,67 @@ const layoutAction = {
         return window.$config[$(selector).attr(DATA_CONFIG_ATTRIBUTE)] || {};
     },
     renders: {
+        renderMenu(ulQuery = '[data-id="menu-parent-ul"]') {
+            $(ulQuery).each((i, ul) => {
+                ul = $(ul)
+                ul.removeClass('d-none')
+                let { liMap, arrPos } = ul
+                    .children("li[data-parent][data-id]")
+                    .toArray()
+                    .reduce((pre, cur, index) => {
+                        const icon = $(cur).find('.icon-menu')
+                        const id = $(cur).data("id")
+                        let iconAdd = $(icon.text())
+                        iconAdd.find('script').remove()
+                        iconAdd = iconAdd.filter((i, e) => {
+                            if (e.tagName === "SCRIPT") return false
+                            return true
+                        })
+                        icon.html(iconAdd);
+                        pre.liMap[$(cur).data("id")] = {
+                            li: cur,
+                            isAddChild: false
+                        };
+                        pre.arrPos[index] = [id, Number.parseInt($(cur).attr('position')) || 0]
+                        return pre;
+                    }, { liMap: {}, arrPos: [] });
+
+                arrPos = arrPos.sort((a, b) => a[1] - b[1])
+                for (let [liId] of arrPos) {
+                    const li = $(liMap[liId].li);
+                    li.detach()
+                    ul.append(li)
+                    const parentId = li.data("parent");
+                    const parentMap = liMap[parentId];
+
+                    if (!parentMap || parentMap.li === li[0]) continue;
+                    
+                    const parent = $(parentMap.li);
+                    let parentUl;
+                    if (!parentMap.isAddChild) {
+                        parentUl = $(
+                            `<ul class="text-left collapse p-0" id="menu-id-${parentId}"></ul>`
+                        );
+                        const btnCollapse = $(parent)
+                            .find("a").eq(0)
+                            .attr("data-toggle", 'collapse')
+                            .addClass("dropdown-toggle")
+                            .addClass("auto-icon");
+                        btnCollapse.attr("href", `#menu-id-${parentId}`);
+                        parent.append(parentUl);
+                        parentMap.isAddChild = true
+                    } else {
+                        parentUl = parent.find("ul").eq(0);
+                    }
+                    parentUl.append(li);
+                }
+                
+            });
+        },
         collapse(selector = $("body")) {
             $(selector)
                 .find('[data-toggle="collapse"]:not([href]):not([data-target])')
-                .each(function(i, e) {
+                .each(function (i, e) {
                     const id = Utils.randomString(15);
                     const collapse = $(e).next(".collapse");
                     if (collapse[0]) {
@@ -191,7 +240,7 @@ const layoutAction = {
                 });
         },
         cardTab(selector = $("body")) {
-            selector.find("[find-header]").each(function(i, cardBody) {
+            selector.find("[find-header]").each(function (i, cardBody) {
                 const ulHead = $(cardBody)
                     .parent()
                     .find(".card-header ul.nav-tabs")[0];
@@ -200,7 +249,7 @@ const layoutAction = {
                 $(cardBody)
                     .children(".tab-content")
                     .children(".tab-pane")
-                    .each(function(i, tabPane) {
+                    .each(function (i, tabPane) {
                         const id = Utils.randomString(15);
                         if (i > tabHeads.length) return;
                         tabHeads[i].setAttribute("href", `#${id}`);
@@ -209,7 +258,7 @@ const layoutAction = {
             });
         },
         tableMobile(selector = $("body")) {
-            selector.find("table.mobile").each(function(i, table) {
+            selector.find("table.mobile").each(function (i, table) {
                 //Đăt class cho table để append css
                 const classId = Utils.randomString(15);
                 if (table.getAttribute("cell-fix") != undefined) return;
@@ -225,8 +274,8 @@ const layoutAction = {
                     .toArray()
                     .reduce(
                         (prev, th, index) =>
-                            (prev += `table.${classId} > tbody > tr > td .cell:not(.no-title)[index="${index +
-                                1}"]::before{ content: '${th.getAttribute(
+                        (prev += `table.${classId} > tbody > tr > td .cell:not(.no-title)[index="${index +
+                            1}"]::before{ content: '${th.getAttribute(
                                 "mobile-head"
                             ) || th.textContent}: ' }\n`),
                         ""
@@ -248,7 +297,7 @@ const layoutAction = {
                 $(this)
                     .children("tbody")
                     .children("tr")
-                    .each(function(i, tr) {
+                    .each(function (i, tr) {
                         console.log("load table");
                         if (tr._cellRender) return;
 
@@ -257,7 +306,7 @@ const layoutAction = {
                         );
                         $(tr)
                             .find(".cell")
-                            .each(function(i, cell) {
+                            .each(function (i, cell) {
                                 const index = cell.getAttribute("index") - 1;
                                 cell.innerHTML =
                                     (tds[index] && tds[index].innerHTML) ||
@@ -268,7 +317,7 @@ const layoutAction = {
             }
         },
         removeErrorInput(jElement = $("body")) {
-            jElement.find(".form-group,.form-check").each(function(index, e) {
+            jElement.find(".form-group,.form-check").each(function (index, e) {
                 if ($(this).find(".invalid-feedback")[0]) {
                     $(this)
                         .find("input")
@@ -280,7 +329,7 @@ const layoutAction = {
             });
         },
         addLoadMore(jElement = $("body")) {
-            jElement.find("table[load-more]").each(function(index, table) {
+            jElement.find("table[load-more]").each(function (index, table) {
                 const config = {};
                 const limit = table.getAttribute("load-more-limit");
                 if (limit) config.limit = limit;

@@ -7,30 +7,33 @@ use Illuminate\Support\Facades\DB;
 
 class BackupSeed extends Seeder
 {
-    static $tables = [
-        'users',
-        'chucnangs',
-        'nhoms',
-        'menus',
-        'danhmucs',
-        'nhanviens',
-        'cauhinhs'
-    ];
+
     static $pathBackup = './database/seeders/seed-json/backup/';
-    /**
-     * Run the database seeds.
-     *
-     * @return void
-     */
+
+    protected function customBackupTable($db, $table)
+    {
+        switch ($table) {
+            case 'chucnangs':
+            case 'users':
+            case 'nhoms':
+            case 'menus':
+                $db->where('deleted_at', '=', null);
+                break;
+        }
+        return $db;
+    }
     public function run()
     {
-        foreach ($this::$tables as $t) {
+        $tables = json_decode(file_get_contents('./share.json'), true);
+        foreach ($tables as $t) {
             try {
                 $file = fopen("{$this::$pathBackup}{$t}.json", "w");
-                fwrite($file, json_encode(DB::table($t)->get()));
+                fwrite($file, json_encode($this->customBackupTable(DB::table($t), $t)->get()));
+                error_log('backup table => '.$t);
             } catch (\Throwable $th) {
-                error_log("Cannot backup table {" . $t . "}: {$th}");
+                error_log("Cannot backup table {" . $t . "}: {$th->getMessage()}");
             }
         }
+        return;
     }
 }

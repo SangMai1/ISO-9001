@@ -1,4 +1,4 @@
-<x-table auto-index select class="mobile" delete-href="{{ route('menu.delete') }}">
+{{-- <x-table auto-index select class="mobile" delete-href="{{ route('menu.delete') }}">
     @slot('head')
         <th class="th-mobile">Menu</th>
         <th>Tên</th>
@@ -34,4 +34,5 @@
             </tr>
         @endforeach
     @endslot
-</x-table>
+</x-table> --}}
+

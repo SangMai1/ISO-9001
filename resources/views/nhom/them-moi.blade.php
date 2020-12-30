@@ -50,23 +50,9 @@
         })
 
         function setName(input) {
-            
             input.setAttribute('name', 'chucnangs[]')
-
             const id = $(input).closest('tr').data('id');
             input.value = id;
-
-            // var ID = [];
-            // $("tr").each(function() {
-            //     // input.setAttribute('value', $(this).data("data-id"));
-            //     // ID.push($(this).attr("data-id"))
-            //     input.setAttribute('value',$(this).attr("data-id"));
-            // })
-
-            // console.log(ID);
-
-            console.log(input);
-            // console.log($('tr').data("data-id"));
         }
 
     </script>

@@ -1,31 +1,32 @@
 // @ts-ignore
 //@ts-nocheck
+HTMLElement.prototype.on = HTMLElement.prototype.addEventListener
 $(() => {
     window.token = $('meta[name="csrf-token"]').attr("content");
 });
-console.log("sidebar", $(".sidebar").html());
-const _swalConfig: { [key: string]: SweetAlertOptions } = {};
+
+const _swagConfig: { [key: string]: SweetAlertOptions } = {};
 var Toast: SwalInterface;
-const showLoading = function(message = "Chờ xí ...") {
+const showLoading = function (message = "Chờ xí ...") {
     Toast.fire({
         title: message,
         showCloseButton: false,
         didOpen: () => Swal.showLoading()
     });
 };
-const showAlert = function(html: JQuery<HTMLElement>) {
+const getMessage = (html) => (html = $(html)).hasClass("alert-message") ? html.text() : $(".alert-message", html).text()
+
+const showAlert = function (html: JQuery<HTMLElement>) {
     html = $(html);
-    let message = $(html).hasClass("alert-message")
-        ? html.text()
-        : $(".alert-message", $(html)).text();
-    const _typeAlert = _swalConfig[message];
+    let message = getMessage(html);
+    const _typeAlert = _swagConfig[message];
     if (_typeAlert) return Swal.fire(_typeAlert);
     else if (message)
         try {
             message = eval(`(()=>(${message}))()`);
             if (typeof message === "object")
                 return Swal.fire({
-                    ...(_swalConfig[message._type] || _swalConfig.toast),
+                    ...(_swagConfig[message._type] || _swagConfig.toast),
                     ...message
                 });
         } catch (error) {
@@ -35,7 +36,7 @@ const showAlert = function(html: JQuery<HTMLElement>) {
     Swal.close();
 };
 
-(function() {
+(function () {
     addJqueryValidationCustom();
     addJqueryTableAutoIndex();
     addSelectModeTable();
@@ -44,9 +45,7 @@ const showAlert = function(html: JQuery<HTMLElement>) {
     addPrototypeFormData();
     fixTooltip();
     configSweetAlert();
-    renderUlParentSelect();
-
-    $(() => fixMaterial());
+    fixMaterial()
 
     $.ajaxSetup({
         headers: {
@@ -58,64 +57,14 @@ const showAlert = function(html: JQuery<HTMLElement>) {
         method: "POST",
         beforeSend: () => showLoading(),
         success: resp => showAlert(resp),
-        error: () => Swal.fire(_swalConfig.errorAjax)
+        error: (resp) => {
+            if (resp.getResponseHeader("content-type").toLowerCase() === "application/json") {
+                const result = JSON.parse(resp.responseText);
+                return Swal.fire({ ..._swagConfig.toast, title: result.message, icon: 'error' });
+            }
+            Swal.fire(_swagConfig.errorAjax)
+        }
     });
-
-    function renderUlParentSelect(ulQuery = '[data-id="menu-parent-ul"]') {
-        $(() => {
-            $(ulQuery).each((i, ul) => {
-                ul = $(ul)
-                const liMap = ul
-                    .children("li[data-parent][data-id]")
-                    .toArray()
-                    .reduce((pre, cur) => {
-                        const icon = $(cur).find('.icon-menu')
-                        // $(cur).children('a').attr('href', '#')
-                        let iconAdd = $(icon.text())
-                        iconAdd.find('script').remove()
-                        iconAdd = iconAdd.filter((i,e)=>{
-                            if (e.tagName === "SCRIPT") return false
-                            return true
-                        })
-                        icon.html(iconAdd);
-                        pre[$(cur).data("id")] = {
-                            li: cur,
-                            isAddChild: false
-                        };
-                        return pre;
-                    }, {});
-
-                for (let liId in liMap) {
-                    const li = $(liMap[liId].li);
-                    const parentId = li.data("parent");
-                    const parentMap = liMap[parentId];
-
-                    if (!parentMap) continue;
-
-                    const parent = $(parentMap.li);
-                    let parentUl;
-                    if (!parentMap.isAddChild) {
-                        parentUl = $(
-                            `<ul class="text-left collapse p-0" id="menu-id-${parentId}"></ul>`
-                        );
-                        const btnCollapse = $(parent)
-                            .children("a")
-                            .attr("data-toggle", 'collapse')
-                            .addClass("dropdown-toggle")
-                            .addClass("auto-icon");
-                        btnCollapse.attr("href", `#menu-id-${parentId}`);
-                        parent.append(parentUl);
-                        parentMap.isAddChild = true
-                    } else {
-                        parentUl = parent.find("ul").eq(0);
-                    }
-
-                    parentUl.append(li);
-                }
-            });
-            $(ulQuery).removeClass('d-none')
-        });
-    }
 
     function configSweetAlert() {
         swal = Swal.mixin({
@@ -131,11 +80,11 @@ const showAlert = function(html: JQuery<HTMLElement>) {
         });
 
         //#region swal_config
-        _swalConfig.toast = {
+        _swagConfig.toast = {
             toast: true,
             position: "top-right",
             showConfirmButton: false,
-            showCloseButton: true,
+            showCloseButton: false,
             didOpen: toast => {
                 layoutAction.rebuild.autoBmd(".swal2-popup");
                 toast.addEventListener("mouseenter", window.Swal.stopTimer);
@@ -144,69 +93,40 @@ const showAlert = function(html: JQuery<HTMLElement>) {
             buttonsStyling: false
         };
 
-        _swalConfig.toastTime = { ..._swalConfig.toast, timer: 1500 };
-        _swalConfig.errorAjax = {
-            ..._swalConfig.toastTime,
-            title: "Lỗi khi gửi Request",
-            icon: "error"
-        };
-        _swalConfig.addSuccess = {
-            ..._swalConfig.toastTime,
-            title: "Thêm thành công",
-            icon: "success"
-        };
-        _swalConfig.addError = {
-            ..._swalConfig.toastTime,
-            title: "Thêm thất bại",
-            icon: "error"
-        };
-        _swalConfig.updateSuccess = {
-            ..._swalConfig.toastTime,
-            title: "Cập nhật thành công",
-            icon: "success"
-        };
-        _swalConfig.updateFailed = {
-            ..._swalConfig.toastTime,
-            title: "Cập nhật thất bại",
-            icon: "error"
-        };
-        _swalConfig.deleteSuccess = {
-            ..._swalConfig.toastTime,
-            title: "Xóa thành công",
-            icon: "success"
-        };
-        _swalConfig.deleteFailed = {
-            ..._swalConfig.toastTime,
-            title: "Xóa thất bại",
-            icon: "error"
-        };
-        _swalConfig.notFoundMoreData = {
-            ..._swalConfig.toastTime,
-            title: "Còn gì nữa đâu mà xem!",
-            icon: "warning"
-        };
+        _swagConfig.toastTime = { ..._swagConfig.toast, timer: 1500 };
+        _swagConfig.errorAjax = { ..._swagConfig.toastTime, title: "Lỗi khi gửi Request", icon: "error" };
+        _swagConfig.addSuccess = { ..._swagConfig.toastTime, title: "Thêm thành công", icon: "success" };
+        _swagConfig.error = { ..._swagConfig.toastTime, title: "Lỗi", icon: "error" };
+        _swagConfig.addError = { ..._swagConfig.toastTime, title: "Thêm thất bại", icon: "error" };
+        _swagConfig.updateSuccess = { ..._swagConfig.toastTime, title: "Cập nhật thành công", icon: "success" };
+        _swagConfig.updateFailed = { ..._swagConfig.toastTime, title: "Cập nhật thất bại", icon: "error" };
+        _swagConfig.deleteSuccess = { ..._swagConfig.toastTime, title: "Xóa thành công", icon: "success" };
+        _swagConfig.deleteFailed = { ..._swagConfig.toastTime, title: "Xóa thất bại", icon: "error" };
+        _swagConfig.notFoundMoreData = { ..._swagConfig.toastTime, title: "Còn gì nữa đâu mà xem!", icon: "warning" };
         //#endregion
 
-        Toast = Swal.mixin(_swalConfig.toast);
+        Toast = Swal.mixin(_swagConfig.toast);
     }
 
     // fix lỗi màn hình đen menu không kéo hết :V
     function fixMaterial() {
-        $(".navbar-toggler").on("click", async function() {
-            await new Promise(resolve => {
-                let interval = setInterval(
-                    () =>
-                        $(".close-layer.visible")[0] &&
-                        resolve(clearInterval(interval)),
-                    100
-                );
+        $(() => {
+            $(".navbar-toggler").on("click", async function () {
+                await new Promise(resolve => {
+                    let interval = setInterval(
+                        () =>
+                            $(".close-layer.visible")[0] &&
+                            resolve(clearInterval(interval)),
+                        100
+                    );
+                });
+                $("body").append($(".close-layer.visible").addClass("done"));
             });
-            $("body").append($(".close-layer.visible").addClass("done"));
-        });
+        })
     }
 
     function addPrototypeFormData() {
-        FormData.prototype.fromObject = function(this: FormData, obj) {
+        FormData.prototype.fromObject = function (this: FormData, obj) {
             if (typeof obj !== "object") return;
             for (let [key, value] of Object.entries(obj)) {
                 if (value instanceof Array) {
@@ -224,7 +144,7 @@ const showAlert = function(html: JQuery<HTMLElement>) {
 
     function fixTooltip() {
         $.fn._tooltip = $.fn.tooltip;
-        $.fn.tooltip = function(selector) {
+        $.fn.tooltip = function (selector) {
             return this._tooltip(selector).off("focusin");
         };
     }
@@ -233,11 +153,11 @@ const showAlert = function(html: JQuery<HTMLElement>) {
         const addBody = (table, action, body) => {
             $(table)
                 .find("tbody")
-                [action](body);
+            [action](body);
             if (table._eventsLoadBody instanceof Array)
                 for (let evt of table._eventsLoadBody) evt(table, body);
         };
-        HTMLTableElement.prototype._setLoadMore = function(config) {
+        HTMLTableElement.prototype._setLoadMore = function (config) {
             declare type _typeConfig = typeof config;
 
             const loadMoreButton = $(
@@ -274,7 +194,7 @@ const showAlert = function(html: JQuery<HTMLElement>) {
             };
 
             loadMoreButton.on("click", () => {
-                if (isMaxRecord) return Swal.fire(_swalConfig.notFoundMoreData);
+                if (isMaxRecord) return Swal.fire(_swagConfig.notFoundMoreData);
                 let c = oldConfig;
                 $.ajax({
                     url: c.urlAjax,
@@ -288,7 +208,7 @@ const showAlert = function(html: JQuery<HTMLElement>) {
                     // đánh dấu dã load hết record lên
                     if (trArr.length === 0) {
                         isMaxRecord = true;
-                        return Swal.fire(_swalConfig.notFoundMoreData);
+                        return Swal.fire(_swagConfig.notFoundMoreData);
                     } else if (trArr.length !== c.limit) {
                         isMaxRecord = true;
                     }
@@ -299,22 +219,22 @@ const showAlert = function(html: JQuery<HTMLElement>) {
             });
         };
 
-        HTMLTableElement.prototype._loadMore = function() {
+        HTMLTableElement.prototype._loadMore = function () {
             throw "Chạy hàm _setLoadMore trước đi bạn ơi!";
         };
-        HTMLTableElement.prototype._loadBodyTable = function(
+        HTMLTableElement.prototype._loadBodyTable = function (
             this: HTMLTableElement,
             body
         ) {
             addBody(this, "html", body);
         };
-        HTMLTableElement.prototype._appendBodyTable = function(
+        HTMLTableElement.prototype._appendBodyTable = function (
             this: HTMLTableElement,
             body
         ) {
             addBody(this, "append", body);
         };
-        HTMLTableElement.prototype._onLoadTableBody = function(
+        HTMLTableElement.prototype._onLoadTableBody = function (
             this: HTMLTableElement,
             eventHandler
         ) {
@@ -324,7 +244,7 @@ const showAlert = function(html: JQuery<HTMLElement>) {
                 this._eventsLoadBody.push(eventHandler);
             }
         };
-        HTMLTableElement.prototype._eachSelected = function(
+        HTMLTableElement.prototype._eachSelected = function (
             this: HTMLTableElement,
             callback
         ) {
@@ -335,7 +255,7 @@ const showAlert = function(html: JQuery<HTMLElement>) {
             }
         };
 
-        HTMLTableElement.prototype._mapSelected = function(
+        HTMLTableElement.prototype._mapSelected = function (
             this: HTMLTableElement,
             callback
         ) {
@@ -367,7 +287,7 @@ const showAlert = function(html: JQuery<HTMLElement>) {
             return controlFeedback;
         };
 
-        HTMLElement.prototype._setBmdError = function(
+        HTMLElement.prototype._setBmdError = function (
             this: HTMLElement,
             error: string
         ) {
@@ -381,59 +301,72 @@ const showAlert = function(html: JQuery<HTMLElement>) {
                         const feedback = getFeedBack(parent);
                         parent.append(feedback);
 
-                        this._setBmdError = function(error) {
+                        this._setBmdError = function (error) {
                             feedback.html(error || "");
                         };
-                        this._setBmdError(error);
+                        this._setBmdError(error)
                     }
                     break;
                 default: {
-                    const parent = $(this).closest(".form-group");
-                    if (!parent[0]) return;
-
-                    const feedback = getFeedBack(parent);
-                    const formControlFeedback = getFormControlFeedback(parent);
-                    const iconFeedback = $(
-                        formControlFeedback.children("i")[0]
-                    );
-
-                    parent.append(feedback).append(formControlFeedback);
-                    let oldStatus = undefined;
-
-                    const addClass = (e, cl, reg) =>
-                        e.attr(
-                            "class",
-                            `${e.attr("class").replace(reg, "")} ${cl}`
-                        );
-                    this._setBmdError = function(error: string) {
-                        feedback.html(error || "");
-                        let formGroupClass;
-                        let iconClass;
-                        if (error === -1) {
-                            formGroupClass = "";
-                            iconClass = "";
-                            feedback.html("");
-                            oldStatus = undefined;
-                        } else if (error) {
-                            if (oldStatus !== false) {
-                                formGroupClass = "has-danger";
-                                iconClass = "fa-exclamation";
-                                oldStatus = false;
+                    switch (this.tagName.toLowerCase()) {
+                        case 'select':
+                            {
+                                const input = $(this).autoCompleteSelect().autoCompleteSelect('refs').input[0]
+                                this._setBmdError = input._setBmdError.bind(input)
                             }
-                        } else {
-                            if (oldStatus !== true) {
-                                formGroupClass = "has-success";
-                                iconClass = "fa-check";
-                                oldStatus = true;
-                            }
-                        }
-                        if (formGroupClass !== undefined)
-                            addClass(parent, formGroupClass, /has-.*?(\s|$)/g);
-                        if (iconClass !== undefined)
-                            addClass(iconFeedback, iconClass, /fa-.*?(\s|$)/g);
-                    };
+                            this._setBmdError(error)
+                            break
+                        default:
+                            {
+                                const parent = $(this).closest(".form-group");
+                                if (!parent[0]) return;
 
-                    this._setBmdError(error);
+                                const feedback = getFeedBack(parent);
+                                const formControlFeedback = getFormControlFeedback(parent);
+                                const iconFeedback = $(
+                                    formControlFeedback.children("i")[0]
+                                );
+
+                                parent.append(feedback).append(formControlFeedback);
+                                let oldStatus = undefined;
+
+                                const addClass = (e, cl, reg) =>
+                                    e.attr(
+                                        "class",
+                                        `${e.attr("class").replace(reg, "")} ${cl}`
+                                    );
+                                this._setBmdError = function (error: string) {
+                                    feedback.html(error || "");
+                                    let formGroupClass;
+                                    let iconClass;
+                                    if (error === -1) {
+                                        formGroupClass = "";
+                                        iconClass = "";
+                                        feedback.html("");
+                                        oldStatus = undefined;
+                                    } else if (error) {
+                                        if (oldStatus !== false) {
+                                            formGroupClass = "has-danger";
+                                            iconClass = "fa-exclamation";
+                                            oldStatus = false;
+                                        }
+                                    } else {
+                                        if (oldStatus !== true) {
+                                            formGroupClass = "has-success";
+                                            iconClass = "fa-check";
+                                            oldStatus = true;
+                                        }
+                                    }
+                                    if (formGroupClass !== undefined)
+                                        addClass(parent, formGroupClass, /has-.*?(\s|$)/g);
+                                    if (iconClass !== undefined)
+                                        addClass(iconFeedback, iconClass, /fa-.*?(\s|$)/g);
+                                };
+
+                                this._setBmdError(error);
+                            }
+                    }
+
                 }
             }
         };
@@ -445,7 +378,7 @@ const showAlert = function(html: JQuery<HTMLElement>) {
         // add regex
         $.validator.addMethod(
             "regex",
-            function(value, element, regexp) {
+            function (value, element, regexp) {
                 var re = new RegExp(regexp);
                 return this.optional(element) || re.test(value);
             },
@@ -473,21 +406,21 @@ const showAlert = function(html: JQuery<HTMLElement>) {
         });
 
         // Thêm hàm validate custom cho form của material ( viết từ component)
-        $.fn.validateCustom = function(validate) {
+        $.fn.validateCustom = function (validate) {
             const validator = this.validate({
                 ...validate,
                 ...{
                     lang: "vi",
-                    highlight: function(element) {
+                    highlight: function (element) {
                         element._setBmdError(this.submitted[element.name]);
 
                         // Dùng để fix lỗi setError chồng lên nhau -> Thứ tự ưu tiên
                         // element._errorLevel = 100
                     },
-                    unhighlight: function(element) {
+                    unhighlight: function (element) {
                         element._setBmdError();
                     },
-                    errorPlacement: error => {}
+                    errorPlacement: error => { }
                 }
             });
 
@@ -499,7 +432,7 @@ const showAlert = function(html: JQuery<HTMLElement>) {
      * Thêm $.fn._autoIndexTable ( Tự động đánh index cho table )
      */
     function addJqueryTableAutoIndex() {
-        $.fn._autoIndexTable = function(this: JQuery<HTMLElement>) {
+        $.fn._autoIndexTable = function (this: JQuery<HTMLElement>) {
             this.each((i, element) => {
                 const table = $(element);
                 const trHead = table.find("thead > tr");
@@ -507,7 +440,7 @@ const showAlert = function(html: JQuery<HTMLElement>) {
                     trHead.prepend(
                         $('<th class="auto-index-head"><strong>#</strong></th>')
                     );
-                    element._onLoadTableBody(function() {
+                    element._onLoadTableBody(function () {
                         table._autoIndexTable();
                     });
                 }
@@ -528,58 +461,48 @@ const showAlert = function(html: JQuery<HTMLElement>) {
 
     function addSelectModeTable() {
         const checkbox = `<div class="form-check"><label class="form-check-label"><input class="form-check-input " type="checkbox"><span class="form-check-sign"><span class="check"></span></span></label></div>`;
-        $.fn._addSelectRows = function(callback) {
-            this.each(function(i, e) {
+        $.fn._addSelectRows = function (callback) {
+            this.each(function (i, e) {
                 const table = $(e);
                 const trHead = table.find("thead > tr");
                 // Tự động thêm checkbox select vào header (nếu không tồn tại)
                 if (!trHead.find("th.select")[0]) {
                     trHead.prepend(
                         $(`<th class="select"></th>`).html(
-                            (function() {
+                            (function () {
                                 const cbSelectAll = $(checkbox);
-                                const selectToolTipText = [
-                                    '<span class="text-danger">Hủy chọn tất cả</span>',
-                                    '<span class="text-success">Chọn tất cả</span>'
-                                ];
+                                // const selectToolTipText = [
+                                //     '<span class="text-danger">Hủy chọn tất cả</span>',
+                                //     '<span class="text-success">Chọn tất cả</span>'
+                                // ]
                                 // Thêm tooltip attribute
-                                cbSelectAll
-                                    .attr("data-toggle", "tooltip")
-                                    .attr("data-html", "true")
-                                    .attr("title", selectToolTipText[1]);
+                                // cbSelectAll
+                                //     .attr("data-toggle", "tooltip")
+                                //     .attr("data-html", "true")
+                                //     .attr("title", selectToolTipText[1]);
                                 // Chọn hoặc hủy tất cả lựa chọn trong table
                                 cbSelectAll
                                     .find("input")
-                                    .on("input", function(evt) {
+                                    .on("input", function (evt) {
                                         const check = this.checked;
-                                        const message =
-                                            selectToolTipText[check ? 0 : 1];
-                                        cbSelectAll.attr(
-                                            "data-original-title",
-                                            message
-                                        );
+                                        // const message = selectToolTipText[check ? 0 : 1]
+                                        // cbSelectAll.attr("data-original-title", message);
                                         // Tìm thẻ tooltip đang được view và thay đổi trực tiếp content bên trong
-                                        $(
-                                            `#${cbSelectAll.attr(
-                                                "aria-describedby"
-                                            )} > .tooltip-inner`
-                                        ).html(message);
-                                        table
-                                            .find("tbody > tr")
-                                            .each(function(i, tr) {
-                                                tr._select[0].checked = check;
-                                            });
+                                        // $(`#${cbSelectAll.attr("aria-describedby")} > .tooltip-inner`).html($(message)[0])
+                                        table.find("tbody > tr").each(function (i, tr) {
+                                            tr._select[0].checked = check;
+                                        });
                                     });
                                 cbSelectAll.tooltip();
                                 return cbSelectAll;
                             })()
                         )
                     );
-                    e._onLoadTableBody(function() {
+                    e._onLoadTableBody(function () {
                         table._addSelectRows(callback);
                     });
                 }
-                callback = callback instanceof Function ? callback : () => {};
+                callback = callback instanceof Function ? callback : () => { };
                 table
                     .children("tbody")
                     .children("tr")

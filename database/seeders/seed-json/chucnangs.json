@@ -2,115 +2,121 @@
     {
         "ten": "Danh sách chức năng",
         "url": "/chuc-nang/danh-sach",
-        "nguoitao": "cuongDolar",
-        "nguoisua": "cuongDolar"
+        "nguoitao": "admin",
+        "nguoisua": "admin"
     },
     {
         "ten": "Thêm chức năng",
         "url": "/chuc-nang/them-moi",
-        "nguoitao": "cuongDolar",
-        "nguoisua": "cuongDolar"
+        "nguoitao": "admin",
+        "nguoisua": "admin"
     },
     {
         "ten": "Xóa chức năng",
         "url": "/chuc-nang/xoa",
-        "nguoitao": "cuongDolar",
-        "nguoisua": "cuongDolar"
+        "nguoitao": "admin",
+        "nguoisua": "admin"
     },
     {
         "ten": "Cập nhật chức năng",
         "url": "/xe/chinh-sua",
-        "nguoitao": "cuongDolar",
-        "nguoisua": "cuongDolar"
+        "nguoitao": "admin",
+        "nguoisua": "admin"
     },
     {
-        "ten": "Cập nhật chức năng",
-        "url": "/xe/chinh-sua",
-        "nguoitao": "cuongDolar",
-        "nguoisua": "cuongDolar"
+        "ten": "Danh sách menu",
+        "url": "/menu/danh-sach",
+        "nguoitao": "admin",
+        "nguoisua": "admin"
     },
     {
-        "ten": "Cập nhật chức năng",
-        "url": "/xe/chinh-sua",
-        "nguoitao": "cuongDolar",
-        "nguoisua": "cuongDolar"
+        "ten": "Thêm menu",
+        "url": "/menu/them-moi",
+        "nguoitao": "admin",
+        "nguoisua": "admin"
     },
     {
-        "ten": "Cập nhật chức năng",
-        "url": "/xe/chinh-sua",
-        "nguoitao": "cuongDolar",
-        "nguoisua": "cuongDolar"
+        "ten": "Xóa menu",
+        "url": "/menu/xoa",
+        "nguoitao": "admin",
+        "nguoisua": "admin"
     },
     {
-        "ten": "Cập nhật chức năng",
-        "url": "/xe/chinh-sua",
-        "nguoitao": "cuongDolar",
-        "nguoisua": "cuongDolar"
+        "ten": "Cập nhật menu",
+        "url": "/menu/chinh-sua",
+        "nguoitao": "admin",
+        "nguoisua": "admin"
     },
     {
-        "ten": "Cập nhật chức năng",
-        "url": "/xe/chinh-sua",
-        "nguoitao": "cuongDolar",
-        "nguoisua": "cuongDolar"
+        "ten": "Danh sách nhóm chức năng",
+        "url": "/nhom/danh-sach",
+        "nguoitao": "admin",
+        "nguoisua": "admin"
     },
     {
-        "ten": "Cập nhật chức năng",
-        "url": "/xe/chinh-sua",
-        "nguoitao": "cuongDolar",
-        "nguoisua": "cuongDolar"
+        "ten": "Thêm nhóm chức năng",
+        "url": "/nhom/them-moi",
+        "nguoitao": "admin",
+        "nguoisua": "admin"
     },
     {
-        "ten": "Cập nhật chức năng",
-        "url": "/xe/chinh-sua",
-        "nguoitao": "cuongDolar",
-        "nguoisua": "cuongDolar"
+        "ten": "Xóa nhóm chức năng",
+        "url": "/nhom/xoa",
+        "nguoitao": "admin",
+        "nguoisua": "admin"
     },
     {
-        "ten": "Cập nhật chức năng",
-        "url": "/xe/chinh-sua",
-        "nguoitao": "cuongDolar",
-        "nguoisua": "cuongDolar"
+        "ten": "Cập nhật nhóm chức năng",
+        "url": "/nhom/chinh-sua",
+        "nguoitao": "admin",
+        "nguoisua": "admin"
     },
     {
-        "ten": "Cập nhật chức năng",
-        "url": "/xe/chinh-sua",
-        "nguoitao": "cuongDolar",
-        "nguoisua": "cuongDolar"
+        "ten": "Danh sách nhóm nhân viên",
+        "url": "/nhan-vien/danh-sach",
+        "nguoitao": "admin",
+        "nguoisua": "admin"
     },
     {
-        "ten": "Cập nhật chức năng",
-        "url": "/xe/chinh-sua",
-        "nguoitao": "cuongDolar",
-        "nguoisua": "cuongDolar"
+        "ten": "Thêm nhóm nhân viên",
+        "url": "/nhan-vien/them-moi",
+        "nguoitao": "admin",
+        "nguoisua": "admin"
     },
     {
-        "ten": "Cập nhật chức năng",
-        "url": "/xe/chinh-sua",
-        "nguoitao": "cuongDolar",
-        "nguoisua": "cuongDolar"
+        "ten": "Xóa nhóm nhân viên",
+        "url": "/nhan-vien/xoa",
+        "nguoitao": "admin",
+        "nguoisua": "admin"
     },
     {
-        "ten": "Cập nhật chức năng",
-        "url": "/xe/chinh-sua",
-        "nguoitao": "cuongDolar",
-        "nguoisua": "cuongDolar"
+        "ten": "Cập nhật nhóm nhân viên",
+        "url": "/nhan-vien/chinh-sua",
+        "nguoitao": "admin",
+        "nguoisua": "admin"
     },
     {
-        "ten": "Cập nhật chức năng",
-        "url": "/xe/chinh-sua",
-        "nguoitao": "cuongDolar",
-        "nguoisua": "cuongDolar"
+        "ten": "Danh sách tài sản",
+        "url": "/tai-san/danh-sach",
+        "nguoitao": "admin",
+        "nguoisua": "admin"
     },
     {
-        "ten": "Cập nhật chức năng",
-        "url": "/xe/chinh-sua",
-        "nguoitao": "cuongDolar",
-        "nguoisua": "cuongDolar"
+        "ten": "Thêm tài sản",
+        "url": "/tai-san/them-moi",
+        "nguoitao": "admin",
+        "nguoisua": "admin"
     },
     {
-        "ten": "Cập nhật chức năng",
-        "url": "/xe/chinh-sua",
-        "nguoitao": "cuongDolar",
-        "nguoisua": "cuongDolar"
+        "ten": "Xóa tài sản",
+        "url": "/tai-san/xoa",
+        "nguoitao": "admin",
+        "nguoisua": "admin"
+    },
+    {
+        "ten": "Cập nhật tài sản",
+        "url": "/tai-san/chinh-sua",
+        "nguoitao": "admin",
+        "nguoisua": "admin"
     }
 ]

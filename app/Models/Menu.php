@@ -9,8 +9,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Menu extends Model
 {
-    use SoftDeletes, UpdateUser;
+    use UpdateUser;
     public $timestamps = true;
     protected $table = "menus";
-    protected $fillable = ["id", "idcha", "url", "ten", "nguoitao", "nguoisua", "icon"];
+    protected $fillable = ["id", "idcha", "url", "ten", "nguoitao", "vitri", "nguoisua", "icon", "chucnangid"];
 }
