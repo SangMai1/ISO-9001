@@ -16,7 +16,7 @@
 
         <div class="form-group">
             <label>Loại tài sản </label>
-            <select title="" class="form-control" name="loaitaisanid">
+            <select title="" class="form-control" name="loaitaisanid" autocomplete>
                 @foreach ($danhMucs as $key => $value)
                     <option value="{{ $key }}" {{ $key == $taisans->loaitaisanid ? 'selected' : '' }}>{{ $value }}</option>
                 @endforeach

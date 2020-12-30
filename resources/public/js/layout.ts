@@ -335,6 +335,15 @@ const layoutAction = {
                 if (limit) config.limit = limit;
                 table._setLoadMore(config);
             });
+        },
+        autoCompleteSelect(listJSelect = $('body').find('select[autocomplete]')){
+            listJSelect.each(function(i, select: JQuery<HTMLElement>){
+                select =$(select)
+                let config = select.attr('autocomplete')
+                if(config && (config = window[config]) && typeof config === 'function') config = config()
+                if (typeof config !== 'object') config = undefined
+                $(select).autoCompleteSelect(config)
+            })
         }
     }
 };
