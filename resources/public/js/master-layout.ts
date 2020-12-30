@@ -311,6 +311,7 @@ const showAlert = function (html: JQuery<HTMLElement>) {
                     switch (this.tagName.toLowerCase()) {
                         case 'select':
                             {
+                                if(!$(this).autoCompleteSelect('instance')) return
                                 const input = $(this).autoCompleteSelect().autoCompleteSelect('refs').input[0]
                                 this._setBmdError = input._setBmdError.bind(input)
                             }
