@@ -2,8 +2,8 @@
 @section('title', 'Trang chủ')
 
 @section('content')
-    <x-input title="title" type="text" name="name" float/>
-    <select id="combobox">
+    <x-input title="title" type="text" name="name" float />
+    <select id="combobox" autocomplete>
         <option value="ActionScript">ActionScript</option>
         <option value="AppleScript">AppleScript</option>
         <option value="Asp">Asp</option>
@@ -27,7 +27,8 @@
         <option value="Scala">Scala</option>
         <option value="Scheme">Scheme</option>
     </select>
+    
     <script>
-        // $('#combobox').autoCompleteSelect()
+        $('#combobox').autoCompleteSelect()
     </script>
 @endsection

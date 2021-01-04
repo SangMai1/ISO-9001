@@ -1,7 +1,7 @@
 <?php
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Http\REQUEST;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -20,9 +20,13 @@ use Illuminate\Support\Facades\DB;
 Route::get('/doc', function () {
     return view('doc');
 }); // Thêm documentation cho layout
-Route::get('/', function () {
-    return view('home');
+
+Route::get('/', function (Request $req) {
+    $result = $req->input;
+    
+    return view('home', compact(['result']));
 });
+
 Route::get('/home', function () {
     return redirect('/');
 })->name('home');
@@ -87,11 +91,13 @@ Route::group(['prefix' => '/chuc-nang',], function () {
 });
 
 Route::group(['prefix' => '/menu',], function () {
+    Route::get('/user-menu', 'App\Http\Controllers\MenuController@getUserMenu')->name('menu.list'); // Lấy menu cho user
     Route::get('/danh-sach', 'App\Http\Controllers\MenuController@index')->name('menu.list'); // Hiển thị danh sách menu
     Route::get('/them-moi', 'App\Http\Controllers\MenuController@create')->name('menu.create'); // Thêm mới menu
     Route::post('/them-moi', 'App\Http\Controllers\MenuController@store')->name('menu.store'); // Xử lý thêm mới menu
     Route::get('/chinh-sua', 'App\Http\Controllers\MenuController@edit')->name('menu.edit');; // Cập nhật menu
     Route::post('/cap-nhat', 'App\Http\Controllers\MenuController@update')->name('menu.update'); // Xử lý cập nhật menu
+    Route::post('/cap-nhat-vi-tri', 'App\Http\Controllers\MenuController@updatePos')->name('menu.update.pos'); // Xử lý cập nhật menu
     Route::post('/xoa', 'App\Http\Controllers\MenuController@destroy')->name('menu.delete'); // Xóa menu
 });
 

@@ -72,8 +72,19 @@ const Utils = {
             if (childs1[i].value) childs2[i].value = childs1[i].value
             else if (childs1[i].checked) childs2[i].checked = childs1[i].checked
         }
+    },
+    render: {
+        nojs(html: JQuery<HTMLElement>) {
+            html = $(html)
+            console.log(html)
+            html.find('*').each(function (i, e) {
+                if(e.tagName.toLowerCase() === 'script') return e.remove()
+                for(let attribute of e.attributes){
+                    if(attribute.name.toLowerCase().startsWith('on')) e.removeAttributeNode(attribute)
+                }
+            })
+            return html
+        }
     }
 }
-
-
 

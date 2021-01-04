@@ -13,8 +13,8 @@
         </button>
         <div class="collapse navbar-collapse justify-content-end">
             <form class="navbar-form">
-                <div class="input-group no-border">
-                    <input type="text" value="" class="form-control" placeholder="Search...">
+                <div class="input-group no-border has-warning">
+                    <input type="text" value="" class="form-control white-input" placeholder="Search...">
                     <button type="submit" class="btn btn-white btn-round btn-just-icon">
                         <i class="material-icons">search</i>
                         <div class="ripple-container"></div>

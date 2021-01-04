@@ -25,10 +25,11 @@ async function main() {
             if (arg === '--all') {
                 fs.rmdirSync(path.dirname(__dirname + '\\public\\js\\**'), { recursive: true })
                 fs.rmdirSync(path.dirname(__dirname + '\\public\\css\\**'), { recursive: true })
-                await execCommand('npm run sass -- --no-source-map ./resources/public/sass/:./public/css && npm run tsc && php artisan migrate:fresh && dev seed --all')
+                execCommand('npm run sass -- ./resources/public/sass/:./public/css && npm run tsc && php artisan migrate:fresh && dev seed --all')
             } else if (arg === 'public') {
                 fs.rmdirSync(path.dirname(__dirname + '\\public\\js\\**'), { recursive: true })
                 fs.rmdirSync(path.dirname(__dirname + '\\public\\css\\**'), { recursive: true })
+                execCommand('npm run sass -- ./resources/public/sass/:./public/css && npm run tsc')
             } else {
                 console.log(NOT_FOUND_COMMAND)
             }

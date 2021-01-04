@@ -14,7 +14,7 @@
             @endforeach
         </select>
     </div>
-    <button class="btn btn-info">Thêm</button>
+    <button class="btn btn-primary">Thêm</button>
     <script>
         window.menuFormInit instanceof Function ?
             menuFormInit() :

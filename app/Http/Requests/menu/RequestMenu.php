@@ -30,13 +30,9 @@ class RequestMenu extends FormRequest
     public function rules()
     {
         return [
-            'idcha' => ['nullable', function($attr, $idCha, $fail){
-                if(isset($_REQUEST['id']) && ($_REQUEST['id'] == $idCha)){
-                    $fail('Menu cha không hợp lệ');
-                }
-            },'exists:menus,id'],
-            'ten' => "required|min:2|max:100",
-            'vitri' => "nullable|Integer",
+            'idcha' => ['nullable', 'exists:menus,id'],
+            'ten' => ["required", "min:2", "max:100"],
+            'vitri' => ["required", "Integer"],
             'chucnangid' => ['nullable', 'Integer', function ($attr, $id, $fail) {
                 if (chucnangs::find($id) == null)
                     $fail('Chức năng không hợp lệ');

@@ -13,4 +13,17 @@ class Menu extends Model
     public $timestamps = true;
     protected $table = "menus";
     protected $fillable = ["id", "idcha", "url", "ten", "nguoitao", "vitri", "nguoisua", "icon", "chucnangid"];
+
+    public function isValidParentId($idcha)
+    {
+        if (!$idcha || $idcha < 1) return true;
+        do {
+            $menu = Menu::find($idcha);
+            if(!$menu) return true;
+            $idcha = $menu->idcha;
+
+            if (!$idcha || $idcha < 1) return true;
+            if ($idcha == $this->id) return false;
+        } while (true);
+    }
 }

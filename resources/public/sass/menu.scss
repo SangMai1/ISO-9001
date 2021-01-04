@@ -5,43 +5,46 @@
         width: 100%;
     }
 }
-ul.icc {
-    padding: 0;
-    .form-check-label {
-        width: 100%;
+
+#update-position-region {
+    .move-mode-show{
+        display: none;
     }
-    li.menu-item {
-        margin-bottom: 10px;
-        .parent-control {
-            .form-check-radio {
-                display: none !important;
-            }
-            display: flex;
-            > .tab-item {
-                align-items: center;
-                width: 100%;
+    ul.icc {
+        padding: 0;
+        .form-check-label {
+            width: 100%;
+        }
+        li.menu-item {
+            margin-bottom: 10px;
+            .parent-control {
                 display: flex;
-                > a.btn {
-                    text-align: left;
-                    margin: 0 !important;
+                > .tab-item {
+                    align-items: center;
                     width: 100%;
-                    color: white !important;
-                }
-                .btn-icon {
-                    margin: 0 3px;
-                    i {
-                        margin: 0;
+                    display: flex;
+                    > a.btn {
+                        text-align: left;
+                        margin: 0 !important;
+                        width: 100%;
+                        color: white !important;
+                    }
+                    .btn-icon {
+                        margin: 0 3px;
+                        i {
+                            margin: 0;
+                        }
                     }
                 }
             }
         }
     }
-}
-ul.icc.move-mode {
-    .form-check-radio {
-        display: block !important;
-    }
-    .dropdown{
-        display: none !important;
+    &.move-mode{
+        .move-mode-show{
+            display: block;
+        }
+        .dropdown{
+            display: none;
+        }
     }
 }

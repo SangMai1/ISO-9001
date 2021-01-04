@@ -1,14 +1,15 @@
 // @ts-nocheck
 // @ts-ignore
 
-type refs = {
+//#region AutoComplete
+type refsAutoComplete = {
     input: JQuery<HTMLElement>,
     autoComplete: JQuery<HTMLElement>,
     parent: JQuery<HTMLElement>,
     showMoreButton: JQuery<HTMLElement>,
 }
 
-let widgetAutoCompleteInitConfig = {
+let __widgetAutoCompleteInitConfig = {
     options: {
         renderData: (option: HTMLOptionElement) => $(`<div class="py-1 px-3">${option.innerText}</div>`),
         getFilter: (inputValue: string, callback: (comparativeValue: string) => boolean) => Utils.filterStringVnMap(inputValue),
@@ -29,9 +30,9 @@ let widgetAutoCompleteInitConfig = {
 
             const value = e.attr('value')
             if (value) e.val(value)
-            else emptyOption[0].selected = true
+            if (!e.children(':selected')[0]) emptyOption[0].selected = true
         }
-        const refs = {} as refs
+        const refs = {} as refsAutoComplete
         e.addClass('d-none')
         this.refs = (callback) => (callback && callback instanceof Function) ? callback(refs) : refs
 
@@ -169,14 +170,20 @@ let widgetAutoCompleteInitConfig = {
     },
     clearFilter(isPushSelect = false) {
         const [{ input, autoComplete }, { element: e, options: { getCompleteValue }, activeSelectIndex: index }] = [this.refs(), this]
+        const selected = e.children(':selected')[0]
         if (isPushSelect) this.filters[index][2].selected = true
         this.active(-1)
         this.filters = []
-        input.val(getCompleteValue(e.children(':selected')[0]))
+        selected && input.val(getCompleteValue(selected))
         clearInterval(this.interval)
         this.interval = undefined
         this.isClickPopup = false
         autoComplete.hide()
+    },
+    _destroy() {
+        this.element.removeClass('d-none')
+        clearInterval(this.interval)
+        this.refs().parent.remove()
     },
     active(index) {
         const length = this.filters.length
@@ -217,15 +224,17 @@ let widgetAutoCompleteInitConfig = {
     clearCache() { this.values = null },
 }
 
-$.widget('custom.autoCompleteSelect', widgetAutoCompleteInitConfig)
-widgetAutoCompleteInitConfig = null
+$.widget('custom.autoCompleteSelect', __widgetAutoCompleteInitConfig)
+__widgetAutoCompleteInitConfig = null
 
 interface JQuery<HTMLElement> {
     autoCompleteSelect: (
-        ((options: typeof widgetAutoCompleteInitConfig.options) => JQuery<HTMLElement>)
-        & ((option: "option", options: typeof widgetAutoCompleteInitConfig.options) => JQuery<HTMLElement>)
+        ((options: typeof __widgetAutoCompleteInitConfig.options) => JQuery<HTMLElement>)
+        & ((option: "option", options: typeof __widgetAutoCompleteInitConfig.options) => JQuery<HTMLElement>)
         & ((option: "clearCache") => JQuery<HTMLElement>)
-        & ((option: "refs", callback: (refs: refs) => any) => JQuery<HTMLElement>)
-        & ((option: "refs") => refs)
+        & ((option: "refs", callback: (refs: refsAutoComplete) => any) => JQuery<HTMLElement>)
+        & ((option: "refs") => refsAutoComplete)
     )
 }
+//#endregion
+

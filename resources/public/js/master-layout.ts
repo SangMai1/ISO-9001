@@ -1,10 +1,19 @@
 // @ts-ignore
 //@ts-nocheck
 HTMLElement.prototype.on = HTMLElement.prototype.addEventListener
-$(() => {
-    window.token = $('meta[name="csrf-token"]').attr("content");
-});
-
+$(() => { window.token = $('meta[name="csrf-token"]').attr("content") })
+$.fn.perfectScrollbar = function (this) { return this }
+$.fn.findAll = function (this: JQuery<HTMLElement>, query) {
+    arr = []
+    for (let e of this) {
+        e = $(e)
+        if (e.is(query))
+            arr = arr.concat([e[0], ...e.find(query)])
+        else
+            arr.push(e.find(query))
+    }
+    return $(arr)
+}
 const _swagConfig: { [key: string]: SweetAlertOptions } = {};
 var Toast: SwalInterface;
 const showLoading = function (message = "Chờ xí ...") {
@@ -311,7 +320,7 @@ const showAlert = function (html: JQuery<HTMLElement>) {
                     switch (this.tagName.toLowerCase()) {
                         case 'select':
                             {
-                                if(!$(this).autoCompleteSelect('instance')) return
+                                if (!$(this).autoCompleteSelect('instance')) return
                                 const input = $(this).autoCompleteSelect().autoCompleteSelect('refs').input[0]
                                 this._setBmdError = input._setBmdError.bind(input)
                             }
@@ -331,11 +340,7 @@ const showAlert = function (html: JQuery<HTMLElement>) {
                                 parent.append(feedback).append(formControlFeedback);
                                 let oldStatus = undefined;
 
-                                const addClass = (e, cl, reg) =>
-                                    e.attr(
-                                        "class",
-                                        `${e.attr("class").replace(reg, "")} ${cl}`
-                                    );
+                                const addClass = (e, cl, reg) => e.attr("class", `${e.attr("class").replace(reg, "")} ${cl}`);
                                 this._setBmdError = function (error: string) {
                                     feedback.html(error || "");
                                     let formGroupClass;
@@ -414,17 +419,14 @@ const showAlert = function (html: JQuery<HTMLElement>) {
                     lang: "vi",
                     highlight: function (element) {
                         element._setBmdError(this.submitted[element.name]);
-
-                        // Dùng để fix lỗi setError chồng lên nhau -> Thứ tự ưu tiên
-                        // element._errorLevel = 100
                     },
                     unhighlight: function (element) {
                         element._setBmdError();
                     },
-                    errorPlacement: error => { }
+                    errorPlacement: error => { },
                 }
             });
-
+            window.validator = validator
             return validator;
         };
     }

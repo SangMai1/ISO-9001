@@ -1,7 +1,7 @@
 //@ts-nocheck
 // @ts-ignore
 const DATA_CONFIG_ATTRIBUTE = "data-config";
-$('ac').auto
+
 const layoutAction = {
     rebuild: {
         tooltip: (selector = $("body")) => selector.find('[data-toggle="tooltip"]').tooltip(),
@@ -29,10 +29,23 @@ const layoutAction = {
                         const result = JSON.parse(resp.responseText);
                         if (result.message !== "The given data was invalid.")
                             return Swal.fire({ ..._swagConfig.toast, title: result.message, icon: 'error' });
+                        const otherMessage = []
                         for (let [fieldName, error] of Object.entries(result.errors)) {
-                            const input = $(this).find(`[name="${fieldName}"]`);
-                            if (input[0]) input[0]._setBmdError(error);
+                            const input = $(this).find(`[name="${fieldName}"]:eq(0)`);
+                            if (!input[0]) continue;
+                            switch (input[0].type.toLowerCase()) {
+                                case 'hidden':
+                                case 'radio':
+                                    otherMessage.push($(`<div>- ${error}</div>`)[0])
+                                    break
+                                default:
+                                    input[0]._setBmdError(error)
+                            }
                         }
+                        if (otherMessage.length > 0) Swal.fire({
+                            ..._swagConfig.error, timer: undefined,
+                            html: $('<div>').append(otherMessage).addClass('swal-error-validation-content')
+                        })
                         layoutAction.renders.removeErrorInput($(this));
                     }
                 }).done(callback);
@@ -169,63 +182,6 @@ const layoutAction = {
         return window.$config[$(selector).attr(DATA_CONFIG_ATTRIBUTE)] || {};
     },
     renders: {
-        renderMenu(ulQuery = '[data-id="menu-parent-ul"]') {
-            $(ulQuery).each((i, ul) => {
-                ul = $(ul)
-                ul.removeClass('d-none')
-                let { liMap, arrPos } = ul
-                    .children("li[data-parent][data-id]")
-                    .toArray()
-                    .reduce((pre, cur, index) => {
-                        const icon = $(cur).find('.icon-menu')
-                        const id = $(cur).data("id")
-                        let iconAdd = $(icon.text())
-                        iconAdd.find('script').remove()
-                        iconAdd = iconAdd.filter((i, e) => {
-                            if (e.tagName === "SCRIPT") return false
-                            return true
-                        })
-                        icon.html(iconAdd);
-                        pre.liMap[$(cur).data("id")] = {
-                            li: cur,
-                            isAddChild: false
-                        };
-                        pre.arrPos[index] = [id, Number.parseInt($(cur).attr('position')) || 0]
-                        return pre;
-                    }, { liMap: {}, arrPos: [] });
-
-                arrPos = arrPos.sort((a, b) => a[1] - b[1])
-                for (let [liId] of arrPos) {
-                    const li = $(liMap[liId].li);
-                    li.detach()
-                    ul.append(li)
-                    const parentId = li.data("parent");
-                    const parentMap = liMap[parentId];
-
-                    if (!parentMap || parentMap.li === li[0]) continue;
-                    
-                    const parent = $(parentMap.li);
-                    let parentUl;
-                    if (!parentMap.isAddChild) {
-                        parentUl = $(
-                            `<ul class="text-left collapse p-0" id="menu-id-${parentId}"></ul>`
-                        );
-                        const btnCollapse = $(parent)
-                            .find("a").eq(0)
-                            .attr("data-toggle", 'collapse')
-                            .addClass("dropdown-toggle")
-                            .addClass("auto-icon");
-                        btnCollapse.attr("href", `#menu-id-${parentId}`);
-                        parent.append(parentUl);
-                        parentMap.isAddChild = true
-                    } else {
-                        parentUl = parent.find("ul").eq(0);
-                    }
-                    parentUl.append(li);
-                }
-                
-            });
-        },
         collapse(selector = $("body")) {
             $(selector)
                 .find('[data-toggle="collapse"]:not([href]):not([data-target])')
@@ -336,11 +292,11 @@ const layoutAction = {
                 table._setLoadMore(config);
             });
         },
-        autoCompleteSelect(listJSelect = $('body').find('select[autocomplete]')){
-            listJSelect.each(function(i, select: JQuery<HTMLElement>){
-                select =$(select)
+        autoCompleteSelect(listJSelect = $('body').find('select[autocomplete]')) {
+            listJSelect.each(function (i, select: JQuery<HTMLElement>) {
+                select = $(select)
                 let config = select.attr('autocomplete')
-                if(config && (config = window[config]) && typeof config === 'function') config = config()
+                if (config && (config = window[config]) && typeof config === 'function') config = config()
                 if (typeof config !== 'object') config = undefined
                 $(select).autoCompleteSelect(config)
             })
