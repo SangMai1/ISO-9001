@@ -63,6 +63,6 @@ class User extends Authenticatable
             ->where('un.userid', '=', $this->id)
             ->orWhere('uc.userid', '=', $this->id)
             ->groupBy('cn.id')
-            ->pluck('cn.id')->toArray();
+            ->pluck('cn.id', 'cn.id')->toArray();
     }
 }

@@ -1,4 +1,7 @@
 const { exec } = require("child_process")
+require('colors')
+
+const Tail = require('tail').Tail
 const fs = require('fs')
 const { seed } = require('./cmd-config')
 const path = require('path')
@@ -34,7 +37,37 @@ async function main() {
                 console.log(NOT_FOUND_COMMAND)
             }
             break
+        case 'log':
+            {
+                const pathLog = __dirname + '\\storage\\logs\\laravel.log'
+                tail = new Tail(pathLog)
+                console.log('Watch Log: '.green + pathLog.blue);
 
+                const matchType = {
+                    default: 'blue',
+                    error: 'red',
+                    emergency: 'orange',
+                    alert: 'green',
+                    critical: 'brightRed',
+                    warning: 'yellow',
+                    notice: 'magenta',
+                    info: 'green',
+                    debug: 'blue',
+                }
+
+                tail.on("line", function (data) {
+                    const match = data.match(/.*?local\.(.*?):/)
+                    const color = matchType[match ? match[1].toLowerCase() : 'default'] || matchType['default']
+                    console.log(data[color]);
+                });
+
+                tail.on("error", function (error) {
+                    console.log('ERROR: '.red, (error + '').red);
+                });
+
+                tail.watch()
+            }
+            break
         default:
             console.log(NOT_FOUND_COMMAND)
     }

@@ -18,8 +18,6 @@
 </head>
 
 <body class="">
-    @php $menus = App\Models\Menu::all()@endphp
-    
     <div class="wrapper ">
         @include('includes.sidebar')
         <div class="main-panel">
@@ -32,7 +30,6 @@
                     @show
                 </div>
             </div>
-            {{-- @include('includes.footer') --}}
         </div>
     </div>
     <script src="http://maxe17q.000webhostapp.com/ISO-9001/js/core/material-dashboard.min.js" type="text/javascript"></script>

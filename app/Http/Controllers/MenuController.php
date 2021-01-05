@@ -131,45 +131,58 @@ class MenuController extends Controller
         $menu->delete();
     }
 
-    public function getUserMenu(callable $renderLi = null, callable $renderUl = null)
+    public function getUserMenu()
     {
-        $user = Auth::user();
         $menus = Menu::all();
 
-        $menuMap = $menus->reduce(function ($acc, $cur) {
-            $acc->{$cur->id} = $cur;
-            return $acc;
-        }, new stdClass());
-
-        if (!$renderLi)
-            $renderLi = function ($menu, $child = "", $isParent = false) {
-                return
-                    $child
-                    ?   '<li class="nav-item">
+        $renderLi = function ($menu, $child = "", $isParent = false) {
+            return
+                $child
+                ?   '<li class="nav-item">
                                 <a class="nav-link dropdown-toggle auto-icon" href="#menu-id-' . $menu->id . '" data-toggle="collapse">
                                     <div class="icon-menu">' . $menu->icon . '</div>' . $menu->ten . '</a>' . $child . '</li>'
-                    :   '<li class="nav-item">
+                :   '<li class="nav-item">
                                 <a class="nav-link" href="' . $menu->url . '">
                                     <div class="icon-menu">' . $menu->icon . '</div>' . $menu->ten . '</a>' . $child . '</li>';
-            };
+        };
 
-        if (!$renderUl)
-            $renderUl = function ($child, $menuParent, $isParent = false) {
-                return $isParent
-                    ?   $child
-                    :   '<ul class="collapse" id="menu-id-' . $menuParent->id . '">' . $child . '</ul>';
-            };
-
+        $renderUl = function ($child, $menuParent, $isParent = false) {
+            return $isParent
+                ?   $child
+                :   '<ul class="collapse" id="menu-id-' . $menuParent->id . '">' . $child . '</ul>';
+        };
 
         $menuConvert = new stdClass();
         $menuConvert->id = -1;
-        $menuConvert->childs = $menus->filter(function ($menu) use ($menuMap) {
-            if (!$menu->idcha) return true;
-            if ($menu->idcha < 0 || $menu->id == $menu->idcha) return true;
-            $menuParent = $menuMap->{$menu->idcha};
+
+        $permissionCache = $GLOBALS['permissions'] ?? [];
+        $permissionMap = $GLOBALS['permissionMap'] ?? [];
+
+        $menuConvert->childs = $menus->filter(function ($menu) use ($menus, $permissionCache, $permissionMap) {
+            $idcha = $menu->idcha;
+            if (!$idcha) return true;
+            if ($idcha < 0 || $menu->id == $idcha) return true;
+            $menuParent = $menus[$menus->search(function ($menu) use ($idcha) {
+                return $menu->id == $idcha;
+            })];
             if ($menuParent) {
-                if (!isset($menuParent->childs)) $menuParent->childs = collect([$menu]);
-                else $menuParent->childs->push($menu);
+                if (!isset($menuParent->childs)) $menuParent->childs = collect([]);
+                $url = preg_replace('/\?.*/', '', $menu->url);
+
+                if (_per($url)) {
+                    $hasIdcha = false;
+                    foreach ($permissionMap as $key) {
+                        if ($key == $idcha) {
+                            break;
+                            $hasIdcha = true;
+                        }
+                    }
+                    if (
+                        $hasIdcha
+                        ? (isset($permissionCache[$idcha]) ? true : false)
+                        : true
+                    ) $menuParent->childs->push($menu);
+                }
                 return false;
             }
             return true;
@@ -182,11 +195,14 @@ class MenuController extends Controller
                 return $a->vitri > $b->vitri ? 1 : -1;
             })->reduce(function ($acc, $menu) use ($renderLi, $recursive, $isParent) {
                 $childs = "";
-                if (isset($menu->childs) && $menu->childs->count() !== 0) $childs = $recursive($recursive, $menu);
+                if (isset($menu->childs)) {
+                    if ($menu->childs->count() === 0) return $acc;
+                    $childs = $recursive($recursive, $menu);
+                }
                 return $acc . $renderLi($menu, $childs, $isParent);
             }, ""), $menu, $isParent);
         };
 
-        return session('menu') ?? $renderRecursive($renderRecursive, $menuConvert);
+        return $renderRecursive($renderRecursive, $menuConvert);
     }
 }

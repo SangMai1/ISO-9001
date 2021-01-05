@@ -2,20 +2,10 @@
 
 namespace App\Http\Middleware;
 
-use App\Http\Controllers\MenuController;
-use App\Models\Cauhinhs;
 use App\Models\chucnangs;
-use App\Models\User;
 use Closure;
-use Illuminate\Cache\ArrayStore;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Session;
-use Illuminate\Support\Facades\URL;
-use Illuminate\Support\Facades\View;
-use stdClass;
 
 use function PHPSTORM_META\type;
 
@@ -32,29 +22,42 @@ class CheckPermission
     public function handle(Request $req, Closure $next)
     {
         $user = Auth::user();
-        // error_log = function(){};
         if ($user) {
-            if ($user->isAdmin()) return $next($req);
+            if($user->isAdmin()) return $next($req);
 
-            $per = chucnangs::where('url', $req->getPathInfo())->first();
+            // map này để dùng check quyền cho đường dẫn trong view
+            $permissionMap = chucnangs::pluck('id', 'url');
+            $GLOBALS['permissionMap'] = $permissionMap;
 
-            if (!$per) return $next($req);
+            $perId = $permissionMap[$req->getPathInfo()] ?? null;
 
-            $permissionCache = session('permissions');
-            if (!$permissionCache || ($permissionCache['updated_at'] !== $user->updated_at->timestamp)) {
-                $permissionCache = [
-                    'updated_at' => $user->updated_at->timestamp,
-                    'permissions' => $user->getAllPermissionId()
-                ];
-                session(['permissions' => $permissionCache]);
-            }
+            // array id các quyền của người dùng
+            $permissionCache = $this->getPermissions();
+            $GLOBALS['permissions'] = $permissionCache;
 
-            return array_search($per->id, $permissionCache['permissions'])
+            if (!$perId) return $next($req);
+
+            return isset($permissionCache['permissions'][$perId])
                 ? $next($req)
                 : abort(401);
         } elseif (preg_match($this::$regexPublic, $req->getPathInfo())) {
             return $next($req);
         }
+
         return redirect()->route('login');
+    }
+
+    public function getPermissions()
+    {
+        $user = Auth::user();
+        $permissionCache = session('permissions');
+        if (!$permissionCache || ($permissionCache['updated_at'] !== $user->updated_at->timestamp)) {
+            $permissionCache = [
+                'updated_at' => $user->updated_at->timestamp,
+                'permissions' => $user->getAllPermissionId()
+            ];
+            session(['permissions' => $permissionCache]);
+        }
+        return $permissionCache;
     }
 }

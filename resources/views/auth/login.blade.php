@@ -2,6 +2,9 @@
 @section('title') {{ __('lang.Login') }} @endsection
 
 @section('content')
+    <script>
+        localStorage.removeItem('menu')
+    </script>
     <div class="row justify-content-center">
         <div class="col-md-10 col-lg-8 col-sm-12" style="max-width: 570px">
             <x-card color="info">

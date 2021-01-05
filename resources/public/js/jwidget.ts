@@ -90,7 +90,7 @@ let __widgetAutoCompleteInitConfig = {
 
             const value = e.attr('value')
             if (value) e.val(value)
-            if (!e.children(':selected')[0]) emptyOption[0].selected = true
+            if (!value || !e.children(':selected')[0]) emptyOption[0].selected = true
         }
         const refs = {} as refsAutoComplete
         e.addClass('d-none')
@@ -333,6 +333,7 @@ class __widgetInputInitConfig {
             controlFeedback.html($('<i class="fas fa-check"></i>'));
             return controlFeedback;
         };
+        const addClass = (e, cl, reg) => e.attr("class", `${e.attr("class").replace(reg, "")} ${cl}`);
 
         const e = this.element
         switch (e.attr("type")) {
@@ -356,6 +357,22 @@ class __widgetInputInitConfig {
                             this.error = function (error) { input.input('error', error === -1 ? '' : (error || '')) }
                         }
                         break
+                    case 'textarea':
+                        {
+                            const parent = e.closest(".form-group");
+                            if (!parent[0]) return;
+
+                            refs.feedback = getFeedBack(parent);
+                            parent.append(refs.feedback).append(refs.feedbackIcon);
+
+                            this.error = function (error) { refs.feedback.html(error || "") }
+
+                            this.error = function (error) {
+                                refs.feedback.html(error === -1 ? '' : (error || ''))
+                                addClass(parent, error === -1 ? '' : (error ? 'has-danger' : 'has-success'), /has-.*?(\s|$)/g)
+                            }
+                        }
+                        break
                     case 'input':
                         {
                             const parent = e.closest(".form-group");
@@ -368,7 +385,6 @@ class __widgetInputInitConfig {
                             parent.append(refs.feedback).append(refs.feedbackIcon);
                             let oldStatus = undefined;
 
-                            const addClass = (e, cl, reg) => e.attr("class", `${e.attr("class").replace(reg, "")} ${cl}`);
                             this.error = function (error: string) {
                                 refs.feedback.html(error || "");
                                 let formGroupClass;

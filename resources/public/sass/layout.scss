@@ -395,6 +395,9 @@ ul:not(.navbar-nav):not([role="presentation"]):not(.nav-tabs) {
             margin-top: 0 !important;
             padding: 15px 10px;
             transition: .7s !important;
+            form[ajax-form]{
+                padding: 10px 25px;
+            }
         }
     }
 }
@@ -441,8 +444,16 @@ input.white-input {
 }
 .go-back-btn{
     margin: 0;
-    padding: 5px 20px;
-    // background-color: transparent !important;
+    padding: 6px 20px;
+    color: #333 !important;
+    background-color: #e8e8e8 !important;
+}
+.break{
+    padding: 0;
+    margin: 0;
+    border-bottom: 1px solid #ddd;
+    margin: 8px 0;
+    width: 100%;
 }
 // keyframe ----------------------------------
 @keyframes dropdown {

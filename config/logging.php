@@ -33,11 +33,11 @@ return [
     |                    "custom", "stack"
     |
     */
-
+    'enable_sql_log' => env('ENABLE_SQL_LOG', false),
     'channels' => [
         'stack' => [
             'driver' => 'stack',
-            'channels' => ['single'],
+            'channels' => ['single', 'stderr', 'daily'],
             'ignore_exceptions' => false,
         ],
 

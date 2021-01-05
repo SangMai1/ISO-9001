@@ -2,7 +2,7 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
 <!-- CSS Files -->
 {{-- <link rel="stylesheet" href="/css/material-dashboard.css"> --}}
-<link rel="stylesheet" href="http://maxe17q.000webhostapp.com/ISO-9001/css/material-dashboard.css">
+<link rel="stylesheet" href="http://maxe17q.000webhostapp.com/ISO-9001/css/material-dashboard.css?ver=1.02">
 {{-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/material-dashboard@2.1.0/assets/css/material-dashboard.css"> --}}
 {{--
 <link rel="stylesheet" href="https://demos.creative-tim.com/test/material-dashboard-pro/assets/css/material-dashboard.min.css?v=2.0.3">
@@ -20,8 +20,7 @@
 <script src="http://maxe17q.000webhostapp.com/ISO-9001/js/core/bootstrap-material-design.min.js">
 </script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.css" id="theme-styles">
-{{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.6.13/js/perfect-scrollbar.jquery.min.js"> --}}
-</script>
+
 <!-- Plugin for the momentJs  -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
 <!--  Plugin for Sweet Alert -->
