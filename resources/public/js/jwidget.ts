@@ -1,5 +1,65 @@
 // @ts-nocheck
 // @ts-ignore
+{
+    $.Widget.prototype._waitDestroy = function (this) { setTimeout(() => this.element[this.widgetName]('destroy')) }
+    $.widget.bridge = function (name, object) {
+        var fullName = object.prototype.widgetFullName || name;
+        $.fn[name] = function (options) {
+            var isMethodCall = typeof options === "string";
+            var args = Array.prototype.slice.call(arguments, 1);
+            var returnValue = this;
+
+            if (isMethodCall) {
+                this.each(function () {
+                    var methodValue;
+                    var instance = $.data(this, fullName);
+
+                    if (options === "instance") {
+                        returnValue = instance;
+                        return false;
+                    }
+
+                    if (!instance) return $(this)[name]()[name].apply($(this), [options, ...args])
+
+                    if (!$.isFunction(instance[options]) || options.charAt(0) === "_") {
+                        return $.error("no such method '" + options + "' for " + name +
+                            " widget instance");
+                    }
+
+                    methodValue = instance[options].apply(instance, args);
+
+                    if (methodValue !== instance && methodValue !== undefined) {
+                        returnValue = methodValue && methodValue.jquery ?
+                            returnValue.pushStack(methodValue.get()) :
+                            methodValue;
+                        return false;
+                    }
+                });
+            } else {
+
+                // Allow multiple hashes to be passed on init
+                if (args.length) {
+                    options = $.widget.extend.apply(null, [options].concat(args));
+                }
+
+                this.each(function () {
+                    var instance = $.data(this, fullName);
+                    if (instance) {
+                        instance.option(options || {});
+                        if (instance._init) {
+                            instance._init();
+                        }
+                    } else {
+                        $.data(this, fullName, new object(options, this));
+                    }
+                });
+            }
+
+            return returnValue;
+        };
+    };
+
+}
 
 //#region AutoComplete
 type refsAutoComplete = {
@@ -23,7 +83,7 @@ let __widgetAutoCompleteInitConfig = {
     },
     _create() {
         const e = this.element
-        if (e[0].tagName.toLowerCase() !== 'select') return
+        if (e[0].tagName.toLowerCase() !== 'select') return this._waitDestroy()
         {
             const emptyOption = $('<option disabled> ------ Bỏ qua ------ </option>')
             emptyOption.insertBefore(e.children('option:nth-child(1)'))
@@ -183,7 +243,7 @@ let __widgetAutoCompleteInitConfig = {
     _destroy() {
         this.element.removeClass('d-none')
         clearInterval(this.interval)
-        this.refs().parent.remove()
+        this.refs && this.refs().parent.remove()
     },
     active(index) {
         const length = this.filters.length
@@ -225,7 +285,7 @@ let __widgetAutoCompleteInitConfig = {
 }
 
 $.widget('custom.autoCompleteSelect', __widgetAutoCompleteInitConfig)
-__widgetAutoCompleteInitConfig = null
+__widgetAutoCompleteInitConfig = undefined
 
 interface JQuery<HTMLElement> {
     autoCompleteSelect: (
@@ -238,3 +298,120 @@ interface JQuery<HTMLElement> {
 }
 //#endregion
 
+//#region setErrorInput
+
+class __widgetInputInitConfig {
+    constructor() { Utils.widgetConstruct(this) }
+    _refs: {
+        feedback: JQuery<HTMLElement>,
+        feedbackIcon: JQuery<HTMLElement>
+    }
+    options: {}
+    _create() {
+        this._refs = {}
+        const refs = this._refs
+        this.refs = () => refs
+        this._drawError()
+    }
+    error(string: error) { }
+    _destroy() { this.error(-1) }
+    _drawError() {
+        const refs = this._refs
+        const getFeedBack = parent => {
+            let feedback = $(parent).find(".invalid-feedback");
+            feedback = feedback[0]
+                ? feedback
+                : $('<span class="invalid-feedback d-block"></span>');
+            feedback.html("");
+            return feedback;
+        };
+        const getFormControlFeedback = parent => {
+            let controlFeedback = $(parent).find(".form-control-feedback");
+            controlFeedback = controlFeedback[0]
+                ? controlFeedback
+                : $('<span class="form-control-feedback"></span>');
+            controlFeedback.html($('<i class="fas fa-check"></i>'));
+            return controlFeedback;
+        };
+
+        const e = this.element
+        switch (e.attr("type")) {
+            case "checkbox":
+            case "radio":
+                {
+                    const parent = e.closest(".form-check")
+                    if (!parent[0]) return
+
+                    refs.feedback = getFeedBack(parent)
+                    parent.append(feedback)
+                    this.error = function (err) { refs.feedback.html(err || "") }
+                }
+                break;
+            default: {
+                switch (e[0].tagName.toLowerCase()) {
+                    case 'select':
+                        {
+                            if (!e.autoCompleteSelect('instance')) return
+                            const input = e.autoCompleteSelect('refs').input.input()
+                            this.error = function (error) { input.input('error', error === -1 ? '' : (error || '')) }
+                        }
+                        break
+                    case 'input':
+                        {
+                            const parent = e.closest(".form-group");
+                            if (!parent[0]) return;
+
+                            refs.feedback = getFeedBack(parent);
+                            refs.feedbackIcon = getFormControlFeedback(parent);
+                            const iconFeedback = refs.feedbackIcon.children("i");
+
+                            parent.append(refs.feedback).append(refs.feedbackIcon);
+                            let oldStatus = undefined;
+
+                            const addClass = (e, cl, reg) => e.attr("class", `${e.attr("class").replace(reg, "")} ${cl}`);
+                            this.error = function (error: string) {
+                                refs.feedback.html(error || "");
+                                let formGroupClass;
+                                let iconClass;
+                                if (error === -1) {
+                                    formGroupClass = "";
+                                    iconClass = "";
+                                    refs.feedback.html("");
+                                    oldStatus = undefined;
+                                } else if (error) {
+                                    if (oldStatus !== false) {
+                                        formGroupClass = "has-danger";
+                                        iconClass = "fa-exclamation";
+                                        oldStatus = false;
+                                    }
+                                } else {
+                                    if (oldStatus !== true) {
+                                        formGroupClass = "has-success";
+                                        iconClass = "fa-check";
+                                        oldStatus = true;
+                                    }
+                                }
+                                if (formGroupClass !== undefined) addClass(parent, formGroupClass, /has-.*?(\s|$)/g);
+                                if (iconClass !== undefined) addClass(iconFeedback, iconClass, /fa-.*?(\s|$)/g);
+                            };
+                        }
+                }
+
+            }
+        }
+
+    }
+    refs() { return this._refs }
+}
+
+$.widget('custom.input', { ... new __widgetInputInitConfig() })
+
+interface JQuery<HTMLElement> {
+    input: (
+        ((options: typeof __widgetInputInitConfig.prototype.options) => JQuery<HTMLElement>)
+        & ((option: "option", options: typeof __widgetInputInitConfig.prototype.options) => JQuery<HTMLElement>)
+        & ((option: "refs") => typeof __widgetInputInitConfig.prototype._refs)
+    )
+}
+__widgetInputInitConfig = undefined
+//#endregion

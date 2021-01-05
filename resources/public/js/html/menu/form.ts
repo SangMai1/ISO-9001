@@ -13,7 +13,7 @@ $(() => {
         window.rdd =
             // build lại form
             updateForm.find('select[name="chucnangid"]').autoCompleteSelect({
-                renderData: option =>$(`<div class="py-1 px-3">
+                renderData: option => $(`<div class="py-1 px-3">
                 <div>${option.innerText}</div>
                 <div><span style="font-weight: 700">URL: </span>${option.getAttribute("url")}</div>
             </div>`)
@@ -29,9 +29,18 @@ $(() => {
         layoutAction.rebuild.autoBmd(updateForm);
 
         // validation
-        // updateForm.validateCustom({
-
-        // })
+        updateForm.validateCustom({
+            rules: {
+                ten: {
+                    required: true,
+                    minlength: 2,
+                    maxlength: 100,
+                },
+                vitri: {
+                    required: true,
+                }
+            }
+        })
     };
     window.menuFormInit();
 });

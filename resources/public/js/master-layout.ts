@@ -46,14 +46,13 @@ const showAlert = function (html: JQuery<HTMLElement>) {
 };
 
 (function () {
-    addJqueryValidationCustom();
-    addJqueryTableAutoIndex();
-    addSelectModeTable();
-    addHTMLTableElementPrototype();
-    addPrototypeInput();
-    addPrototypeFormData();
-    fixTooltip();
-    configSweetAlert();
+    addJqueryValidationCustom()
+    addJqueryTableAutoIndex()
+    addSelectModeTable()
+    addHTMLTableElementPrototype()
+    addPrototypeFormData()
+    fixTooltip()
+    configSweetAlert()
     fixMaterial()
 
     $.ajaxSetup({
@@ -278,105 +277,6 @@ const showAlert = function (html: JQuery<HTMLElement>) {
         };
     }
 
-    function addPrototypeInput() {
-        const getFeedBack = parent => {
-            let feedback = $(parent).find(".invalid-feedback");
-            feedback = feedback[0]
-                ? feedback
-                : $('<span class="invalid-feedback d-block"></span>');
-            feedback.html("");
-            return feedback;
-        };
-        const getFormControlFeedback = parent => {
-            let controlFeedback = $(parent).find(".form-control-feedback");
-            controlFeedback = controlFeedback[0]
-                ? controlFeedback
-                : $('<span class="form-control-feedback"></span>');
-            controlFeedback.html($('<i class="fas fa-check"></i>'));
-            return controlFeedback;
-        };
-
-        HTMLElement.prototype._setBmdError = function (
-            this: HTMLElement,
-            error: string
-        ) {
-            switch ($(this).attr("type")) {
-                case "checkbox":
-                case "radio":
-                    {
-                        const parent = $(this).closest(".form-check");
-                        if (!parent[0]) return;
-
-                        const feedback = getFeedBack(parent);
-                        parent.append(feedback);
-
-                        this._setBmdError = function (error) {
-                            feedback.html(error || "");
-                        };
-                        this._setBmdError(error)
-                    }
-                    break;
-                default: {
-                    switch (this.tagName.toLowerCase()) {
-                        case 'select':
-                            {
-                                if (!$(this).autoCompleteSelect('instance')) return
-                                const input = $(this).autoCompleteSelect().autoCompleteSelect('refs').input[0]
-                                this._setBmdError = input._setBmdError.bind(input)
-                            }
-                            this._setBmdError(error)
-                            break
-                        default:
-                            {
-                                const parent = $(this).closest(".form-group");
-                                if (!parent[0]) return;
-
-                                const feedback = getFeedBack(parent);
-                                const formControlFeedback = getFormControlFeedback(parent);
-                                const iconFeedback = $(
-                                    formControlFeedback.children("i")[0]
-                                );
-
-                                parent.append(feedback).append(formControlFeedback);
-                                let oldStatus = undefined;
-
-                                const addClass = (e, cl, reg) => e.attr("class", `${e.attr("class").replace(reg, "")} ${cl}`);
-                                this._setBmdError = function (error: string) {
-                                    feedback.html(error || "");
-                                    let formGroupClass;
-                                    let iconClass;
-                                    if (error === -1) {
-                                        formGroupClass = "";
-                                        iconClass = "";
-                                        feedback.html("");
-                                        oldStatus = undefined;
-                                    } else if (error) {
-                                        if (oldStatus !== false) {
-                                            formGroupClass = "has-danger";
-                                            iconClass = "fa-exclamation";
-                                            oldStatus = false;
-                                        }
-                                    } else {
-                                        if (oldStatus !== true) {
-                                            formGroupClass = "has-success";
-                                            iconClass = "fa-check";
-                                            oldStatus = true;
-                                        }
-                                    }
-                                    if (formGroupClass !== undefined)
-                                        addClass(parent, formGroupClass, /has-.*?(\s|$)/g);
-                                    if (iconClass !== undefined)
-                                        addClass(iconFeedback, iconClass, /fa-.*?(\s|$)/g);
-                                };
-
-                                this._setBmdError(error);
-                            }
-                    }
-
-                }
-            }
-        };
-    }
     /**
      * Thêm $.fn.validateCustom ( dùng cho input viết từ component )
      */
@@ -418,10 +318,10 @@ const showAlert = function (html: JQuery<HTMLElement>) {
                 ...{
                     lang: "vi",
                     highlight: function (element) {
-                        element._setBmdError(this.submitted[element.name]);
+                        $(element).input('error', this.submitted[element.name])
                     },
                     unhighlight: function (element) {
-                        element._setBmdError();
+                        $(element).input('error', '')
                     },
                     errorPlacement: error => { },
                 }

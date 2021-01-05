@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\menu\RequestMenu;
 use App\Http\Requests\menu\RequestMenuUpdatePos;
-use App\Http\Requests\RequestMenu;
 use App\Models\chucnangs;
 use App\Models\Menu;
 use App\Util\CommonUtil;
@@ -49,7 +49,7 @@ class MenuController extends Controller
      */
     public function store(RequestMenu $request)
     {
-        Session::flash('message', (new Menu())->create($request->all()) ? 'addSuccess' : 'addFailed');
+        Session::flash('message', (new Menu())->create($request->except('id')) ? 'addSuccess' : 'addFailed');
         return view('message');
     }
 
@@ -86,7 +86,7 @@ class MenuController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $req)
+    public function update(RequestMenu $req)
     {
         $menu = $req->id ? Menu::find($req->id) : '';
         $message = 'updateFailed';
@@ -99,7 +99,7 @@ class MenuController extends Controller
     {
         $params = $req->only('id', 'vitri', 'idcha');
         $menu = $req->model['menu'];
-        
+
         Session::flash('message', $menu->update($params) ? 'updateSuccess' : 'updateFailed');
         return redirect()->route('menu.list');
     }
@@ -120,9 +120,10 @@ class MenuController extends Controller
         }
         return view('message');
     }
+
     protected function recursiveDelete(Menu $menu)
     {
-        error_log('\n\nMenu-cha' . $menu->id);
+        if ($menu->idcha == $menu->id) return;
         $list = Menu::where('idcha', $menu->id)->get();
         foreach ($list as $item) {
             $this->recursiveDelete($item);

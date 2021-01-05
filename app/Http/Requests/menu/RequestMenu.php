@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\menu;
 
 use App\Models\chucnangs;
 use App\Models\Menu;

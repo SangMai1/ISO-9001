@@ -35,16 +35,16 @@ class CauhinhsController extends Controller
     public function create()
     {
         //Hiển thị trang thêm cấu hình
-	    return view('cau-hinh.them-moi');
+        return view('cau-hinh.them-moi');
     }
 
-    public function search(Request $request){
+    public function search(Request $request)
+    {
         $search = $request->get('search');
-        $cauHinhs = Cauhinhs::where('ten', 'like', '%'.$search.'%')->paginate(3);
-        return view('cau-hinh/danh-sach',['cauHinhs'=> $cauHinhs]);
-       
+        $cauHinhs = Cauhinhs::where('ten', 'like', '%' . $search . '%')->paginate(3);
+        return view('cau-hinh/danh-sach', ['cauHinhs' => $cauHinhs]);
     }
-   
+
 
     /**
      * Store a newly created resource in storage.
@@ -53,7 +53,7 @@ class CauhinhsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(RequestCauHinh $request)
-    {   
+    {
         date_default_timezone_set("Asia/Ho_Chi_Minh");
 
         $cauHinh = new Cauhinhs();
@@ -66,9 +66,8 @@ class CauhinhsController extends Controller
         Session::flash('message', $cauHinh->save() ? 'addSuccess' : 'addFailed');
 
         return view('message');
-
     }
-	
+
 
     /**
      * Display the specified resource.
@@ -78,7 +77,6 @@ class CauhinhsController extends Controller
      */
     public function show(Cauhinhs $cauhinhs)
     {
-        
     }
 
     /**
@@ -100,19 +98,19 @@ class CauhinhsController extends Controller
      * @param  \App\Models\Cauhinhs  $cauhinhs
      * @return \Illuminate\Http\Response
      */
-    public function update(RequestCauHinh $request ){
-        
+    public function update(RequestCauHinh $request)
+    {
+
         $cauhinh = Cauhinhs::find($request->id);
         if (!$cauhinh) {
             Session::flash('message', 'notFoundItem');
-        } else
-        { 
-        $cauhinh->ma = $request->ma;
-        $cauhinh->ten = $request->ten;
-        $cauhinh->giatri = $request->giatri;
-        $cauhinh->nguoisua = "EDadmin";
-        $cauhinh->updated_at = Carbon::now('Asia/Ho_Chi_Minh');
-        Session::flash('message', $cauhinh->update() ? 'updateSuccess' : 'updateFailed');
+        } else {
+            $cauhinh->ma = $request->ma;
+            $cauhinh->ten = $request->ten;
+            $cauhinh->giatri = $request->giatri;
+            $cauhinh->nguoisua = "EDadmin";
+            $cauhinh->updated_at = Carbon::now('Asia/Ho_Chi_Minh');
+            Session::flash('message', $cauhinh->update() ? 'updateSuccess' : 'updateFailed');
         }
         return view('message');
     }
@@ -123,27 +121,26 @@ class CauhinhsController extends Controller
      * @param  \App\Models\Cauhinhs  $cauhinhs
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request )
+    public function destroy(Request $request)
     {
-    //  date_default_timezone_set("Asia/Ho_Chi_Minh");    
-    //     //  $cauhinhs = users::where('id');
-    //     //  $cauhinhs -> nguoisua = "Del Admin";
-    //     // // $id = $request->input('id');
-    //     // $result = chucnangs::find($id)->delete();
-    // $cauhinhs -> delete();
-    $cauhinh = Cauhinhs::find($request->id);
-    if (!$cauhinh) {
-          Session::flash('message', 'notFoundItem');
-    } else
-     { 
-    $cauhinh->nguoisua = "DELadmin";
-    $cauhinh->deleted_at = Carbon::now('Asia/Ho_Chi_Minh');
-     Session::flash("message", $cauhinh->update() ? "deleteSuccess" : "deleteFailed");
-     return view('message');
+        //  date_default_timezone_set("Asia/Ho_Chi_Minh");    
+        //     //  $cauhinhs = users::where('id');
+        //     //  $cauhinhs -> nguoisua = "Del Admin";
+        //     // // $id = $request->input('id');
+        //     // $result = chucnangs::find($id)->delete();
+        // $cauhinhs -> delete();
+        $cauhinh = Cauhinhs::find($request->id);
+        if (!$cauhinh) {
+            Session::flash('message', 'notFoundItem');
+        } else {
+            $cauhinh->nguoisua = "DELadmin";
+            $cauhinh->deleted_at = Carbon::now('Asia/Ho_Chi_Minh');
+            Session::flash("message", $cauhinh->update() ? "deleteSuccess" : "deleteFailed");
+            return view('message');
+        }
     }
-}
 
-    
+
     // public function getDeleteCauhinhs() 
     // {
     //     $cauhinhs = Cauhinhs::all()->where('daxoa');

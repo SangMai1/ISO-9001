@@ -47,9 +47,7 @@ class ChucnangsController extends Controller
 
         date_default_timezone_set("Asia/Ho_Chi_Minh");
 
-        $chucNang = new chucnangs();
-        $chucNang->ten = $request->ten;
-        $chucNang->url = $request->url;
+        $chucNang = new chucnangs($request->except('id'));
 
         Session::flash('message', $chucNang->save() ? 'addSuccess' : 'addFailed');
 

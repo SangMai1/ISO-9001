@@ -1,7 +1,7 @@
 <form action="{{ route('menu.update') }}" method="POST" id="update-form" style="display: none">
     @csrf
     <input type="hidden" name="id" value="{{ $menu->id }}">
-    <x-input title="Vị trí" type="text" name="vitri" float value="{{ $menu->vitri }}" />
+    <x-input title="Vị trí" type="number" name="vitri" float value="{{ $menu->vitri }}" />
     <x-input title="Tên menu" type="text" name="ten" float value="{{ $menu->ten }}" />
     <x-input title="Đường dẫn" type="text" name="url" float value="{{ $menu->url }}" />
     <x-input title="Icon" type="textarea" name="icon" rows="4" float>
@@ -14,7 +14,7 @@
             @endforeach
         </select>
     </div>
-    <button class="btn btn-primary">Thêm</button>
+    <button class="btn btn-primary">Cập nhật</button>
     <script>
         window.menuFormInit instanceof Function ?
             menuFormInit() :

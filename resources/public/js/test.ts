@@ -1,5 +1,6 @@
-//@ts-no-check
-//@ts-ignore
+// @ts-nocheck
+// @ts-ignore
+
 // let __c = function () {
 //     return {
 //         nameTest: 'hello',

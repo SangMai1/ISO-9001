@@ -1,7 +1,8 @@
 <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
 <!-- CSS Files -->
-<link rel="stylesheet" href="/css/material-dashboard.css">
+{{-- <link rel="stylesheet" href="/css/material-dashboard.css"> --}}
+<link rel="stylesheet" href="http://maxe17q.000webhostapp.com/ISO-9001/css/material-dashboard.css">
 {{-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/material-dashboard@2.1.0/assets/css/material-dashboard.css"> --}}
 {{--
 <link rel="stylesheet" href="https://demos.creative-tim.com/test/material-dashboard-pro/assets/css/material-dashboard.min.css?v=2.0.3">
@@ -13,10 +14,10 @@
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.devbridge-autocomplete/1.4.10/jquery.autocomplete.min.js">
 </script>
-<script src="/assets/js/core/popper.min.js"></script>
+<script src="http://maxe17q.000webhostapp.com/ISO-9001/js/core/popper.min.js"></script>
 {{-- <script src="/assets/js/core/bootstrap-material-design.min.js"></script>
 --}}
-<script src="https://cdn.jsdelivr.net/npm/bootstrap-material-design@4.1.3/dist/js/bootstrap-material-design.min.js">
+<script src="http://maxe17q.000webhostapp.com/ISO-9001/js/core/bootstrap-material-design.min.js">
 </script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.css" id="theme-styles">
 {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.6.13/js/perfect-scrollbar.jquery.min.js"> --}}

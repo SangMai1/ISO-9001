@@ -28,7 +28,6 @@
             <!-- End Navbar -->
             <div class="content">
                 <div class="container-fluid">
-                    {{-- {{ dd(Auth::user()) }} --}}
                     @section('content')
                     @show
                 </div>
@@ -36,7 +35,7 @@
             {{-- @include('includes.footer') --}}
         </div>
     </div>
-    <script src="/assets/js/material-dashboard.js?v=2.1.2" type="text/javascript"></script>
+    <script src="http://maxe17q.000webhostapp.com/ISO-9001/js/core/material-dashboard.min.js" type="text/javascript"></script>
 </body>
 
 </html>

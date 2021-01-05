@@ -27,7 +27,9 @@
         <option value="Scala">Scala</option>
         <option value="Scheme">Scheme</option>
     </select>
-    
+    <script>
+        console.log(@json(Auth::user()))
+    </script>
     <script>
         $('#combobox').autoCompleteSelect()
     </script>

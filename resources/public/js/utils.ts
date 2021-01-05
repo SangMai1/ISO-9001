@@ -78,12 +78,18 @@ const Utils = {
             html = $(html)
             console.log(html)
             html.find('*').each(function (i, e) {
-                if(e.tagName.toLowerCase() === 'script') return e.remove()
-                for(let attribute of e.attributes){
-                    if(attribute.name.toLowerCase().startsWith('on')) e.removeAttributeNode(attribute)
+                if (e.tagName.toLowerCase() === 'script') return e.remove()
+                for (let attribute of e.attributes) {
+                    if (attribute.name.toLowerCase().startsWith('on')) e.removeAttributeNode(attribute)
                 }
             })
             return html
+        }
+    },
+    widgetConstruct(obj) {
+        for (let key of Object.getOwnPropertyNames(Object.getPrototypeOf(obj))) {
+            if (key === 'constructor') continue
+            obj[key] = obj[key]
         }
     }
 }

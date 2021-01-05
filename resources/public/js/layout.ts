@@ -39,7 +39,7 @@ const layoutAction = {
                                     otherMessage.push($(`<div>- ${error}</div>`)[0])
                                     break
                                 default:
-                                    input[0]._setBmdError(error)
+                                    input.input('error', error)
                             }
                         }
                         if (otherMessage.length > 0) Swal.fire({
@@ -278,8 +278,7 @@ const layoutAction = {
                     $(this)
                         .find("input")
                         .on("input", function _event() {
-                            $(this).off("input", _event);
-                            this._setBmdError(-1);
+                            $(this).off("input", _event).input('error', -1)
                         });
                 }
             });
