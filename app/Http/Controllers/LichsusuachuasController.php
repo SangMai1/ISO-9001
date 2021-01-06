@@ -34,11 +34,13 @@ class LichsusuachuasController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
+        $xe = xes::find($request->id);
+   
         $idTaiSan = taisans::pluck('tentaisan', 'id');
         $idNhanVien = Nhanviens::pluck('ten', 'id');
-        return view('/lich-su-sua-chua/them-moi', compact(['idTaiSan', 'idNhanVien']));
+        return view('/lich-su-sua-chua/them-moi', compact(['idTaiSan', 'idNhanVien', 'xe']));
     }
 
     /**

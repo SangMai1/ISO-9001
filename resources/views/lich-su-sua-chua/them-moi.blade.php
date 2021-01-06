@@ -6,14 +6,8 @@
     <form method="post" autocomplete="off" ajax-form>
       @csrf
       
-      <div class="form-group">
-        <label>Tài sản</label>
-        <select title="" class="form-control" name="taisanid">
-          @foreach($idTaiSan as $key => $value)
-            <option value="{{$key}}">{{$value}}</option>
-          @endforeach
-        </select>
-      </div>
+      
+      <x-input title="Tài sản" type="text" name="taisanid" value="{{$idTaiSan[$xe->taisanid]}}" float/>
 
       <x-input title="Ngày đi sửa" type="datetime-local" name="thoigiansua"/>
 

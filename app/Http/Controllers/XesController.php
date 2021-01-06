@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\RequestXe;
+use App\Models\Lichsusuachuas;
 use App\Models\Nhanviens;
 use App\Models\taisans;
 use App\Models\xes;
@@ -23,10 +24,11 @@ class XesController extends Controller
         $xes = CommonUtil::readViewConfig(xes::class, $request)->get();
         $taisans = taisans::pluck('tentaisan', 'id');
         $nhanviens = Nhanviens::pluck('ten', 'id');
+        $soLanSuaChua = Lichsusuachuas::all();
         if($request->has('no-layout')) {
-            return view('xe.table-include', compact(['xes', 'taisans', 'nhanviens']));
+            return view('xe.table-include', compact(['xes', 'taisans', 'nhanviens', 'soLanSuaChua']));
         }
-        return view('xe.danh-sach', compact(['xes', 'taisans', 'nhanviens']));
+        return view('xe.danh-sach', compact(['xes', 'taisans', 'nhanviens', 'soLanSuaChua']));
     }
 
     /**
@@ -36,6 +38,7 @@ class XesController extends Controller
      */
     public function create()
     {
+        
         $idTaiSan = taisans::pluck('tentaisan', 'id');
         $idNhanVien = Nhanviens::pluck('ten', 'id');
         return view('/xe/them-moi', compact(['idTaiSan', 'idNhanVien']));
