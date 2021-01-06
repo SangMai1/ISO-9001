@@ -22,6 +22,11 @@ async function main() {
                 await execCommand('php artisan db:seed --class=' + 'BackupSeed')
                 fs.unlinkSync('./share.json')
             }
+            else if(process.argv[3] === 'i'){
+                fs.writeFileSync('./share.json', JSON.stringify(process.argv.slice(4, process.env.length)))
+                await execCommand('php artisan db:seed --class=' + 'InsertSeeder')
+                fs.unlinkSync('./share.json')
+            }
             else await commandAction.seedAction(arg)
             break
         case 'clean':
