@@ -48,7 +48,7 @@ $(() => {
                 if (!parentLi[0]) ulList.find('.menu-item.root input[type="radio"]:eq(0)')[0].checked = true
                 else parentLi.find('input[type="radio"]:eq(0)')[0].checked = true
 
-                liUpdate.find('a:eq(0)').removeClass('btn-primary').addClass('btn-primary')  
+                liUpdate.find('a:eq(0)').removeClass('btn-primary').addClass('btn-info')  
                 formUpdatePos.find('input[name="id"]:eq(0)').val(li.data('id'))
                 posUpdate.val('')
             })
@@ -97,7 +97,7 @@ $(() => {
 
         cancelBtn.on('click', function () {
             regionUpdatePos.removeClass('move-mode')
-            liUpdate.find('a:eq(0)').removeClass('btn-primary').addClass('btn-primary')
+            liUpdate.find('a:eq(0)').removeClass('btn-info').addClass('btn-primary')
         })
 
         window.updatePosAction = (resp) => {

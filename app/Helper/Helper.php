@@ -3,7 +3,10 @@
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
-function _per($url)
+/**
+ * Kiểm tra người dùng có quyền tại 1 đường dẫn
+ */
+function _p($url)
 {
     static $action = 0;
     static $cache = [];
@@ -19,7 +22,7 @@ function _per($url)
                 $permissionMap = $GLOBALS['permissionMap'];
                 $permissionCache = $GLOBALS['permissions'];
             }
-            return _per($url);
+            return _p($url);
         case 1:
             return false;
         case 2:
@@ -39,12 +42,10 @@ function _per($url)
     }
 };
 
-function _route($name)
+/**
+ * Hàm check quyền nhưng thông qua route name
+ */
+function _pr($routename)
 {
-    return route($name, [], false);
-}
-
-function _perr($routename)
-{
-    return _per(_route($routename));
+    return _p(route($routename, [], false));
 }

@@ -118,17 +118,15 @@ let __widgetAutoCompleteInitConfig = {
             switch (evt.keyCode) {
                 case 38: // up key
                     this.active((index) => index - 1)
-                    evt.preventDefault()
                     break
                 case 40: // down key
                     this.active((index) => index + 1)
                     if (refs.input.val() === '' && this.activeSelectIndex === undefined) this.filter()
-                    evt.preventDefault()
                     break
                 case 13: // enter key
                     evt.preventDefault()
                     this.activeSelectIndex !== undefined && this.clearFilter(true)
-                    return false
+                    break
                 case 27: // esc key
                     refs.input[0].blur()
                     break
@@ -230,8 +228,8 @@ let __widgetAutoCompleteInitConfig = {
     },
     clearFilter(isPushSelect = false) {
         const [{ input, autoComplete }, { element: e, options: { getCompleteValue }, activeSelectIndex: index }] = [this.refs(), this]
-        const selected = e.children(':selected')[0]
         if (isPushSelect) this.filters[index][2].selected = true
+        const selected = e.children(':selected')[0]
         this.active(-1)
         this.filters = []
         selected && input.val(getCompleteValue(selected))

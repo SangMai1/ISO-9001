@@ -20,10 +20,11 @@
         </div>
     </div>
     @php
-    $isCreate = _per(_route('menu.create'));
-    $isUpdate = _per(_route('menu.update'));
-    $isUpdatePos = _per(_route('menu.update.pos'));
-    $isDelete = _per(_route('menu.delete'));
+    // Kiểm tra người dùng có quyền ứng với route name => xem thêm tai app/Helper/Helper.php
+    $isCreate = _pr('menu.create');
+    $isUpdate = _pr('menu.update');
+    $isUpdatePos = _pr('menu.update.pos');
+    $isDelete = _pr('menu.delete');
     $isRender = $isCreate || $isUpdate || $isUpdatePos || $isDelete;
     @endphp
     <div id="update-position-region">
@@ -68,26 +69,17 @@
                                         <div>Đường dẫn: {{ $m->url }}</div>
                                     </div>
                                 </a>
-                                {{-- @if ($isRender) --}}
+                                @if ($isRender)
                                     <div class="dropdown">
                                         <div class="btn btn-icon btn-link" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></div>
                                         <div class="dropdown-menu dropdown-menu-right">
-                                            @if ($isCreate)
-                                                <div class="dropdown-item add-menu-btn"><i class="fas fa-plus-circle"></i> Thêm Menu</div>
-                                            @endif
-                                            @if ($isUpdate)
-                                                <div class="dropdown-item edit-menu-btn"><i class="fas fa-pencil-alt"></i>Chỉnh sửa</div>
-                                            @endif
-                                            @if ($isUpdatePos)
-                                                <div class="dropdown-item move-menu-btn"><i class="fas fa-pencil-alt"></i>Chuyển vị trí</div>
-                                            @endif
-                                            @if ($isDelete)
-                                                <div class="dropdown-item delete-menu-btn"><i class="fas fa-trash"></i>Xóa</div>
-                                            @endif
+                                            @if ($isCreate) <div class="dropdown-item add-menu-btn"><i class="fas fa-plus-circle"></i> Thêm Menu</div> @endif
+                                            @if ($isUpdate) <div class="dropdown-item edit-menu-btn"><i class="fas fa-pencil-alt"></i>Chỉnh sửa</div> @endif
+                                            @if ($isUpdatePos) <div class="dropdown-item move-menu-btn"><i class="fas fa-pencil-alt"></i>Chuyển vị trí</div> @endif
+                                            @if ($isDelete) <div class="dropdown-item delete-menu-btn"><i class="fas fa-trash"></i>Xóa</div> @endif
                                         </div>
                                     </div>
-                                    {{--
-                                @endif --}}
+                                @endif
                             </div>
                         </div>
                     </li>

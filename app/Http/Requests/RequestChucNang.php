@@ -25,7 +25,7 @@ class RequestChucNang extends FormRequest
     {
         return  [
             'ten' => 'required|string|min:5',
-            'url' => 'required|string|min:1'
+            'url' => 'required|regex:/^\\/[^\\?^\\s]*$/|unique:chucnangs,url'
         ];
     }
 

@@ -169,7 +169,7 @@ class MenuController extends Controller
                 if (!isset($menuParent->childs)) $menuParent->childs = collect([]);
                 $url = preg_replace('/\?.*/', '', $menu->url);
 
-                if (_per($url)) {
+                if (_p($url)) {
                     $hasIdcha = false;
                     foreach ($permissionMap as $key) {
                         if ($key == $idcha) {

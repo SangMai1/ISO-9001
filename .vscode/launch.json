@@ -5,6 +5,13 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "command": "dev log",
+            "name": "Launch",
+            "type": "node-terminal",
+            "request": "launch",
+            "internalConsoleOptions": "openOnFirstSessionStart"
+        },
+        {
             "name": "Listen for XDebug",
             "type": "php",
             "request": "launch",
@@ -16,7 +23,8 @@
             "request": "launch",
             "program": "${file}",
             "cwd": "${fileDirname}",
-            "port": 9000
+            "port": 9000,
+            "externalConsole": false
         }
     ]
 }

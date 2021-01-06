@@ -42,8 +42,8 @@ class RequestMenuUpdatePos extends FormRequest
     public function attributes()
     {
         return [
-            'idcha' => 'menu cha',
-            'vitri' => "vị trí",
+            'idcha' => 'Menu cha',
+            'vitri' => "Vị trí",
         ];
     }
 }
