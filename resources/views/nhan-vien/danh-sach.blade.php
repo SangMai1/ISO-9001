@@ -28,8 +28,9 @@
                 <th class="th-action"><i class="fas fa-cogs"></i></th>
             @endslot
             @slot('body')
-                @foreach ($nhanViens as $item)
-                    <tr data-id="{{ $item->id }}">
+                @foreach ($nhanViens as $nv)
+                    <tr data-id="{{ $nv->id }}">
+                        {{-- @php dd($nv) @endphp --}}
                         <td class="td-mobile">
                             <a data-toggle="collapse" class="dropdown-toggle btn-info btn auto-icon">
                                 <span class="cell no-title" index="2"></span>
@@ -42,14 +43,24 @@
                                 <div class="cell" index="5"></div>
                             </div>
                         </td>
-                        <td>{{ $item->ma }}</td>
-                        <td>{{ $item->ten }}</td>
-                        <td>{{ $item->email }}</td>
-                        <td>{{ $phongBans[$item->phongbanid] }}</td>
-                        <td>{{ $chucDanhs[$item->chucdanhid] }}</td>
+                        <td>{{ $nv->ma }}</td>
+                        <td>{{ $nv->ten }}</td>
+                        <td>{{ $nv->email }}</td>
+                        @isset($phongBans[$nv->phongbanid])
+                            <td>{{ $phongBans[$nv->phongbanid] }}</td>
+                        @else
+                            <td empty></td>
+                        @endisset
+                        
+                        @isset($phongBans[$nv->chucnangid])
+                            <td>{{ $chucDanhs[$nv->chucdanhid]}}</td>
+                        @else
+                            <td empty></td>
+                        @endisset
+
                         <td class="td-action">
                             <button class="btn btn-sm btn-icon btn-danger rounded-circle delete-btn"><i class="fas fa-trash"></i></button>
-                            <a class="btn btn-sm btn-info btn-icon rounded-circle" href="{{ route('nhanvien.edit') }}?id={{ $item->id }}"><i class="fas fa-pencil-alt"></i></a>
+                            <a class="btn btn-sm btn-info btn-icon rounded-circle" href="{{ route('nhanvien.edit') }}?id={{ $nv->id }}"><i class="fas fa-pencil-alt"></i></a>
                         </td>
 
                     </tr>

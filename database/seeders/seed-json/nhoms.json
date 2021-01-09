@@ -1,1 +1,212 @@
-[{"id":1,"ma":"n1","ten":"Nh\u00f3m 11111","nguoitao":"sang","nguoisua":"admin","created_at":"2020-12-24 20:28:33","updated_at":"2020-12-26 08:05:49","deleted_at":null},{"id":2,"ma":"n2","ten":"Nh\u00f3m 1","nguoitao":"sang","nguoisua":"admin","created_at":"2020-12-24 20:57:37","updated_at":"2020-12-24 22:30:03","deleted_at":null},{"id":3,"ma":"n3","ten":"Nh\u00f3m 3","nguoitao":"sang","nguoisua":"admin","created_at":"2020-12-24 22:08:39","updated_at":"2020-12-24 22:34:02","deleted_at":null},{"id":4,"ma":"n4","ten":"Nh\u00f3m 4","nguoitao":"sang","nguoisua":"sang","created_at":"2020-12-24 22:44:03","updated_at":"2020-12-24 22:44:03","deleted_at":null},{"id":5,"ma":"n5","ten":"Nh\u00f3m 5","nguoitao":"sang","nguoisua":"ai do","created_at":"2020-12-24 22:45:13","updated_at":"2020-12-25 20:21:55","deleted_at":"2020-12-25 20:21:55"},{"id":6,"ma":"n6","ten":"Nh\u00f3m 6","nguoitao":"sang","nguoisua":"sang","created_at":"2020-12-25 21:06:17","updated_at":"2020-12-25 21:06:17","deleted_at":null},{"id":7,"ma":"n7","ten":"Nh\u00f3m 7","nguoitao":"sang","nguoisua":"sang","created_at":"2020-12-25 21:06:29","updated_at":"2020-12-25 21:06:29","deleted_at":null},{"id":8,"ma":"n8","ten":"Nh\u00f3m 8","nguoitao":"sang","nguoisua":"sang","created_at":"2020-12-25 21:06:39","updated_at":"2020-12-25 21:06:39","deleted_at":null},{"id":9,"ma":"n9","ten":"Nh\u00f3m 9","nguoitao":"sang","nguoisua":"sang","created_at":"2020-12-25 21:06:49","updated_at":"2020-12-25 21:06:49","deleted_at":null},{"id":10,"ma":"n10","ten":"Nh\u00f3m 10","nguoitao":"sang","nguoisua":"sang","created_at":"2020-12-25 21:06:59","updated_at":"2020-12-25 21:06:59","deleted_at":null},{"id":11,"ma":"n11","ten":"Nh\u00f3m 11","nguoitao":"sang","nguoisua":"sang","created_at":"2020-12-25 21:07:08","updated_at":"2020-12-25 21:07:08","deleted_at":null},{"id":12,"ma":"n12","ten":"Nh\u00f3m 12","nguoitao":"sang","nguoisua":"sang","created_at":"2020-12-25 21:07:16","updated_at":"2020-12-25 21:07:16","deleted_at":null},{"id":13,"ma":"n13","ten":"Nh\u00f3m 13","nguoitao":"sang","nguoisua":"sang","created_at":"2020-12-25 21:18:58","updated_at":"2020-12-25 21:18:58","deleted_at":null},{"id":14,"ma":"n14","ten":"Nh\u00f3m 14","nguoitao":"sang","nguoisua":"sang","created_at":"2020-12-25 21:19:12","updated_at":"2020-12-25 21:19:12","deleted_at":null},{"id":15,"ma":"n15","ten":"Nh\u00f3m 15","nguoitao":"sang","nguoisua":"sang","created_at":"2020-12-25 21:19:21","updated_at":"2020-12-25 21:19:21","deleted_at":null},{"id":16,"ma":"n16","ten":"Nh\u00f3m 16","nguoitao":"sang","nguoisua":"sang","created_at":"2020-12-25 21:19:30","updated_at":"2020-12-25 21:19:30","deleted_at":null},{"id":17,"ma":"n17","ten":"Nh\u00f3m 17","nguoitao":"sang","nguoisua":"sang","created_at":"2020-12-25 21:19:40","updated_at":"2020-12-25 21:19:40","deleted_at":null},{"id":18,"ma":"n18","ten":"Nh\u00f3m 18","nguoitao":"sang","nguoisua":"sang","created_at":"2020-12-25 21:19:55","updated_at":"2020-12-25 21:19:55","deleted_at":null},{"id":19,"ma":"n19","ten":"Nh\u00f3m 19","nguoitao":"sang","nguoisua":"sang","created_at":"2020-12-25 21:20:04","updated_at":"2020-12-25 21:20:04","deleted_at":null},{"id":20,"ma":"n20","ten":"Nh\u00f3m 20","nguoitao":"sang","nguoisua":"sang","created_at":"2020-12-25 21:20:17","updated_at":"2020-12-25 21:20:17","deleted_at":null},{"id":21,"ma":"n21","ten":"Nh\u00f3m 21","nguoitao":"sang","nguoisua":"sang","created_at":"2020-12-25 21:20:25","updated_at":"2020-12-25 21:20:25","deleted_at":null}]
+[
+    {
+        "id": 1,
+        "ma": "n1",
+        "ten": "Nh\u00f3m 11111",
+        "nguoitao": "sang",
+        "nguoisua": "admin",
+        "created_at": "2020-12-24 20:28:33",
+        "updated_at": "2020-12-26 08:05:49",
+        "deleted_at": null
+    },
+    {
+        "id": 2,
+        "ma": "n2",
+        "ten": "Nh\u00f3m 1",
+        "nguoitao": "sang",
+        "nguoisua": "admin",
+        "created_at": "2020-12-24 20:57:37",
+        "updated_at": "2020-12-24 22:30:03",
+        "deleted_at": null
+    },
+    {
+        "id": 3,
+        "ma": "n3",
+        "ten": "Nh\u00f3m 3",
+        "nguoitao": "sang",
+        "nguoisua": "admin",
+        "created_at": "2020-12-24 22:08:39",
+        "updated_at": "2020-12-24 22:34:02",
+        "deleted_at": null
+    },
+    {
+        "id": 4,
+        "ma": "n4",
+        "ten": "Nh\u00f3m 4",
+        "nguoitao": "sang",
+        "nguoisua": "sang",
+        "created_at": "2020-12-24 22:44:03",
+        "updated_at": "2020-12-24 22:44:03",
+        "deleted_at": null
+    },
+    {
+        "id": 5,
+        "ma": "n5",
+        "ten": "Nh\u00f3m 5",
+        "nguoitao": "sang",
+        "nguoisua": "ai do",
+        "created_at": "2020-12-24 22:45:13",
+        "updated_at": "2020-12-25 20:21:55",
+        "deleted_at": "2020-12-25 20:21:55"
+    },
+    {
+        "id": 6,
+        "ma": "n6",
+        "ten": "Nh\u00f3m 6",
+        "nguoitao": "sang",
+        "nguoisua": "sang",
+        "created_at": "2020-12-25 21:06:17",
+        "updated_at": "2020-12-25 21:06:17",
+        "deleted_at": null
+    },
+    {
+        "id": 7,
+        "ma": "n7",
+        "ten": "Nh\u00f3m 7",
+        "nguoitao": "sang",
+        "nguoisua": "sang",
+        "created_at": "2020-12-25 21:06:29",
+        "updated_at": "2020-12-25 21:06:29",
+        "deleted_at": null
+    },
+    {
+        "id": 8,
+        "ma": "n8",
+        "ten": "Nh\u00f3m 8",
+        "nguoitao": "sang",
+        "nguoisua": "sang",
+        "created_at": "2020-12-25 21:06:39",
+        "updated_at": "2020-12-25 21:06:39",
+        "deleted_at": null
+    },
+    {
+        "id": 9,
+        "ma": "n9",
+        "ten": "Nh\u00f3m 9",
+        "nguoitao": "sang",
+        "nguoisua": "sang",
+        "created_at": "2020-12-25 21:06:49",
+        "updated_at": "2020-12-25 21:06:49",
+        "deleted_at": null
+    },
+    {
+        "id": 10,
+        "ma": "n10",
+        "ten": "Nh\u00f3m 10",
+        "nguoitao": "sang",
+        "nguoisua": "sang",
+        "created_at": "2020-12-25 21:06:59",
+        "updated_at": "2020-12-25 21:06:59",
+        "deleted_at": null
+    },
+    {
+        "id": 11,
+        "ma": "n11",
+        "ten": "Nh\u00f3m 11",
+        "nguoitao": "sang",
+        "nguoisua": "sang",
+        "created_at": "2020-12-25 21:07:08",
+        "updated_at": "2020-12-25 21:07:08",
+        "deleted_at": null
+    },
+    {
+        "id": 12,
+        "ma": "n12",
+        "ten": "Nh\u00f3m 12",
+        "nguoitao": "sang",
+        "nguoisua": "sang",
+        "created_at": "2020-12-25 21:07:16",
+        "updated_at": "2020-12-25 21:07:16",
+        "deleted_at": null
+    },
+    {
+        "id": 13,
+        "ma": "n13",
+        "ten": "Nh\u00f3m 13",
+        "nguoitao": "sang",
+        "nguoisua": "sang",
+        "created_at": "2020-12-25 21:18:58",
+        "updated_at": "2020-12-25 21:18:58",
+        "deleted_at": null
+    },
+    {
+        "id": 14,
+        "ma": "n14",
+        "ten": "Nh\u00f3m 14",
+        "nguoitao": "sang",
+        "nguoisua": "sang",
+        "created_at": "2020-12-25 21:19:12",
+        "updated_at": "2020-12-25 21:19:12",
+        "deleted_at": null
+    },
+    {
+        "id": 15,
+        "ma": "n15",
+        "ten": "Nh\u00f3m 15",
+        "nguoitao": "sang",
+        "nguoisua": "sang",
+        "created_at": "2020-12-25 21:19:21",
+        "updated_at": "2020-12-25 21:19:21",
+        "deleted_at": null
+    },
+    {
+        "id": 16,
+        "ma": "n16",
+        "ten": "Nh\u00f3m 16",
+        "nguoitao": "sang",
+        "nguoisua": "sang",
+        "created_at": "2020-12-25 21:19:30",
+        "updated_at": "2020-12-25 21:19:30",
+        "deleted_at": null
+    },
+    {
+        "id": 17,
+        "ma": "n17",
+        "ten": "Nh\u00f3m 17",
+        "nguoitao": "sang",
+        "nguoisua": "sang",
+        "created_at": "2020-12-25 21:19:40",
+        "updated_at": "2020-12-25 21:19:40",
+        "deleted_at": null
+    },
+    {
+        "id": 18,
+        "ma": "n18",
+        "ten": "Nh\u00f3m 18",
+        "nguoitao": "sang",
+        "nguoisua": "sang",
+        "created_at": "2020-12-25 21:19:55",
+        "updated_at": "2020-12-25 21:19:55",
+        "deleted_at": null
+    },
+    {
+        "id": 19,
+        "ma": "n19",
+        "ten": "Nh\u00f3m 19",
+        "nguoitao": "sang",
+        "nguoisua": "sang",
+        "created_at": "2020-12-25 21:20:04",
+        "updated_at": "2020-12-25 21:20:04",
+        "deleted_at": null
+    },
+    {
+        "id": 20,
+        "ma": "n20",
+        "ten": "Nh\u00f3m 20",
+        "nguoitao": "sang",
+        "nguoisua": "sang",
+        "created_at": "2020-12-25 21:20:17",
+        "updated_at": "2020-12-25 21:20:17",
+        "deleted_at": null
+    },
+    {
+        "id": 21,
+        "ma": "n21",
+        "ten": "Nh\u00f3m 21",
+        "nguoitao": "sang",
+        "nguoisua": "sang",
+        "created_at": "2020-12-25 21:20:25",
+        "updated_at": "2020-12-25 21:20:25",
+        "deleted_at": null
+    }
+]

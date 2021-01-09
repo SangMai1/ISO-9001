@@ -255,19 +255,19 @@ const layoutAction = {
                     .children("tr")
                     .each(function (i, tr) {
                         console.log("load table");
-                        if (tr._cellRender) return;
+                        if (tr._cellRender) return
 
-                        const tds = $(tr).children(
-                            "td:not([ai]):not([sl]):not(.td-mobile):not(.td-action)"
-                        );
+                        const tds = $(tr).children("td:not([ai]):not([sl]):not(.td-mobile):not(.td-action)")
                         $(tr)
                             .find(".cell")
                             .each(function (i, cell) {
-                                const index = cell.getAttribute("index") - 1;
-                                cell.innerHTML =
-                                    (tds[index] && tds[index].innerHTML) ||
-                                    $(cell).addClass("d-none");
                                 tr._cellRender = true;
+                                const index = cell.getAttribute("index") - 1;
+                                if(index < 0) return
+                                if($(tds[index]).is('[empty]')) return cell.remove()
+
+                                if(tds[index]) return $(cell).html(tds[index].innerHTML)
+                                else cell.remove()
                             });
                     });
             }
