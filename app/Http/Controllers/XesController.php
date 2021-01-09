@@ -38,9 +38,9 @@ class XesController extends Controller
      */
     public function create()
     {
-        
         $idTaiSan = taisans::pluck('tentaisan', 'id');
         $idNhanVien = Nhanviens::pluck('ten', 'id');
+     
         return view('/xe/them-moi', compact(['idTaiSan', 'idNhanVien']));
     }
 

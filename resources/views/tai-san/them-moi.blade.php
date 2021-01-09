@@ -20,8 +20,8 @@
 
       <x-input title="Giá tiền" type="number" name="giatien"/>
 
-      <x-input title="Còn zin" type="radio" name="trangthai" value="0" checked float/> <!-- 0: Mới -->
-      <x-input title="Mất zin" type="radio" name="trangthai" value="1" float/>          <!-- 1: Đã qua sử dụng -->
+      <x-input title="Mới" type="radio" name="trangthai" value="0" checked float/> <!-- 0: Mới -->
+      <x-input title="Đã qua sử dụng" type="radio" name="trangthai" value="1" float/>          <!-- 1: Đã qua sử dụng -->
 
       <x-input title="Khấu hao" type="number" name="khauhao"/>
 
