@@ -15,7 +15,7 @@ class CreateHoSoNhanViensTable extends Migration
     {
         Schema::create('hosonhanviens', function (Blueprint $table) {
             $table->id();
-            $table->int('nhanvienid');
+            $table->integer('nhanvienid');
             $table->double('hesoluong');
             $table->string('diachi')->nullable(true);
             $table->string('cmnd')->nullable(true);
@@ -23,7 +23,6 @@ class CreateHoSoNhanViensTable extends Migration
             $table->string('thoigianlamviec')->nullable(true);
             $table->string('baohiemyte')->nullable(true);
             $table->string('baohiemxahoi')->nullable(true);
-            $table->string('baohiemthatnghiep')->nullable(true);
             $table->string('baohiemthatnghiep')->nullable(true);
             $table->timestamps();
         });
