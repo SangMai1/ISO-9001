@@ -52,8 +52,7 @@ class XesController extends Controller
      */
     public function store(RequestXe $request)
     {
-        date_default_timezone_set("Asia/Ho_Chi_Minh");
-        $xe = new xes();
+                $xe = new xes();
         $xe->taisanid = $request->taisanid;
         $xe->bienso = $request->bienso;
         $xe->socho = $request->socho;
@@ -97,8 +96,7 @@ class XesController extends Controller
      */
     public function update(RequestXe $request)
     {
-        date_default_timezone_set("Asia/Ho_Chi_Minh");
-
+        
         $xe = xes::find($request->id);
         if(!$xe){
             Session::flash('message', 'notFoundItem');
@@ -121,8 +119,7 @@ class XesController extends Controller
      */
     public function destroy(Request $request)
     {
-        date_default_timezone_set("Asia/Ho_Chi_Minh");
-        $id = $request->input('id');
+                $id = $request->input('id');
         $result = xes::find($id)->delete();
         Session::flash('message', $result ? 'deleteSuccess' : 'deleteFailed');
         return view('message');

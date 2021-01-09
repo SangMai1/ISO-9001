@@ -52,7 +52,7 @@
                             <td empty></td>
                         @endisset
                         
-                        @isset($phongBans[$nv->chucnangid])
+                        @isset($chucDanhs[$nv->chucdanhid])
                             <td>{{ $chucDanhs[$nv->chucdanhid]}}</td>
                         @else
                             <td empty></td>

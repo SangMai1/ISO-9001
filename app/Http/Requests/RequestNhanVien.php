@@ -2,7 +2,12 @@
 
 namespace App\Http\Requests;
 
+use App\Models\ChucDanh;
+use App\Models\PhongBan;
+use App\Util\CommonUtil;
+use Illuminate\Console\Command;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Request;
 
 class RequestNhanVien extends FormRequest
 {
@@ -23,9 +28,15 @@ class RequestNhanVien extends FormRequest
      */
     public function rules()
     {
+        $isCreate = Request::getPathInfo() == route('nhanvien.create');
         return  [
             'ten' => 'required|string',
-            'ma' => 'required|string',
+            'email' => 'required|email',
+            'phongbanid' => ['nullable', CommonUtil::checkExists(PhongBan::class)],
+            'chucdanhid' => ['nullable', CommonUtil::checkExists(ChucDanh::class)],
+            'password' => 'required|min:8',
+            'username' => [$isCreate ? 'required' : 'nullable', 'min:6'],
+            
         ];
     }
 
@@ -33,7 +44,6 @@ class RequestNhanVien extends FormRequest
     {
         return [
             'ten' => 'Tên nhân viên',
-            'ma' => 'Mã nhân viên'
         ];
     }
     

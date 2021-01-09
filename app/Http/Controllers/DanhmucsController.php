@@ -43,8 +43,7 @@ class DanhmucsController extends Controller
      */
     public function store(RequestDanhMuc $request)
     {
-        date_default_timezone_set("Asia/Ho_Chi_Minh");     
-	
+        	
         $danhMuc = new Danhmucs();
         $danhMuc -> ten = $request->ten;
         $danhMuc -> ma = $request->ma;
@@ -90,8 +89,7 @@ class DanhmucsController extends Controller
      */
     public function update(RequestDanhMuc $request)
     {
-        date_default_timezone_set("Asia/Ho_Chi_Minh");
-
+        
         $danhmuc = Danhmucs::find($request->id);
         
  
@@ -116,8 +114,7 @@ class DanhmucsController extends Controller
      */
     public function destroy(Request $request)
     {
-        date_default_timezone_set("Asia/Ho_Chi_Minh");
- 
+         
         $id = $request->input('id');
         $result = Danhmucs::find($id)->delete();
         Session::flash("message", $result ? "deleteSuccess" : "deleteFailed");

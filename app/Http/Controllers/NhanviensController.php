@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\RequestNhanVien;
+use App\Models\ChucDanh;
 use App\Models\Danhmucs;
+use App\Models\HoSoNhanVien;
 use App\Models\Nhanviens;
+use App\Models\PhongBan;
 use App\Models\User;
 use App\Models\users;
 use App\Util\CommonUtil;
@@ -25,8 +28,9 @@ class NhanviensController extends Controller
     public function index(Request $request)
     {
         $nhanViens = CommonUtil::readViewConfig(Nhanviens::class, $request)->get();
-        $chucDanhs = Danhmucs::all()->where('loai',0)->pluck("ten","id");
-        $phongBans = Danhmucs::all()->where('loai',1)->pluck("ten","id");
+        $chucDanhs = ChucDanh::all()->pluck("ten","id");
+
+        $phongBans = PhongBan::all()->pluck("ten","id");
         if (Session::get('no-layout') == true) {
             return view('/nhan-vien/danh-sach', compact(['nhanViens','chucDanhs','phongBans']));
         }
@@ -41,8 +45,8 @@ class NhanviensController extends Controller
     public function create()
     {
         //
-        $chucDanhs = Danhmucs::all()->where('loai',0)->pluck("ten","id");
-        $phongBans = Danhmucs::all()->where('loai',1)->pluck("ten","id");
+        $chucDanhs = ChucDanh::all()->pluck("ten","id");
+        $phongBans = PhongBan::all()->pluck("ten","id");
         return view('/nhan-vien/them-moi',["chucDanhs"=>$chucDanhs,"phongBans"=>$phongBans]);
     }
 
@@ -54,30 +58,17 @@ class NhanviensController extends Controller
      */
     public function store(RequestNhanVien $request)
     {
-        date_default_timezone_set("Asia/Ho_Chi_Minh");     
-        $nhanVien = new Nhanviens();
-        $user = new users();
-
-        $nhanVien -> ten = $request -> ten;
-        $nhanVien -> ma = $request -> ma;
-        $nhanVien -> email = $request -> email;
-        $nhanVien -> ngaysinh = $request -> ngaysinh;
-        $nhanVien -> gioitinh = $request -> gioitinh;
-        $nhanVien -> hesoluong = $request -> hesoluong;
-        $nhanVien -> chucdanhid = $request -> chucdanhid;
-        $nhanVien -> phongbanid = $request -> phongbanid;
-        $nhanVien -> nguoitao = Auth::user()->username;
-        $nhanVien -> nguoisua = Auth::user()->username;
-        
-        Session::flash('message', $nhanVien->save() ? 'addSuccess' : 'addFailed');
-        $user -> username = $request -> email;
-        $user -> password = Hash::make($request->password);
-        $user -> email = $request -> email;
-        $user -> nhanvienid = $nhanVien->id;
-        $user -> nguoitao = Auth::user()->username;
-        $user -> nguoisua = Auth::user()->username;
-        $user->save(); 
-
+        $nhanviens = $request->except('id');
+        $nhanviens['ma'] = $this->getMaNhanVien();
+        try {
+            DB::transaction(function() use($nhanviens){
+                Nhanviens::create($nhanviens);
+                User::create($nhanviens);
+            });
+            Session::flash('message', "addSuccess");
+        } catch (\Throwable $th) {
+            Session::flash('message', "addFailed");
+        }
         return view('message');
     }
 
@@ -116,8 +107,7 @@ class NhanviensController extends Controller
      */
     public function update(RequestNhanVien $request)
     {
-        date_default_timezone_set("Asia/Ho_Chi_Minh");     
-        $nhanvien = Nhanviens::find($request-> id);
+                $nhanvien = Nhanviens::find($request-> id);
        
         if (!$nhanvien) {
             Session::flash('message', 'notFoundItem');
@@ -144,8 +134,7 @@ class NhanviensController extends Controller
      */
     public function destroy(Request $request)
     {
-        date_default_timezone_set("Asia/Ho_Chi_Minh");
-        
+                
         $id = $request->input('id');
         $result = Nhanviens::find($id)->delete();
         $result1 = users::where('nhanvienid',$id)->delete();
@@ -153,21 +142,7 @@ class NhanviensController extends Controller
         return view('message');
     }
 
-    public function render(Request $request)
-    {
-        $ten = CommonUtil::convert_name(strtolower($request->ten));
-        $searchPreArr = explode(" ", $ten);
-        $username = $searchPreArr[count($searchPreArr)-1];
-        $password = CommonUtil::getValueCauhinh("PASSWORDDEFAULT"); //cấu hình pass default = 12345678
-
-        for ($i = 0; $i < count($searchPreArr) - 1; $i++) {
-            $username = $username . $searchPreArr[$i][0];
-        }
-        $username = $username . CommonUtil::getValueCauhinh("EMAILDEFAULT");
-        $id = DB::table('nhanviens')->max("id");
-        $ma = $id < 10 ? "NV0".$id : "NV".$id;
-        
-        return response()->json(json_encode(["username"=>$username,"password"=>$password,"ma"=>$ma]));
+    public function getMaNhanVien(){
+        return 'NV' . DB::table('nhanviens')->max("id");
     }
-
 }

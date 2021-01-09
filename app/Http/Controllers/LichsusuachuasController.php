@@ -51,8 +51,7 @@ class LichsusuachuasController extends Controller
      */
     public function store(RequestLichSuSuaChua $request)
     {
-        date_default_timezone_set("Asia/Ho_Chi_Minh");
-        $lichsusuachuas = new Lichsusuachuas();
+                $lichsusuachuas = new Lichsusuachuas();
         $lichsusuachuas->taisanid = $request->taisanid;
         $lichsusuachuas->nguoidisua = $request->nguoidisua;
         $lichsusuachuas->thoigiansua = $request->thoigiansua;
@@ -97,8 +96,7 @@ class LichsusuachuasController extends Controller
      */
     public function update(RequestLichSuSuaChua $request)
     {
-        date_default_timezone_set("Asia/Ho_Chi_Minh");
-        $lichsusuachua = Lichsusuachuas::find($request->id);
+                $lichsusuachua = Lichsusuachuas::find($request->id);
         if(!$lichsusuachua){
             Session::flash('message', 'notFoundItem');
         } else {
@@ -120,8 +118,7 @@ class LichsusuachuasController extends Controller
      */
     public function destroy(Request $request)
     {
-        date_default_timezone_set("Asia/Ho_Chi_Minh");
-        $id = $request->input('id');
+                $id = $request->input('id');
         $result = Lichsusuachuas::find($id)->delete();
         Session::flash('message', $result ? 'deleteSuccess' : 'deleteFailed');
         return view('message');

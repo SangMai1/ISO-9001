@@ -51,8 +51,7 @@ class LichxuatxesController extends Controller
      */
     public function store(RequestLichXuatXe $request)
     {
-        date_default_timezone_set("Asia/Ho_Chi_Minh");
-
+        
         $lichxuatxes = new Lichxuatxes();
         $lichxuatxes->xeid = $request->xeid;
         $lichxuatxes->cuochopid = $request->cuochopid;
@@ -107,8 +106,7 @@ class LichxuatxesController extends Controller
      */
     public function update(RequestLichXuatXe $request)
     {
-        date_default_timezone_set("Asia/Ho_Chi_Minh");
-        $lichxuatxe = Lichxuatxes::find($request->id);
+                $lichxuatxe = Lichxuatxes::find($request->id);
         if(!$lichxuatxe){
             Session::falsh('message', 'notFoundItem');
         } else {
@@ -137,8 +135,7 @@ class LichxuatxesController extends Controller
      */
     public function destroy(Request $request)
     {
-        date_default_timezone_set("Asia/Ho_Chi_Minh");
-        $id = $request->input('id');
+                $id = $request->input('id');
         $result = Lichxuatxes::fbind($id)->delete();
         Session::flash('message', $result ? 'deleteSuccess' : 'deleteFailed');
         return view('message');

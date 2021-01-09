@@ -44,8 +44,7 @@ class TaisansController extends Controller
      */
     public function store(RequestTaisan $request)
     {
-        date_default_timezone_set("Asia/Ho_Chi_Minh");
-        $taisan = new taisans();
+                $taisan = new taisans();
         $taisan->mataisan = $request->mataisan;
         $taisan->tentaisan = $request->tentaisan;
         $taisan->loaitaisanid = $request->loaitaisanid;
@@ -90,8 +89,7 @@ class TaisansController extends Controller
      */
     public function update(RequestTaisan $request)
     {
-        date_default_timezone_set("Asia/Ho_Chi_Minh");
-
+        
         $taisan = taisans::find($request->id);
         if(!$taisan){
             Session::flash('message', 'notFoundItem');
@@ -116,8 +114,7 @@ class TaisansController extends Controller
      */
     public function destroy(Request $request)
     {
-        date_default_timezone_set("Asia/Ho_Chi_Minh");
-        $id = $request->input('id');
+                $id = $request->input('id');
         $result = taisans::find($id)->delete();
         Session::flash('message', $result ? 'deleteSuccess' : 'deleteFailed');
         return view('message');

@@ -49,8 +49,7 @@ class NhomsController extends Controller
      */
     public function store(RequestNhom $request)
     {
-        date_default_timezone_set("Asia/Ho_Chi_Minh");
-
+        
         $nhom = new nhoms();
         $nhom->ma = $request->ma;
         $nhom->ten = $request->ten;
@@ -102,8 +101,7 @@ class NhomsController extends Controller
      */
     public function update(RequestNhom $request)
     {
-        date_default_timezone_set("Asia/Ho_Chi_Minh");
-
+        
 
         $nhom = nhoms::find($request->id);
         $nhom->ma = $request->ma;
@@ -135,8 +133,7 @@ class NhomsController extends Controller
     public function deleteAll(Request $request)
     {
 
-        date_default_timezone_set("Asia/Ho_Chi_Minh");
-        $id = $request->input('id');
+                $id = $request->input('id');
         $result = nhoms::find($id)->delete();
         Session::flash("message", $result ? "deleteSuccess" : "deleteFailed");
         return view('message');

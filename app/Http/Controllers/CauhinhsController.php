@@ -54,8 +54,7 @@ class CauhinhsController extends Controller
      */
     public function store(RequestCauHinh $request)
     {
-        date_default_timezone_set("Asia/Ho_Chi_Minh");
-
+        
         $cauHinh = new Cauhinhs();
         $cauHinh->ma = $request->ma;
         $cauHinh->ten = $request->ten;
@@ -123,8 +122,7 @@ class CauhinhsController extends Controller
      */
     public function destroy(Request $request)
     {
-        //  date_default_timezone_set("Asia/Ho_Chi_Minh");    
-        //     //  $cauhinhs = users::where('id');
+        //          //     //  $cauhinhs = users::where('id');
         //     //  $cauhinhs -> nguoisua = "Del Admin";
         //     // // $id = $request->input('id');
         //     // $result = chucnangs::find($id)->delete();

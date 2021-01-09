@@ -45,8 +45,6 @@ class ChucnangsController extends Controller
     public function store(RequestChucNang $request)
     {
 
-        date_default_timezone_set("Asia/Ho_Chi_Minh");
-
         $chucNang = new chucnangs($request->except('id'));
 
         Session::flash('message', $chucNang->save() ? 'addSuccess' : 'addFailed');
@@ -76,8 +74,7 @@ class ChucnangsController extends Controller
      */
     public function update(RequestChucNang $request)
     {
-        date_default_timezone_set("Asia/Ho_Chi_Minh");
-
+        
         $chucnang = chucnangs::find($request->id);
 
         if (!$chucnang) {
@@ -101,8 +98,7 @@ class ChucnangsController extends Controller
     public function delete(Request $request)
     {
 
-        date_default_timezone_set("Asia/Ho_Chi_Minh");
-        $id = $request->input('id');
+                $id = $request->input('id');
         $result = chucnangs::find($id)->delete();
         Session::flash("message", $result ? "deleteSuccess" : "deleteFailed");
         return view('message');

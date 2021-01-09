@@ -1,15 +1,14 @@
 @extends('layouts.master')
 @section('title', 'Thêm mới nhân viên')
-@section('module', 'nhanvien/render')
 @section('content')
   @include('message')
   
     <form method="post" autocomplete="off" ajax-form>
       @csrf
 
-      <x-input title="Tên" type="text" name="ten" id="ten" onblur="render()" float/>
-      <x-input title="Mã" type="text" name="ma" id="ma"/>
+      <x-input title="Tên" type="text" name="ten" id="ten" float/>
       <x-input title="Email" type="email" name="email" id="email"/>
+      <x-input title="Tên tài khoản" type="text" name="username"/>
 
       <x-input title="Nam" type="radio" name="gioitinh" value="0" checked float/>
       <x-input title="Nữ" type="radio" name="gioitinh" value="1" float/>
@@ -41,24 +40,4 @@
       <input class="btn btn-sm btn-info" type="submit" value="Lưu" />
   </div>
 </form>
-<script>
-function render() {
-  var formData = new FormData();
-  formData.append("_token", $("input[name=_token]").val());
-  formData.append("ten", $('#ten').val());
-  $.ajax({
-    type: 'POST', 
-    url: "{{route('nhanvien.render')}}", 
-    data: formData, 
-    dataType: "json",
-    success: function (data) {
-      var json = JSON.parse(data);
-      Swal.close();
-      $("#email").val(json.username);
-      $("#ma").val(json.ma);
-      $("#password").val(json.password);
-    }
-  });
-}
-</script>
 @endsection

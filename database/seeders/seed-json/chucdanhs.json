@@ -1,0 +1,6 @@
+[
+    { "ten": "Giám đốc", "level" : "100"} ,
+    { "ten": "Chủ tịch", "level" : "101"} ,
+    { "ten": "Lao công", "level" : "102"} ,
+    { "ten": "Nhân viên vệ sinh", "level" : "103"} 
+]
