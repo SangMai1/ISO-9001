@@ -8,7 +8,7 @@
       
       <div class="form-group">
         <label>Tài sản</label>
-        <select title="" class="form-control" name="taisanid">
+        <select title="" class="form-control" id="selectBox" name="taisanid" onchange="changeFunc()">
           @foreach($idTaiSan as $key => $value)
             <option value="{{$key}}">{{$value}}</option>
           @endforeach
@@ -17,7 +17,7 @@
 
       <x-input title="Biển số" type="text" name="bienso" float />
 
-      <x-input title="Số chỗ" type="number" name="socho" float/>
+      <x-input title="Số chỗ" type="number" name="socho" min="1" float/>
 
       <div class="form-group">
         <label>Nhân viên</label>
@@ -37,7 +37,7 @@
                 rules: {
                     bienso: {
                         required: true,
-                        minlength: 3
+                        minlength: 5
                     },
                     socho: {
                         required: true,
@@ -47,5 +47,10 @@
             })
         });
 
+        function changeFunc() {
+          var selectBox = document.getElementById("selectBox");
+          var selectedValue = selectBox.options[selectBox.selectedIndex].value;
+          alert(selectedValue);
+        }
   </script>
 @endsection

@@ -23,6 +23,8 @@
             </select>
         </div>
 
+        <x-input title="Thuộc sở hữu" type="text" name="sohuu" value="{{ $taisans->sohuu }}" />
+
         <x-input title="Giá tiền" type="number" name="giatien" value="{{ $taisans->giatien }}" />
 
         <x-input title="Còn zin" type="radio" name="trangthai" value="0" :checked="$taisans['trangthai'] == 0 " float />
@@ -40,10 +42,6 @@
         $(() => {
             $('form[ajax-form]').validateCustom({
                 rules: {
-                    mataisan: {
-                        required: true,
-                        minlength: 1
-                    },
                     tentaisan: {
                         required: true,
                         minlength: 3

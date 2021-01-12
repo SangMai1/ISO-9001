@@ -4,5 +4,7 @@ module.exports = {
         'u': 'UsersSeeder',
         'n': 'NhomsSeeder',
         'm': 'MenusSeeder',
+        'x': 'XesSeeder',
+        'ts': 'TaisansSeeder'
     }
 }

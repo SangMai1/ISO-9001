@@ -12,5 +12,5 @@ class taisans extends Model
     use SoftDeletes, UpdateUser;
     public $timestamps = true;
     protected $table = "taisans";
-    protected $fillable = ["id", "mataisan", "tentaisan", "loaitaisanid", "giatien", "khauhao", "nguoitao", "nguoisua", "trangthai"];
+    protected $fillable = ["id", "mataisan", "tentaisan", "loaitaisanid", "giatien", "khauhao", "nguoitao", "nguoisua", "trangthai", "sohuu"];
 }

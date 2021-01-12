@@ -16,6 +16,8 @@
 
             <th>Trạng thái</th>
 
+            <th>Sở hữu</th>
+
             <th class="th-action"><i class="fas fa-cogs"></i></th>   
 
         @endslot
@@ -35,6 +37,7 @@
                             <div class="cell" index="2"></div>
                             <div class="cell" index="3"></div>
                             <div class="cell" index="4"></div>
+                            <div class="cell" index="5"></div>
                         </div>
                     </td>
 
@@ -46,12 +49,17 @@
                     <td>{{ $ts->giatien }}</td>
                     
                     <td>{{ $ts->trangthai ? 'Đã qua sử dụng' : 'Hàng mới' }}</td>
+
+                    <td>{{ $ts->sohuu }}</td>
+
                     <td class="td-action">
                                                                                      
                         <button class="btn btn-sm btn-icon btn-danger rounded-circle delete-btn"><i class="fas fa-trash"></i></button>
                                                                                       
                         <a class="btn btn-sm btn-info btn-icon rounded-circle" 
                             href="{{ route('taisan.edit') }}?id={{$ts->id}}"><i class="fas fa-pencil-alt"></i></a>
+                        <a class="btn btn-sm btn-info btn-icon rounded-circle" 
+                            href="{{ route('taisan.chuyen') }}?id={{$ts->id}}"><i class="fas fa-exchange-alt"></i></a>
                     </td>
                 </tr>
             @endforeach

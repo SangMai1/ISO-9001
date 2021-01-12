@@ -18,10 +18,20 @@
         </select>
       </div>
 
+      <div class="form-group">
+        <label>Thuộc sở hữu</label>
+        <select title="" class="form-control" name="sohuu" autocomplete>
+          @foreach($soHuus as $key => $value)
+            <option value="{{$value->ten}}">{{$value->ten}}</option>
+          @endforeach
+          <option value="Không thuộc bất kì ai">Không thuộc bất kì ai</option>
+        </select>
+      </div>
+
       <x-input title="Giá tiền" type="number" name="giatien"/>
 
       <x-input title="Mới" type="radio" name="trangthai" value="0" checked float/> <!-- 0: Mới -->
-      <x-input title="Đã qua sử dụng" type="radio" name="trangthai" value="1" float/>          <!-- 1: Đã qua sử dụng -->
+      <x-input title="Đã qua sử dụng" type="radio" name="trangthai" value="1" float/> <!-- 1: Đã qua sử dụng -->
 
       <x-input title="Khấu hao" type="number" name="khauhao"/>
 
@@ -41,6 +51,12 @@
                     tentaisan: {
                         required: true,
                         minlength: 3
+                    },
+                    giatien: {
+                        required: true
+                    },
+                    khauhao: {
+                        required: true
                     }
                 }
             })

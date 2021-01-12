@@ -24,8 +24,8 @@ class RequestXe extends FormRequest {
     public function rules()
     {
         return  [
-            'bienso' => 'required|string|min:3',
-            'socho' => 'required|string|min:1'
+            'bienso' => 'required|unique:xes|string|min:5',
+            'socho' => 'required|numeric|min:0|not_in:0'
         ];
     }
 
