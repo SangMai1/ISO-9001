@@ -21,7 +21,7 @@ class XesController extends Controller
      */
     public function index(Request $request)
     {
-        $xes = CommonUtil::readViewConfig(xes::class, $request)->get();
+        $xes = CommonUtil::readViewConfig(xes::class, $request)->orderBy('created_at', 'DESC')->get();
         $taisans = taisans::pluck('tentaisan', 'id');
         $nhanviens = Nhanviens::pluck('ten', 'id');
         $soLanSuaChua = Lichsusuachuas::all();
@@ -38,9 +38,15 @@ class XesController extends Controller
      */
     public function create()
     {
-        $idTaiSan = taisans::pluck('tentaisan', 'id');
-        $idNhanVien = Nhanviens::pluck('ten', 'id');
-     
+
+        $idNhanVien = Nhanviens::whereNotExists(function($query){
+                            $query->select(DB::raw('id'))->from('xes')->whereRaw('xes.nhanvienid = nhanviens.id');
+                        })->pluck('ten', 'id');
+
+         $idTaiSan = taisans::whereNotExists(function($query){
+                        $query->select(DB::raw('id'))->from('xes')->whereRaw('taisans.id = xes.taisanid');
+                    })->pluck('tentaisan', 'id');
+    
         return view('/xe/them-moi', compact(['idTaiSan', 'idNhanVien']));
     }
 

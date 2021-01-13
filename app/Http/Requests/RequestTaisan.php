@@ -24,8 +24,10 @@ class RequestTaisan extends FormRequest {
     public function rules()
     {
         return  [
-            'mataisan' => 'required|string|min:1',
-            'tentaisan' => 'required|string|min:3'
+            'mataisan' => 'required|string|min:1|unique:taisans,id,'.$this->id,
+            'tentaisan' => 'required|string|min:3',
+            'giatien' => 'required|string',
+            'khauhao' => 'required|string'
         ];
     }
 
@@ -33,7 +35,9 @@ class RequestTaisan extends FormRequest {
     {
         return [
             'mataisan' => 'Mã tài sản',
-            'tentaisan' => 'Tên tài sản'
+            'tentaisan' => 'Tên tài sản',
+            'giatien' => 'Giá tiền',
+            'khauhao' => 'Khấu hao'
         ];
     }
 }

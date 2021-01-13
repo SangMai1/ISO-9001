@@ -134,6 +134,8 @@ Route::group(['prefix' => '/tai-san'], function () {
     Route::get('/chinh-sua', 'App\Http\Controllers\TaisansController@edit')->name('taisan.edit'); // Cập nhật tài sản
     Route::post('/cap-nhat', 'App\Http\Controllers\TaisansController@update')->name('taisan.update'); // Xử lý cập nhật tài sản
     Route::post('/xoa', 'App\Http\Controllers\TaisansController@destroy')->name('taisan.delete'); // Xóa tài sản
+    Route::get('/chuyen', 'App\Http\Controllers\TaisansController@chuyen')->name('taisan.chuyen'); // Chuyển giao tài sản
+    Route::post('/chuyen-giao', 'App\Http\Controllers\TaisansController@chuyengiao')->name('taisan.chuyengiao'); // Chuyển giao tài sản
     // Route::get('/search', 'App\Http\Controllers\NhomsController@search')->name('nhom.search'); // Tìm kiếm tài sản
 });
 

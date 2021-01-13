@@ -16,6 +16,8 @@ class BackupSeed extends Seeder
             case 'chucnangs':
             case 'users':
             case 'nhoms':
+            case 'taisans':
+            case 'xes':
                 $db->where('deleted_at', '=', null);
                 break;
             case 'menus':
