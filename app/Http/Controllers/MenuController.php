@@ -88,7 +88,7 @@ class MenuController extends Controller
      */
     public function update(RequestMenu $req)
     {
-        $menu = $req->id ? Menu::find($req->id) : '';
+        $menu = $req->_data['id'];
         $message = 'updateFailed';
         if ($menu) $message = $menu->update($req->except('idcha')) ? 'updateSuccess' : 'updateFailed';
         Session::flash('message', $message);
@@ -98,7 +98,7 @@ class MenuController extends Controller
     public function updatePos(RequestMenuUpdatePos $req)
     {
         $params = $req->only('id', 'vitri', 'idcha');
-        $menu = $req->model['menu'];
+        $menu = $req->_data['id'];
 
         Session::flash('message', $menu->update($params) ? 'updateSuccess' : 'updateFailed');
         return redirect()->route('menu.list');

@@ -1,6 +1,15 @@
 // @ts-ignore
 //@ts-nocheck
 HTMLElement.prototype.on = HTMLElement.prototype.addEventListener
+
+const requestPath = {
+    u: {
+        nhanviens: {
+            info: '/u/nhan-vien/i'
+        }
+    }
+}
+
 $(() => { window.token = $('meta[name="csrf-token"]').attr("content") })
 $.fn.perfectScrollbar = function (this) { return this }
 $.fn.findAll = function (this: JQuery<HTMLElement>, query) {
@@ -54,6 +63,7 @@ const showAlert = function (html: JQuery<HTMLElement>) {
     fixTooltip()
     configSweetAlert()
     fixMaterial()
+    $(renderNotification)
 
     $.ajaxSetup({
         headers: {
@@ -73,6 +83,73 @@ const showAlert = function (html: JQuery<HTMLElement>) {
             Swal.fire(_swagConfig.errorAjax)
         }
     });
+
+    function renderNotification() {
+        const notificationLi = $('#notifications-li')
+        const dropdownMenu = notificationLi.find('.dropdown-menu:eq(0)')
+        if (!_notifications.length) return notificationLi.addClass('empty')
+
+        const readDiv = $('<div class="read">Đã đọc</div>')
+        const unreadDiv = $('<div class="unread">Chưa đọc</div>')
+        notificationLi.find('.dropdown-menu')
+            .append(unreadDiv)
+            .append(readDiv)
+
+        let quantityUnread = 0
+        $(()=>console.log($('a.notification-link')))
+        $('a.notification-link').on('click', function(e){
+            console.log(e)
+        })
+        let userIds = []
+        for (let notification of _notifications) {
+            let action = (e) => { e.insertBefore(readDiv) }
+
+            if (!notification.readat) ++quantityUnread
+            else parentDiv = (e) => { dropdownMenu.append(e) }
+            switch (notification.type) {
+                case 'text':
+                    {
+                        action($(`<div class="dropdown-item">${notification.data}</div>`))
+                    }
+                    break
+                case 'text-from':
+                    {
+                        userIds.push(notification.data.user)
+                        action($(
+                            `<div class="dropdown-item">
+                                <span class="nv" i="${notification.data.user}"></span>
+                                <span>&nbspđã để lại lời nhắn: ${notification.data.message}</span>
+                            </div>`))
+                    }
+            }
+        }
+
+        renderUserCss(userIds)
+
+        notificationLi.find('.notification:eq(0)').html(quantityUnread)
+    }
+
+    function renderUserCss(userIds: any[]) {
+        const style = $('<style id="nv-style"></style>')
+        document.head.append(style[0])
+        const map = {}
+        renderUserCss = function (userIds: any[]) {
+            userIds = userIds.filter((cur) => {
+                if (map[cur]) return false
+                return (map[cur] = true)
+            })
+            if (!userIds.length) return
+            const path = `${requestPath.u.nhanviens.info}?type=more.min.json${Array.from(new Set(userIds)).reduce((acc, cur) => `${acc}&ids[]=${cur}`, '')}`
+            $.getJSON({ url: path, success: null, error: null })
+                .done((users: any[]) => {
+                    for (let id in users) {
+                        style.append(`.nv[i="${id}"]::before{ content: "${users[id].ten}"}`)
+                        map[id] = users[id]
+                    }
+                })
+        }
+        renderUserCss(userIds)
+    }
 
     function configSweetAlert() {
         swal = Swal.mixin({

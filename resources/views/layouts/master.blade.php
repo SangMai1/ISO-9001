@@ -18,6 +18,10 @@
 </head>
 
 <body class="">
+    <script>
+        const _user = @json(Auth::user());
+        const _notifications = @json($GLOBALS['notifications']);
+    </script>
     <div class="wrapper ">
         @include('includes.sidebar')
         <div class="main-panel">

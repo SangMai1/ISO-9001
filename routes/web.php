@@ -1,10 +1,13 @@
 <?php
 
+use App\Models\Notification;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-
+use Illuminate\Support\Facades\Session;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,10 +24,27 @@ Route::get('/doc', function () {
     return view('doc');
 }); // Thêm documentation cho layout
 
+Route::get('/noti', function (Request $req) {
+    try {
+        Notification::sendNotifications(User::find($req->userid), ['user' => Auth::user()->id, 'message' => $req->message], 'text-from');
+    } catch (\Throwable $th) {
+        Session::flash('message', "addSuccess");
+    }
+    return view('home', ['users' => User::all()]);
+});
+
+Route::get('/user/read-notification', function (Request $req) {
+    $message = $req->message;
+    $notification = Notification::find($req->id);
+    if (!$notification) return;
+    Notification::where('userid', Auth::user()->nhanvienid)
+        ->whereNull('readat')
+        ->where('created_at', '<=', $notification->created_at)
+        ->update(['readat' => Carbon::now()]);
+});
+
 Route::get('/', function (Request $req) {
-    $result = $req->input;
-    
-    return view('home', compact(['result']));
+    return view('home', ['users' => User::all()]);
 });
 
 Route::get('/home', function () {
@@ -105,7 +125,6 @@ Route::group(['prefix' => '/nhan-vien'], function () {
     Route::post('/cap-nhat', 'App\Http\Controllers\NhanviensController@update')->name('nhanvien.update'); // Xử lý sửa nhân viên
     Route::post('/xoa', 'App\Http\Controllers\NhanviensController@destroy')->name('nhanvien.delete'); // Xóa  nhân viên
     Route::get('/search', 'App\Http\Controllers\NhanviensController@search')->name('nhanvien.search'); // Tìm kiếm  nhân viên
-    Route::post('/render', 'App\Http\Controllers\NhanviensController@render')->name('nhanvien.render');
 });
 
 Route::group(['prefix' => '/tai-san'], function () {
@@ -146,4 +165,10 @@ Route::group(['prefix' => '/lich-xuat-xe'], function () {
     Route::post('/cap-nhat', 'App\Http\Controllers\LichxuatxesController@update')->name('lichxuatxe.update'); // Xử lý cập nhật lịch xuất xe
     Route::post('/xoa', 'App\Http\Controllers\LichxuatxesController@destroy')->name('lichxuatxe.delete'); // Xóa lịch xuất xe
     // Route::get('/search', 'App\Http\Controllers\NhomsController@search')->name('nhom.search'); // Tìm kiếm lịch xuất xe
+});
+
+Route::group(['prefix' => '/u'], function () {
+    Route::group(['prefix' => '/nhan-vien'], function () {
+        Route::get('/i', 'App\Http\Controllers\u\NhanVienController@getInfo');
+    });
 });

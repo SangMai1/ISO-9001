@@ -84,10 +84,17 @@ class CommonUtil
 
         return $str;
     }
-    static function checkExists($class, $field = 'id', $request = null){
-        return function($attr, $value, $fail) use($class, $field){
-            if($field === null) $field = $attr;
-            return $class::where($field, $value)->first() ? true : $fail('Không tìm thấy' . $attr . '');
+
+    static function checkExists($class, $field = 'id', $request = null)
+    {
+        return function ($attr, $value, $fail) use ($class, $field, $request) {
+            $data = $class::where($field, $value)->first();
+            if (!$data) return $fail('Không tìm thấy ' . $attr . '');
+            if ($field === null) $field = $attr;
+            if ($request) {
+                if (!isset($request->_data)) $request->_data = [];
+                $request->_data[$attr] = $data;
+            }
         };
     }
 }

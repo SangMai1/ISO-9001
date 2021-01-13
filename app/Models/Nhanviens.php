@@ -14,4 +14,5 @@ class Nhanviens extends Model
     public $timestamps = true;
     protected $table = "nhanviens";
     protected $fillable = ["id", "ten", "ma","email", "ngaysinh", "gioitinh", "hesoluong", "chucdanhid", "phongbanid", "nguoitao", "nguoisua"];
+    protected $hidden = ['deleted_at'];
 }

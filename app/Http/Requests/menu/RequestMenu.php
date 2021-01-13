@@ -4,6 +4,7 @@ namespace App\Http\Requests\menu;
 
 use App\Models\chucnangs;
 use App\Models\Menu;
+use App\Util\CommonUtil;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -30,7 +31,8 @@ class RequestMenu extends FormRequest
     public function rules()
     {
         return [
-            'idcha' => ['nullable', 'exists:menus,id'],
+            'id' => ['nullable', CommonUtil::checkExists(Menu::class, 'id', $this)],
+            'idcha' => ['required', 'exists:menus,id'],
             'ten' => ["required", "min:2", "max:100"],
             'vitri' => ["required", "Integer"],
             'chucnangid' => ['nullable', 'Integer', function ($attr, $id, $fail) {

@@ -3,6 +3,7 @@
 namespace App\Http\Requests\menu;
 
 use App\Models\Menu;
+use App\Util\CommonUtil;
 use Illuminate\Foundation\Http\FormRequest;
 
 class RequestMenuUpdatePos extends FormRequest
@@ -26,14 +27,10 @@ class RequestMenuUpdatePos extends FormRequest
     public function rules()
     {
         return [
-            'id' => ['required', function ($attr, $id, $fail) {
-                $menu = Menu::find($id);
-                if (!$menu) $fail(__('validation.exists', ['attribute' => $this->attributes()[$attr]]));
-                $this->model['menu'] = $menu;
-            }],
+            'id' => ['required', CommonUtil::checkExists(Menu::class, 'id', $this)],
             'idcha' => ['nullable', function ($attr, $idcha, $fail) {
-                $menu = $this->model['menu'];
-                if (!$menu->isValidParentId($idcha)) $fail( ucfirst($this->attributes()[$attr]) . " không hợp lệ" );
+                $menu = $this->_data['id'];
+                if (!$menu->isValidParentId($idcha)) $fail(ucfirst($this->attributes()[$attr]) . " không hợp lệ");
             }],
             'vitri' => ["required", "Integer"],
         ];

@@ -30,22 +30,16 @@
                         </p>
                     </a>
                 </li>
-                {{-- <li class="nav-item dropdown">
-                    <a class="nav-link" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <li class="nav-item dropdown" id="notifications-li">
+                    <a class="nav-link notification-link" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class="material-icons">notifications</i>
                         <span class="notification">5</span>
-                        <p class="d-lg-none d-md-block">
-                            Some Actions
-                        </p>
+                        <p class="d-lg-none d-md-block">Thông báo</p>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
-                        <a class="dropdown-item" href="#">Mike John responded to your email</a>
-                        <a class="dropdown-item" href="#">You have 5 new tasks</a>
-                        <a class="dropdown-item" href="#">You're now friend with Andrew</a>
-                        <a class="dropdown-item" href="#">Another Notification</a>
-                        <a class="dropdown-item" href="#">Another One</a>
+
                     </div>
-                </li> --}}
+                </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link" data-toggle="dropdown">
                         <i class="material-icons">person</i>
@@ -59,7 +53,7 @@
                         <a class="dropdown-item" href="#">Cài đặt</a>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="javascript:$('#logoutForm')[0].submit()">Đăng xuất</a>
-                        <form action="{{ route('logout') }}" id="logoutForm" method="POST"> @csrf</form>
+                        <form action="{{ route('logout') }}" class="d-none" id="logoutForm" method="POST"> @csrf</form>
                     </div>
                 </li>
             </ul>
