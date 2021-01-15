@@ -1,16 +1,11 @@
 // @ts-ignore
 //@ts-nocheck
 HTMLElement.prototype.on = HTMLElement.prototype.addEventListener
-
-const requestPath = {
-    u: {
-        nhanviens: {
-            info: '/u/nhan-vien/i'
-        }
-    }
-}
+moment.locale('vn')
+const global = {}
 
 $(() => { window.token = $('meta[name="csrf-token"]').attr("content") })
+
 $.fn.perfectScrollbar = function (this) { return this }
 $.fn.findAll = function (this: JQuery<HTMLElement>, query) {
     arr = []
@@ -23,6 +18,7 @@ $.fn.findAll = function (this: JQuery<HTMLElement>, query) {
     }
     return $(arr)
 }
+
 const _swagConfig: { [key: string]: SweetAlertOptions } = {};
 var Toast: SwalInterface;
 const showLoading = function (message = "Chờ xí ...") {
@@ -85,48 +81,107 @@ const showAlert = function (html: JQuery<HTMLElement>) {
     });
 
     function renderNotification() {
+        addNotificationPusher()
         const notificationLi = $('#notifications-li')
-        const dropdownMenu = notificationLi.find('.dropdown-menu:eq(0)')
-        if (!_notifications.length) return notificationLi.addClass('empty')
+        const dropdownMenu = notificationLi.find('.dropdown-menu')
 
-        const readDiv = $('<div class="read">Đã đọc</div>')
-        const unreadDiv = $('<div class="unread">Chưa đọc</div>')
-        notificationLi.find('.dropdown-menu')
+        const readDiv = $('<div class="read"></div>')
+        const unreadDiv = $('<div class="unread"></div>')
+        dropdownMenu
+            .append($('<div class="mx-2 mb-0 mt-2">Chưa đọc</div>'))
             .append(unreadDiv)
+            .append($('<div class="mx-2 my-0">Đã đọc</div>'))
             .append(readDiv)
 
         let quantityUnread = 0
-        $(()=>console.log($('a.notification-link')))
-        $('a.notification-link').on('click', function(e){
-            console.log(e)
-        })
         let userIds = []
-        for (let notification of _notifications) {
-            let action = (e) => { e.insertBefore(readDiv) }
 
-            if (!notification.readat) ++quantityUnread
-            else parentDiv = (e) => { dropdownMenu.append(e) }
+        if (_notifications.read.length)
+            _notifications.read.forEach((notification) => { renderChild(readDiv, notification) })
+        else
+            readDiv.prev().hide()
+
+        if (_notifications.unread.length)
+            _notifications.unread.forEach((notification) => { renderChild(unreadDiv, notification); ++quantityUnread })
+        else
+            unreadDiv.prev().hide()
+
+        let isPreventShowNotification = false;
+        let lastNotificationUnreadId = getLastNotificationId(_notifications.unread)
+
+        global['_notification_event'] = function () {
+            $('[id="notifications-li"]').each(function () {
+                const e = $(this)
+                if (e.data('has-event-notification')) return
+                e.data('has-event-notification', true)
+                e.on('show.bs.dropdown', function (evt) {
+                    if (isPreventShowNotification || !lastNotificationUnreadId) return
+                    console.log('clear notification')
+                    const noLi = $('[id="notifications-li"]')
+                    $.getJSON({ url: `${requestPath.u.notification.readNotification}?id=${lastNotificationUnreadId}`, success: null, error: null, beforeSend: null })
+                        .done((resp) => { $('.notification').empty(), isPreventShowNotification = true })
+                        .fail(() => isPreventShowNotification = false)
+                })
+            })
+        }
+
+        renderUserCss(userIds)
+        notificationLi.prepend($(`<script>global['_notification_event']()</script>`)[0])
+        quantityUnread && notificationLi.find('.notification:eq(0)').html(quantityUnread)
+
+        function renderChild(parentDiv, notification, method = 'append') {
             switch (notification.type) {
                 case 'text':
                     {
-                        action($(`<div class="dropdown-item">${notification.data}</div>`))
+                        parentDiv[method]($(`<div class="dropdown-item">${notification.data}</div>`))
                     }
                     break
                 case 'text-from':
                     {
                         userIds.push(notification.data.user)
-                        action($(
+                        parentDiv[method]($(
                             `<div class="dropdown-item">
-                                <span class="nv" i="${notification.data.user}"></span>
-                                <span>&nbspđã để lại lời nhắn: ${notification.data.message}</span>
+                                <div>
+                                    <span class="nv" i="${notification.data.user}"></span>
+                                    <span>&nbsp<strong>${notification.data.action || 'đã để lại lời nhắn'}</strong>: ${notification.data.message}</span>
+                                    <div>${moment(notification.created_at).calendar()}</div>
+                                <div>
                             </div>`))
                     }
             }
         }
+        function getLastNotificationId(arr) {
+            return arr.reduce((max, { created_at, id }) => {
+                let time = (new Date(created_at)).getTime()
+                return time > max.time ? { id: id, time: time } : max
+            }, { time: 0 }).id
+        }
+        function addNotificationPusher() {
+            let pusher = new Pusher(config.keyPusher, {
+                encrypted: false,
+                cluster: "ap1"
+            });
 
-        renderUserCss(userIds)
+            let channel = pusher.subscribe('notification');
+            channel.bind('user-id-' + _user.id, evt);
+            channel.bind('all', console.log);
 
-        notificationLi.find('.notification:eq(0)').html(quantityUnread)
+            function evt(data) {
+                if (data.users && (data.users.indexOf(_user.id) === -1)) return
+                $.getJSON({
+                    url: `${requestPath.u.notification.getNotificationsUnread}?id=${data.notification || 0}`,
+                    success: null,
+                    error: null,
+                    beforeSend: null
+                }).done((notification) => {
+                    renderChild($('.unread'), notification, 'prepend')
+                    $('.unread').prev().show()
+                    isPreventShowNotification = false
+                    lastNotificationUnreadId = data.notification
+                    $('.notification').each(function () { $(this).html((Number($(this).html()) || 0) + 1) })
+                })
+            }
+        }
     }
 
     function renderUserCss(userIds: any[]) {
@@ -139,7 +194,7 @@ const showAlert = function (html: JQuery<HTMLElement>) {
                 return (map[cur] = true)
             })
             if (!userIds.length) return
-            const path = `${requestPath.u.nhanviens.info}?type=more.min.json${Array.from(new Set(userIds)).reduce((acc, cur) => `${acc}&ids[]=${cur}`, '')}`
+            const path = `${requestPath.u.nhanvien.info}?type=more.min.json${Array.from(new Set(userIds)).reduce((acc, cur) => `${acc}&ids[]=${cur}`, '')}`
             $.getJSON({ url: path, success: null, error: null })
                 .done((users: any[]) => {
                     for (let id in users) {

@@ -244,21 +244,10 @@ ul:not(.navbar-nav):not([role="presentation"]):not(.nav-tabs) {
             }
         }
     }
-    .dropdown-item{
+    .dropdown-item {
         display: block !important;
     }
     .nav-mobile-menu {
-        #notifications-li {
-            &.has-message {
-                > .nav-link {
-                    background-color: white;
-                    * {
-                        color: tomato !important;
-                        font-weight: 700px !important;
-                    }
-                }
-            }
-        }
         .nav-item {
             i {
                 color: white !important;
@@ -451,6 +440,9 @@ input.white-input {
     &.empty .dropdown-menu {
         display: none !important;
     }
+    .notification:empty {
+        display: none;
+    }
     .dropdown-menu {
         .read,
         .unread {
@@ -459,11 +451,24 @@ input.white-input {
             padding: 4px 10px;
         }
     }
-    .nv{
+    .nv {
         font-weight: 600;
         color: orange;
     }
 }
+
+.main-panel {
+    #notifications-li .dropdown-menu {
+        position: fixed !important;
+        top: 55px !important;
+        right: 130px !important;
+        max-width: 500px;
+        min-width: 500px;
+        max-height: calc(100% - 80px);
+        overflow: auto;
+    }
+}
+
 .go-back-btn {
     margin: 0;
     padding: 6px 20px;
@@ -486,9 +491,9 @@ input.white-input {
         transform: translateX(-50%) translateY(-50%);
     }
 }
-.dropdown-item{
+.dropdown-item {
     display: block;
-    &:hover{
+    &:hover {
         background-color: rgba(0, 0, 0, 0.1) !important;
         color: black !important;
         cursor: pointer;
