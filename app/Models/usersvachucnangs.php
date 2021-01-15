@@ -7,5 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class usersvachucnangs extends Model
 {
-    use HasFactory;
+    public $timestamps = false;
+    protected $table = "usersvachucnangs";
+    protected $fillable = ["userid", "chucnangid"];
 }

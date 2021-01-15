@@ -8,7 +8,7 @@
       
       <div class="form-group">
         <label>Tài sản</label>
-        <select title="" class="form-control" id="selectBox" name="taisanid" onchange="changeFunc()">
+        <select title="" class="form-control" name="taisanid" autocomplete>
           @foreach($idTaiSan as $key => $value)
             <option value="{{$key}}">{{$value}}</option>
           @endforeach
@@ -21,7 +21,7 @@
 
       <div class="form-group">
         <label>Nhân viên</label>
-        <select title="" class="form-control" name="nhanvienid">
+        <select title="" class="form-control" name="nhanvienid" autocomplete>
           @foreach($idNhanVien as $key => $value)
             <option value="{{$key}}">{{$value}}</option>
           @endforeach
@@ -44,13 +44,10 @@
                         minlength: 1
                     }
                 }
-            })
-        });
+            });
 
-        function changeFunc() {
-          var selectBox = document.getElementById("selectBox");
-          var selectedValue = selectBox.options[selectBox.selectedIndex].value;
-          alert(selectedValue);
-        }
+            
+        });        
+
   </script>
 @endsection

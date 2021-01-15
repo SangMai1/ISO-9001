@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\chucnangs;
+use App\Models\Nhanviens;
 use App\Models\usersvachucnangs;
 use Illuminate\Http\Request;
 
@@ -22,9 +24,11 @@ class UsersvachucnangsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        $nhanVien = Nhanviens::find($request->id);
+        $idChucNang = chucnangs::pluck('ten', 'id');
+        return view('/nhan-vien/them-moi-chuc-nang', compact(["nhanVien", "idChucNang"]));
     }
 
     /**
@@ -35,7 +39,14 @@ class UsersvachucnangsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $chucnangid = $request->input('chucnangs');
+        foreach($chucnangid as $chucs){
+            $usersvachucnangs = new usersvachucnangs();
+            $usersvachucnangs->userid = $request->userid;
+            $usersvachucnangs->chucnangid = $chucs;
+            $usersvachucnangs->save();
+        }
+        return view("message");
     }
 
     /**

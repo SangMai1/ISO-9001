@@ -61,6 +61,8 @@
                         <td class="td-action">
                             <button class="btn btn-sm btn-icon btn-danger rounded-circle delete-btn"><i class="fas fa-trash"></i></button>
                             <a class="btn btn-sm btn-info btn-icon rounded-circle" href="{{ route('nhanvien.edit') }}?id={{ $nv->id }}"><i class="fas fa-pencil-alt"></i></a>
+                            <a class="btn btn-sm btn-info btn-icon rounded-circle" href="{{ route('usersvachucnangs.create') }}?id={{ $nv->id }}"><i class="fas fa-user-shield"></i></a>
+                            <a class="btn btn-sm btn-info btn-icon rounded-circle" href="{{ route('usersvanhoms.create') }}?id={{ $nv->id }}"><i class="fas fa-users"></i></a>
                         </td>
 
                     </tr>

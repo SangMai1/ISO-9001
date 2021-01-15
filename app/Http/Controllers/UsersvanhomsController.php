@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Nhanviens;
+use App\Models\nhoms;
 use App\Models\usersvanhoms;
 use Illuminate\Http\Request;
 
@@ -22,9 +24,11 @@ class UsersvanhomsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        $nhanVien = Nhanviens::find($request->id);
+        $idNhom = nhoms::pluck('ten', 'id');
+        return view('/nhan-vien/them-moi-nhom', compact(["nhanVien", "idNhom"]));
     }
 
     /**
@@ -35,7 +39,14 @@ class UsersvanhomsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $nhomid = $request->input('nhoms');
+        foreach($nhomid as $ns){
+            $usersvanhoms = new usersvanhoms();
+            $usersvanhoms->userid = $request->userid;
+            $usersvanhoms->nhomid = $ns;
+            $usersvanhoms->save();
+        }
+        return view("message");
     }
 
     /**

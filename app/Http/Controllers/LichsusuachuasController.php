@@ -37,7 +37,6 @@ class LichsusuachuasController extends Controller
     public function create(Request $request)
     {
         $xe = xes::find($request->id);
-   
         $idTaiSan = taisans::pluck('tentaisan', 'id');
         $idNhanVien = Nhanviens::pluck('ten', 'id');
         return view('/lich-su-sua-chua/them-moi', compact(['idTaiSan', 'idNhanVien', 'xe']));

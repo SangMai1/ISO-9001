@@ -125,6 +125,10 @@ Route::group(['prefix' => '/nhan-vien'], function () {
     Route::post('/cap-nhat', 'App\Http\Controllers\NhanviensController@update')->name('nhanvien.update'); // Xử lý sửa nhân viên
     Route::post('/xoa', 'App\Http\Controllers\NhanviensController@destroy')->name('nhanvien.delete'); // Xóa  nhân viên
     Route::get('/search', 'App\Http\Controllers\NhanviensController@search')->name('nhanvien.search'); // Tìm kiếm  nhân viên
+    Route::get('/them-moi-chuc-nang', 'App\Http\Controllers\UsersvachucnangsController@create')->name('usersvachucnangs.create'); // màn hình thêm mới nhân viên và chức năng
+    Route::post('/them-moi-chuc-nang', 'App\Http\Controllers\UsersvachucnangsController@store')->name('usersvachucnangs.store'); // Xử lý thêm mới nhân viên và chức năng
+    Route::get('/them-moi-nhom', 'App\Http\Controllers\UsersvanhomsController@create')->name('usersvanhoms.create'); // màn hình thêm mới nhân viên và nhóm
+    Route::post('/them-moi-nhom', 'App\Http\Controllers\UsersvanhomsController@store')->name('usersvanhoms.store'); // Xử lý thêm mới nhân viên và nhóm
 });
 
 Route::group(['prefix' => '/tai-san'], function () {

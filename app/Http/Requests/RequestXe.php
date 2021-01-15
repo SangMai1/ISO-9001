@@ -24,7 +24,7 @@ class RequestXe extends FormRequest {
     public function rules()
     {
         return  [
-            'bienso' => 'required|unique:xes|string|min:5',
+            'bienso' => 'required|string|min:5|unique:xes,id,'.$this->id,
             'socho' => 'required|numeric|min:0|not_in:0'
         ];
     }

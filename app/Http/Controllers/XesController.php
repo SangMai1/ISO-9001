@@ -39,14 +39,11 @@ class XesController extends Controller
     public function create()
     {
 
-        $idNhanVien = Nhanviens::whereNotExists(function($query){
-                            $query->select(DB::raw('id'))->from('xes')->whereRaw('xes.nhanvienid = nhanviens.id');
-                        })->pluck('ten', 'id');
-
+        $idNhanVien = Nhanviens::pluck('ten', 'id');
+        
          $idTaiSan = taisans::whereNotExists(function($query){
                         $query->select(DB::raw('id'))->from('xes')->whereRaw('taisans.id = xes.taisanid');
                     })->pluck('tentaisan', 'id');
-    
         return view('/xe/them-moi', compact(['idTaiSan', 'idNhanVien']));
     }
 
@@ -142,5 +139,6 @@ class XesController extends Controller
             ->orWhere('xes.socho', 'like', '%' . $search . '%')->get();
         return view('/xe/danh-sach', compact(['xes', 'nhanviens', 'taisans']));
         
-}
+    }
+
 }

@@ -10,7 +10,7 @@
 
         <div class="form-group">
             <label>Tài sản</label>
-            <select title="" class="form-control" name="taisanid">
+            <select title="" class="form-control" name="taisanid" autocomplete >
                 @foreach ($idTaiSan as $key => $value)
                     <option value="{{ $key }}" {{ $key == $xe['taisanid'] ? 'selected' : '' }}>{{ $value }}</option>
                 @endforeach
@@ -23,7 +23,7 @@
 
         <div class="form-group">
             <label>Nhân viên</label>
-            <select title="" class="form-control" name="nhanvienid">
+            <select title="" class="form-control" name="nhanvienid" autocomplete>
                 @foreach ($idNhanVien as $key => $value)
                     <option value="{{ $key }}" {{ $key == $xe['nhanvienid'] ? 'selected' : '' }}>{{ $value }}</option>
                 @endforeach
