@@ -51,16 +51,6 @@ Route::get('/home', function () {
     return redirect('/');
 })->name('home');
 Auth::routes(['register' => true]);
-Route::get('/example', function () {
-    return view('example');
-});
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-Route::get('/list', function () {
-    return view('/layouts/default-form/demo');
-});
-Route::get('/table/{table}', function ($table) {
-    return response(DB::table($table)->get(), 200, ['content-type' => 'application/json']);
-});
 
 Route::group(['prefix' => '/cau-hinh'], function () {
     Route::get('/danh-sach', 'App\Http\Controllers\CauhinhsController@index')->name('cauhinh.list'); // Hiển thị danh sách cấu hình

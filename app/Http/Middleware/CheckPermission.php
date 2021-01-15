@@ -89,7 +89,7 @@ class CheckPermission
             $content = ['lastTimeCleanNotification' => 0];
         }
 
-        if (($content['lastTimeCleanNotification'] + $this::$lifespanOfNotification) < time() || true) {
+        if (($content['lastTimeCleanNotification'] + $this::$lifespanOfNotification) < time()) {
             $content['lastTimeCleanNotification'] = time();
             $file = fopen($path, 'w+');
             fwrite($file, json_encode($content));
