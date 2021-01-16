@@ -1,8 +1,7 @@
 <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
 <!-- CSS Files -->
-{{-- <link rel="stylesheet" href="/css/material-dashboard.css"> --}}
-<link rel="stylesheet" href="http://maxe17q.000webhostapp.com/ISO-9001/css/material-dashboard.css?ver=1.02">
+<link rel="stylesheet" href="http://maxe17q.000webhostapp.com/ISO-9001/css/material-dashboard.css?ver=1.04">
 {{-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/material-dashboard@2.1.0/assets/css/material-dashboard.css"> --}}
 {{--
 <link rel="stylesheet" href="https://demos.creative-tim.com/test/material-dashboard-pro/assets/css/material-dashboard.min.css?v=2.0.3">

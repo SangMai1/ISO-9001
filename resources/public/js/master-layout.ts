@@ -58,7 +58,7 @@ const showAlert = function (html: JQuery<HTMLElement>) {
     addPrototypeFormData()
     fixTooltip()
     configSweetAlert()
-    fixMaterial()
+    $(fixMaterial)
     $(renderNotification)
 
     $.ajaxSetup({
@@ -250,18 +250,8 @@ const showAlert = function (html: JQuery<HTMLElement>) {
 
     // fix lỗi màn hình đen menu không kéo hết :V
     function fixMaterial() {
-        $(() => {
-            $(".navbar-toggler").on("click", async function () {
-                await new Promise(resolve => {
-                    let interval = setInterval(
-                        () =>
-                            $(".close-layer.visible")[0] &&
-                            resolve(clearInterval(interval)),
-                        100
-                    );
-                });
-                $("body").append($(".close-layer.visible").addClass("done"));
-            });
+        $('#close-menu-mobile')[0].on('click', () => {
+            $(".close-layer.visible")[0].click();
         })
     }
 
