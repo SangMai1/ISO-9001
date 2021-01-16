@@ -8,6 +8,10 @@
     <link rel="apple-touch-icon" sizes="76x76" href="/assets/img/apple-icon.png"> --}}
     {{--
     <link rel="icon" type="image/png" href="/assets/img/favicon.png"> --}}
+    <script>
+        const _user = @json(Auth::user());
+        const _notifications = @json($GLOBALS['notifications']);
+    </script>
     <title> @yield('title')</title>
     @include('includes.lib')
     @if (View::hasSection('module'))
@@ -18,10 +22,6 @@
 </head>
 
 <body class="">
-    <script>
-        const _user = @json(Auth::user());
-        const _notifications = @json($GLOBALS['notifications']);
-    </script>
     <div class="wrapper ">
         @include('includes.sidebar')
         <div class="main-panel">

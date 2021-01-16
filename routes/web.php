@@ -1,13 +1,16 @@
 <?php
 
+use App\Events\Notify;
 use App\Models\Notification;
 use App\Models\User;
+use App\Util\PusherUtils;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
+use Pusher\Pusher;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,23 +27,20 @@ Route::get('/doc', function () {
     return view('doc');
 }); // Thêm documentation cho layout
 
-Route::get('/noti', function (Request $req) {
+Route::post('/noti', function (Request $req) {
     try {
-        Notification::sendNotifications(User::find($req->userid), ['user' => Auth::user()->id, 'message' => $req->message], 'text-from');
+        $user = null;
+        if ($req->has('all')) {
+            $user = User::all();
+        } else {
+            $user = User::find($req->userid);
+            if (!$user) return;
+        }
+        Notification::sendNotifications($user, ['user' => Auth::user()->id, 'message' => $req->message], 'text-from');
     } catch (\Throwable $th) {
         Session::flash('message', "addSuccess");
     }
     return view('home', ['users' => User::all()]);
-});
-
-Route::get('/user/read-notification', function (Request $req) {
-    $message = $req->message;
-    $notification = Notification::find($req->id);
-    if (!$notification) return;
-    Notification::where('userid', Auth::user()->nhanvienid)
-        ->whereNull('readat')
-        ->where('created_at', '<=', $notification->created_at)
-        ->update(['readat' => Carbon::now()]);
 });
 
 Route::get('/', function (Request $req) {
@@ -51,16 +51,6 @@ Route::get('/home', function () {
     return redirect('/');
 })->name('home');
 Auth::routes(['register' => true]);
-Route::get('/example', function () {
-    return view('example');
-});
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-Route::get('/list', function () {
-    return view('/layouts/default-form/demo');
-});
-Route::get('/table/{table}', function ($table) {
-    return response(DB::table($table)->get(), 200, ['content-type' => 'application/json']);
-});
 
 Route::group(['prefix' => '/cau-hinh'], function () {
     Route::get('/danh-sach', 'App\Http\Controllers\CauhinhsController@index')->name('cauhinh.list'); // Hiển thị danh sách cấu hình
@@ -175,6 +165,10 @@ Route::group(['prefix' => '/lich-xuat-xe'], function () {
 
 Route::group(['prefix' => '/u'], function () {
     Route::group(['prefix' => '/nhan-vien'], function () {
-        Route::get('/i', 'App\Http\Controllers\u\NhanVienController@getInfo');
+        Route::get('/i', 'App\Http\Controllers\u\NhanVienController@getInfo')->name('u.nhanvien.info');
+    });
+    Route::group(['prefix' => '/thong-bao'], function () {
+        Route::get('/doc', 'App\Http\Controllers\u\NotificationController@readNotificationsOfUser')->name('u.thongbao.docthongbao'); // Xác định người dùng đã đọc thông báo
+        Route::get('/chua-doc', 'App\Http\Controllers\u\NotificationController@getNotificationOfUser')->name('u.thongbao.chuadoc'); // Lấy thông báo chưa đọc
     });
 });

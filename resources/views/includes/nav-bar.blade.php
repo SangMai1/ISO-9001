@@ -33,7 +33,7 @@
                 <li class="nav-item dropdown" id="notifications-li">
                     <a class="nav-link notification-link" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class="material-icons">notifications</i>
-                        <span class="notification">5</span>
+                        <span class="notification"></span>
                         <p class="d-lg-none d-md-block">Thông báo</p>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">

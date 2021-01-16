@@ -16,9 +16,10 @@ use function PHPSTORM_META\type;
 
 class CheckPermission
 {
+    // 604800
     private static $regexPublic = '/^(\/login|\/register)$/';
-    private static $maxTimeClean = 604800;
-    // private static $maxTimeClean = 1;
+    private static $lifespanOfNotification = 604800;
+    private static $lifespanOfNotificationUnread = 604800 * 4;
     /**
      * Handle an incoming request.
      *
@@ -31,8 +32,8 @@ class CheckPermission
         $user = Auth::user();
         $GLOBALS['notifications'] = [];
         if ($user) {
-            $GLOBALS['notifications'] = $this->getUserNotifications();
             $this->cleanNotifications();
+            $GLOBALS['notifications'] = $this->getUserNotifications();
 
             if ($user->isAdmin()) return $next($req);
 
@@ -75,7 +76,7 @@ class CheckPermission
     public function getUserNotifications()
     {
         $user = Auth::user();
-        return Notification::unreadNotifications($user)->toArray() + Notification::readNotifications($user, 20)->toArray();
+        return ['unread' => Notification::unreadNotifications($user), 'read' => Notification::readNotifications($user, 20)];
     }
 
     public function cleanNotifications()
@@ -88,15 +89,26 @@ class CheckPermission
             $content = ['lastTimeCleanNotification' => 0];
         }
 
-        if (($content['lastTimeCleanNotification'] + $this::$maxTimeClean) < time()) {
+        if (($content['lastTimeCleanNotification'] + $this::$lifespanOfNotification) < time()) {
             $content['lastTimeCleanNotification'] = time();
             $file = fopen($path, 'w+');
             fwrite($file, json_encode($content));
             fclose($file);
-            DB::table('notifications')
-                ->whereNotNull('readat')
-                ->orWhere('readat', '<', Carbon::createFromTimestamp(time() + $this::$maxTimeClean))
-                ->delete();
+            DB::transaction(function () {
+                DB::table('usersnotifications as un')
+                    ->leftJoin('notifications as n', 'un.notificationid', '=', 'n.id')
+                    ->whereNull('n.id')
+                    ->orWhere('n.created_at', '<', Carbon::createFromTimestamp(time() - $this::$lifespanOfNotificationUnread))
+                    ->orWhere(function ($q) {
+                        $q->whereNotNull('un.readat')
+                            ->where('un.readat', '<', Carbon::createFromTimestamp(time() - $this::$lifespanOfNotification));
+                    })->delete();
+
+                DB::table('notifications as n')
+                    ->leftJoin('usersnotifications as un', 'un.notificationid', '=', 'n.id')
+                    ->whereNull('un.id')
+                    ->delete();
+            });
         } else fclose($file);
     }
 }

@@ -4,6 +4,7 @@
 /storage/*.key
 /public/js
 /public/css
+/public/data.json
 /vendor
 /.idea
 /database/seeders/seed-json/backup

@@ -6,6 +6,7 @@ use App\Models\Danhmucs;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Pusher\Pusher;
 
 class CommonUtil
 {
@@ -29,7 +30,7 @@ class CommonUtil
 
         $wordSearch = trim(str_replace(" ", "&", $wordSearch));
         $arr[] = "(" . $wordSearch . ")";
-        return implode($arr);
+        return implode('', $arr);
     }
 
     static function getValueCauhinh($ma)
@@ -96,5 +97,5 @@ class CommonUtil
                 $request->_data[$attr] = $data;
             }
         };
-    }
+    }    
 }
