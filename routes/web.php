@@ -37,6 +37,7 @@ Route::post('/noti', function (Request $req) {
             $user = User::find($req->userid);
             if (!$user) return;
         }
+        
         Notification::sendNotifications($user, ['user' => Auth::user()->id, 'message' => $req->message], 'text-from');
     } catch (\Throwable $th) {
         Session::flash('message', "addSuccess");

@@ -7,6 +7,7 @@ use App\Models\Danhmucs;
 use App\Models\Nhanviens;
 use App\Models\PhongBan;
 use App\Models\taisans;
+use App\Models\User;
 use App\Util\CommonUtil;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -130,22 +131,44 @@ class TaisansController extends Controller
     public function chuyen(Request $request)
     {
         $taisans = taisans::find($request->id);
-        $nhanViens = DB::table('nhanviens')->select('id', 'ten');
-        $soHuus = DB::table('phongbans')->select('id', 'ten')->union($nhanViens)->get();
         if(!$taisans) return abort(404);
-        return view('/tai-san/chuyen-giao', compact(['taisans', 'soHuus']));
+        $nhanViens = Nhanviens::all()->pluck(['ten', 'id']);
+        $phongBans = PhongBan::all()->pluck(['ten', 'id']);
+        switch($taisans->sohuu_type){
+            case null:
+                $taisans->sohuu = '"Không có người sở hữu"'; break;
+            case 1:
+                $taisans->sohuu = 'Phòng ban: '. ($phongBans[$taisans->sohuu_id] ?? '"Không tồn tại phòng ban có id' . $taisans->sohuu_id .'"'); break;
+            case 2: 
+                $taisans->sohuu = 'Nhân viên: ' . ($nhanViens['1'] ?? '"Không tồn tại nhân viên có id ' . $taisans->sohuu_id .'"'); break;
+        } 
+        return view('/tai-san/chuyen-giao', compact(['nhanViens', 'phongBans', 'taisans']));
     }
     
-        public function chuyengiao(Request $request)
+    public function chuyengiao(Request $req)
     {
-        
-        $taisan = taisans::find($request->id);
-        if(!$taisan){
-            Session::flash('message', 'notFoundItem');
-        } else {
-            $taisan->sohuu = $request->sohuu;
-            Session::flash('message', $taisan->update() ? 'updateSuccess' : 'updateFailed');
+        $taisan = taisans::find($req->id);
+
+        $soHuu = [0, null];
+        switch($taisan->sohuu_type){
+            case 1:
+                $pb = PhongBan::find($taisan->sohuu_id);
+                $soHuu = [1, $pb ? $pb : null];
+                break;
+            case 2:
+                $u = User::where('nhanvienid', $taisan->nhanvienid);
+                $soHuu = [1, $u ? $u : null];
+                break;
         }
+
+        // tài sản có sở hữu
+        switch($req->sohuu_type){
+            case null:  
+                
+                
+        }
+        // không sở hữu
+
         
         return view('message');
 

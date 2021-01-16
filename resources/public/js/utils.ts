@@ -91,6 +91,16 @@ const Utils = {
             if (key === 'constructor') continue
             obj[key] = obj[key]
         }
+    },
+    emptyAjaxSetting(settings){
+        return {
+            ...{
+                beforeSend: null,
+                success: null,
+                error: null,
+            ...settings
+        }
+        
     }
 }
 

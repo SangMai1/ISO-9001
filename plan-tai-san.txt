@@ -1,0 +1,7 @@
+chưa sở hữu
+  thông báo cho người sắp sở hữu về tài sản chuyển giao
+    -> người dùng -> lấy tài sản -> xác nhận thông báo 
+      -> thay đổi người sở hữu trên database
+      -> xóa thông báo xác nhận
+đã sở hữu tài sản
+  -> yêu cầu thu hồi

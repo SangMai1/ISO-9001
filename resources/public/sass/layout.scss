@@ -412,6 +412,8 @@ ul:not(.navbar-nav):not([role="presentation"]):not(.nav-tabs) {
 }
 
 .wrapper {
+    margin-top: 70px;
+    height: calc(100% - 70px);
     .main-panel {
         > .content {
             margin-top: 0 !important;

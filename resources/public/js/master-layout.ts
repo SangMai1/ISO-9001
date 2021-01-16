@@ -168,16 +168,15 @@ const showAlert = function (html: JQuery<HTMLElement>) {
 
             function evt(data) {
                 if (data.users && (data.users.indexOf(_user.id) === -1)) return
-                $.getJSON({
+                $.getJSON(Utils.emptyAjaxSetting({
                     url: `${requestPath.u.notification.getNotificationsUnread}?id=${data.notification || 0}`,
-                    success: null,
-                    error: null,
-                    beforeSend: null
-                }).done((notification) => {
+                    
+                })).done((notification) => {
                     renderChild($('.unread'), notification, 'prepend')
                     $('.unread').prev().show()
                     isPreventShowNotification = false
                     lastNotificationUnreadId = data.notification
+                    renderUserCss([notification.data.user])
                     $('.notification').each(function () { $(this).html((Number($(this).html()) || 0) + 1) })
                 })
             }
@@ -195,7 +194,7 @@ const showAlert = function (html: JQuery<HTMLElement>) {
             })
             if (!userIds.length) return
             const path = `${requestPath.u.nhanvien.info}?type=more.min.json${Array.from(new Set(userIds)).reduce((acc, cur) => `${acc}&ids[]=${cur}`, '')}`
-            $.getJSON({ url: path, success: null, error: null })
+            $.getJSON(Utils.emptyAjaxSetting({ url: path }))
                 .done((users: any[]) => {
                     for (let id in users) {
                         style.append(`.nv[i="${id}"]::before{ content: "${users[id].ten}"}`)

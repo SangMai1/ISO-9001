@@ -34,7 +34,8 @@ class configjs extends Command
         ];
 
         $config = [
-            'keyPusher' => env('PUSHER_APP_KEY')
+            'keyPusher' => env('PUSHER_APP_KEY'),
+            'defaultMessage'=>'lsaldflasdfl'
         ];
 
         $path = './resources/public/js/requestPath.js';
