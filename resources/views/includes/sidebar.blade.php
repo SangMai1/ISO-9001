@@ -5,9 +5,10 @@ Tip 1: You can change the color of the sidebar using: data-color="purple | azure
 Tip 2: you can also add an image using data-image tag
 -->
 
-    <div class="logo"><span class="simple-text logo-normal">
-            ISO-9001
-        </span></div>
+    <div class="logo">
+        <div id="close-menu-mobile"><i class="fas fa-times"></i></div>
+        <span class="simple-text logo-normal">ISO-9001</span>
+    </div>
     <div class="sidebar-wrapper">
         <ul class="list-unstyled nav sidebar-ul">
             <script>

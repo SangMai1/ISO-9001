@@ -8,13 +8,6 @@ body {
 .font-weight-bold {
     font-weight: 900 !important;
 }
-.close-layer.visible.done {
-    position: fixed !important;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    right: 260px;
-}
 .nav-link {
     cursor: pointer;
 }
@@ -50,10 +43,15 @@ body {
         user-select: none;
     }
     .logo {
-        // background-color: linear-gradient(45deg, #614385, #516395);
-        // box-shadow: 4px 0px 8px -1px;
         height: 70px;
         text-align: center;
+        #close-menu-mobile {
+            position: absolute;
+            left: 20px;
+            top: 22px;
+            display: none;
+            font-size: 26px;
+        }
     }
     ul {
         padding: 0;
@@ -234,6 +232,14 @@ ul:not(.navbar-nav):not([role="presentation"]):not(.nav-tabs) {
     transform: translateX(-50%);
 }
 @media (max-width: 991px) {
+    .close-layer.visible {
+        right: 400px !important;
+        position: fixed;
+    }
+    
+    #close-menu-mobile{
+        display: block !important;
+    }
     ul.nav:not(.nav-tabs):not([role="presentation"]) {
         li {
             .nav-link {
@@ -243,6 +249,12 @@ ul:not(.navbar-nav):not([role="presentation"]):not(.nav-tabs) {
                 padding: 3px 6px !important;
             }
         }
+    }
+    .sidebar {
+        width: 100%;
+        max-width: 400px;
+        left: unset !important;
+        right: 0;
     }
     .dropdown-item {
         display: block !important;
@@ -270,10 +282,6 @@ ul:not(.navbar-nav):not([role="presentation"]):not(.nav-tabs) {
         .wrapper {
             .main-panel {
                 transform: none;
-                .navbar#navbar,
-                .content {
-                    transform: translateX(-260px);
-                }
             }
         }
     }
@@ -404,15 +412,7 @@ ul:not(.navbar-nav):not([role="presentation"]):not(.nav-tabs) {
 }
 
 .wrapper {
-    position: fixed;
-    width: 100%;
-    overflow: auto;
-    top: 70px;
-    height: calc(100% - 70px);
     .main-panel {
-        > nav#navbar {
-            transition: 0.7s !important;
-        }
         > .content {
             margin-top: 0 !important;
             padding: 15px 10px;
@@ -463,9 +463,11 @@ input.white-input {
         top: 55px !important;
         right: 130px !important;
         max-width: 500px;
-        min-width: 500px;
         max-height: calc(100% - 80px);
         overflow: auto;
+        span {
+            white-space: pre-wrap;
+        }
     }
 }
 

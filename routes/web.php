@@ -1,6 +1,7 @@
 <?php
 
 use App\Events\Notify;
+use App\Http\Controllers\MenuController;
 use App\Models\Notification;
 use App\Models\User;
 use App\Util\PusherUtils;
@@ -10,6 +11,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Storage;
 use Pusher\Pusher;
 
 /*
@@ -22,7 +24,6 @@ use Pusher\Pusher;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
 Route::get('/doc', function () {
     return view('doc');
 }); // Thêm documentation cho layout
@@ -166,5 +167,9 @@ Route::group(['prefix' => '/u'], function () {
     Route::group(['prefix' => '/thong-bao'], function () {
         Route::get('/doc', 'App\Http\Controllers\u\NotificationController@readNotificationsOfUser')->name('u.thongbao.docthongbao'); // Xác định người dùng đã đọc thông báo
         Route::get('/chua-doc', 'App\Http\Controllers\u\NotificationController@getNotificationOfUser')->name('u.thongbao.chuadoc'); // Lấy thông báo chưa đọc
+    });
+    Route::group(['prefix' => '/cuoc-hop'], function () {
+        Route::get('/them-moi', 'App\Http\Controllers\u\CuocHopController@create')->name('u.cuochop.create');
+        Route::post('/them-moi', 'App\Http\Controllers\u\CuocHopController@store')->name('u.cuochop.store');
     });
 });
