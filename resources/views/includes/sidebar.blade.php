@@ -17,8 +17,8 @@ Tip 2: you can also add an image using data-image tag
                     let menu = localStorage.getItem('menu')
                     if (menu === null) $.get('/menu/user-menu').then(resp => {
                         const menu = Utils.render.nojs(resp)
-                        localStorage.setItem('menu', menu[0].outerHTML) 
                         $(current).replaceWith(menu)
+                        localStorage.setItem('menu', menu.parent().html()) 
                     })
                     else $(current).replaceWith(Utils.render.nojs(menu))
                 }

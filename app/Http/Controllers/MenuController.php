@@ -10,6 +10,7 @@ use App\Util\CommonUtil;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\View as FacadesView;
 use Illuminate\View\View;
@@ -133,9 +134,9 @@ class MenuController extends Controller
 
     public function getUserMenu()
     {
-        $menus = Menu::all();
+        $menus = Menu::orderBy('vitri')->get();
 
-        $renderLi = function ($menu, $child = "", $isParent = false) {
+        $renderLi = function ($menu, $child = "") {
             return
                 $child
                 ?   '<li class="nav-item">
@@ -146,63 +147,49 @@ class MenuController extends Controller
                                     <div class="icon-menu">' . $menu->icon . '</div>' . $menu->ten . '</a>' . $child . '</li>';
         };
 
-        $renderUl = function ($child, $menuParent, $isParent = false) {
-            return $isParent
-                ?   $child
-                :   '<ul class="collapse" id="menu-id-' . $menuParent->id . '">' . $child . '</ul>';
+        $renderUl = function ($child, $menuParent) {
+            return isset($menuParent->id)
+                ?   '<ul class="collapse" id="menu-id-' . $menuParent->id . '">' . $child . '</ul>'
+                :   $child;
         };
 
-        $menuConvert = new stdClass();
-        $menuConvert->id = -1;
-
-        $permissionCache = $GLOBALS['permissions'] ?? [];
-        $permissionMap = $GLOBALS['permissionMap'] ?? [];
-
-        $menuConvert->childs = $menus->filter(function ($menu) use ($menus, $permissionCache, $permissionMap) {
+        $menus = $menus->filter(function ($menu) use ($menus) {
             $idcha = $menu->idcha;
             if (!$idcha) return true;
             if ($idcha < 0 || $menu->id == $idcha) return true;
             $menuParent = $menus[$menus->search(function ($menu) use ($idcha) {
                 return $menu->id == $idcha;
             })];
+
             if ($menuParent) {
                 if (!isset($menuParent->childs)) $menuParent->childs = collect([]);
-                $url = preg_replace('/\?.*/', '', $menu->url);
-
-                if (_p($url)) {
-                    $hasIdcha = false;
-                    foreach ($permissionMap as $key) {
-                        if ($key == $idcha) {
-                            break;
-                            $hasIdcha = true;
-                        }
-                    }
-                    if (
-                        $hasIdcha
-                        ? (isset($permissionCache[$idcha]) ? true : false)
-                        : true
-                    ) $menuParent->childs->push($menu);
-                }
+                $menuParent->childs->push($menu);
                 return false;
             }
             return true;
         });
 
         $renderRecursive = function ($recursive, $menu) use ($renderLi, $renderUl) {
-            $isParent = $menu->id === -1;
-
-            return $renderUl($menu->childs->sort(function ($a, $b) {
-                return $a->vitri > $b->vitri ? 1 : -1;
-            })->reduce(function ($acc, $menu) use ($renderLi, $recursive, $isParent) {
+            $childsRender = $menu->childs->reduce(function ($acc, $menu) use ($renderLi, $recursive) {
                 $childs = "";
                 if (isset($menu->childs)) {
+
+                    $menu->childs = $menu->childs->filter(function ($curMenu) {
+                        $url = preg_replace('/\?.*/', '', $curMenu->url);
+                        return _p($url);
+                    });
+
                     if ($menu->childs->count() === 0) return $acc;
                     $childs = $recursive($recursive, $menu);
                 }
-                return $acc . $renderLi($menu, $childs, $isParent);
-            }, ""), $menu, $isParent);
+                return $acc . $renderLi($menu, $childs);
+            }, "");
+
+            return $renderUl($childsRender, $menu);
         };
 
+        $menuConvert = new stdClass();
+        $menuConvert->childs = $menus;
         return $renderRecursive($renderRecursive, $menuConvert);
     }
 }

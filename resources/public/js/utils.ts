@@ -92,15 +92,16 @@ const Utils = {
             obj[key] = obj[key]
         }
     },
-    emptyAjaxSetting(settings){
+    emptyAjaxSetting(settings) {
         return {
             ...{
                 beforeSend: null,
                 success: null,
                 error: null,
-            ...settings
+                ...settings
+            }
+
         }
-        
     }
 }
 

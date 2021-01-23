@@ -4,4 +4,7 @@ chưa sở hữu
       -> thay đổi người sở hữu trên database
       -> xóa thông báo xác nhận
 đã sở hữu tài sản
-  -> yêu cầu thu hồi
+  ->chuyển sang nút thu hồi tài sản 
+      ->c
+      ->ghi vào nhật kí
+

@@ -6,11 +6,7 @@
 {{--
 <link rel="stylesheet" href="https://demos.creative-tim.com/test/material-dashboard-pro/assets/css/material-dashboard.min.css?v=2.0.3">
 --}}
-
-
-<!--   Core JS Files   -->
-
-<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script> 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.devbridge-autocomplete/1.4.10/jquery.autocomplete.min.js">
 </script>
 <script src="http://maxe17q.000webhostapp.com/ISO-9001/js/core/popper.min.js"></script>

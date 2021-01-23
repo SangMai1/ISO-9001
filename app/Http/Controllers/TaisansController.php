@@ -23,7 +23,7 @@ class TaisansController extends Controller
     public function index(Request $request)
     {
         $taisans = CommonUtil::readViewConfig(taisans::class, $request)->orderBy('created_at', 'DESC')->get();
-        if($request->has('no-layout')) {
+        if ($request->has('no-layout')) {
             return view('tai-san.include', compact(['taisans']));
         }
         return view('tai-san.danh-sach', compact(['taisans']));
@@ -83,7 +83,7 @@ class TaisansController extends Controller
     {
         $taisans = taisans::find($request->id);
         $danhMucs = Danhmucs::all()->where('loai', 2)->pluck('ten', 'id');
-        if(!$taisans) return abort(404);
+        if (!$taisans) return abort(404);
         return view('/tai-san/cap-nhat', compact(['taisans', 'danhMucs']));
     }
 
@@ -96,9 +96,9 @@ class TaisansController extends Controller
      */
     public function update(RequestTaisan $request)
     {
-        
+
         $taisan = taisans::find($request->id);
-        if(!$taisan){
+        if (!$taisan) {
             Session::flash('message', 'notFoundItem');
         } else {
             $taisan->mataisan = $request->mataisan;
@@ -109,9 +109,8 @@ class TaisansController extends Controller
             $taisan->sohuu = $request->sohuu;
             Session::flash('message', $taisan->update() ? 'updateSuccess' : 'updateFailed');
         }
-        
-        return view('message');
 
+        return view('message');
     }
 
     /**
@@ -122,7 +121,7 @@ class TaisansController extends Controller
      */
     public function destroy(Request $request)
     {
-                $id = $request->input('id');
+        $id = $request->input('id');
         $result = taisans::find($id)->delete();
         Session::flash('message', $result ? 'deleteSuccess' : 'deleteFailed');
         return view('message');
@@ -131,26 +130,29 @@ class TaisansController extends Controller
     public function chuyen(Request $request)
     {
         $taisans = taisans::find($request->id);
-        if(!$taisans) return abort(404);
+        if (!$taisans) return abort(404);
         $nhanViens = Nhanviens::all()->pluck(['ten', 'id']);
         $phongBans = PhongBan::all()->pluck(['ten', 'id']);
-        switch($taisans->sohuu_type){
+        switch ($taisans->sohuu_type) {
             case null:
-                $taisans->sohuu = '"Không có người sở hữu"'; break;
+                $taisans->sohuu = '"Không có người sở hữu"';
+                break;
             case 1:
-                $taisans->sohuu = 'Phòng ban: '. ($phongBans[$taisans->sohuu_id] ?? '"Không tồn tại phòng ban có id' . $taisans->sohuu_id .'"'); break;
-            case 2: 
-                $taisans->sohuu = 'Nhân viên: ' . ($nhanViens['1'] ?? '"Không tồn tại nhân viên có id ' . $taisans->sohuu_id .'"'); break;
-        } 
+                $taisans->sohuu = 'Phòng ban: ' . ($phongBans[$taisans->sohuu_id] ?? '"Không tồn tại phòng ban có id' . $taisans->sohuu_id . '"');
+                break;
+            case 2:
+                $taisans->sohuu = 'Nhân viên: ' . ($nhanViens['1'] ?? '"Không tồn tại nhân viên có id ' . $taisans->sohuu_id . '"');
+                break;
+        }
         return view('/tai-san/chuyen-giao', compact(['nhanViens', 'phongBans', 'taisans']));
     }
-    
+
     public function chuyengiao(Request $req)
     {
         $taisan = taisans::find($req->id);
 
         $soHuu = [0, null];
-        switch($taisan->sohuu_type){
+        switch ($taisan->sohuu_type) {
             case 1:
                 $pb = PhongBan::find($taisan->sohuu_id);
                 $soHuu = [1, $pb ? $pb : null];
@@ -162,15 +164,12 @@ class TaisansController extends Controller
         }
 
         // tài sản có sở hữu
-        switch($req->sohuu_type){
-            case null:  
-                
-                
+        switch ($req->sohuu_type) {
+            case null:
         }
         // không sở hữu
 
-        
-        return view('message');
 
+        return view('message');
     }
 }

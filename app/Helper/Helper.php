@@ -9,36 +9,34 @@ use Illuminate\Support\Facades\Route;
 function _p($url)
 {
     static $action = 0;
-    static $cache = [];
-    static $permissionMap = [];
-    static $permissionCache = [];
+    static $permissionCache = null;
 
     switch ($action) {
+        case 3:
+            return $permissionCache[$url] ?? true;
         case 0:
-            if (!Auth::check()) $action = 1;
-            else if (Auth::user()->isAdmin()) $action = 2;
+            $user = Auth::user();
+            if (!Auth::check())
+                $action = 1;
+            else if (Auth::user()->isAdmin())
+                $action = 2;
             else {
                 $action = 3;
-                $permissionMap = $GLOBALS['permissionMap'];
-                $permissionCache = $GLOBALS['permissions'];
+                $cache = session('permissions');
+                if (!$cache || ($cache['updated_at'] !== $user->updated_at->timestamp) || true) {
+                    $cache = [
+                        'updated_at' => $user->updated_at->timestamp,
+                        'permissions' => $user->getAllPermissions()
+                    ];
+                    session(['permissions' => $cache]);
+                }
+                $permissionCache = $cache['permissions'];
             }
             return _p($url);
         case 1:
             return false;
         case 2:
             return true;
-        case 3:
-            if (isset($cache[$url])) return $cache[$url];
-            else {
-                $perId = $permissionMap[$url] ?? null;
-                if (!$perId) {
-                    $cache[$url] = true;
-                    return true;
-                } else {
-                    $cache[$url] = isset($permissionCache[$perId]);
-                    return $cache[$url];
-                }
-            }
     }
 };
 

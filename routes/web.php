@@ -24,6 +24,7 @@ use Pusher\Pusher;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
 Route::get('/doc', function () {
     return view('doc');
 }); // Thêm documentation cho layout
@@ -37,7 +38,7 @@ Route::post('/noti', function (Request $req) {
             $user = User::find($req->userid);
             if (!$user) return;
         }
-        
+
         Notification::sendNotifications($user, ['user' => Auth::user()->id, 'message' => $req->message], 'text-from');
     } catch (\Throwable $th) {
         Session::flash('message', "addSuccess");
@@ -167,7 +168,7 @@ Route::group(['prefix' => '/lich-xuat-xe'], function () {
 
 Route::group(['prefix' => '/u'], function () {
     Route::group(['prefix' => '/nhan-vien'], function () {
-        Route::get('/i', 'App\Http\Controllers\u\NhanVienController@getInfo')->name('u.nhanvien.info');
+        Route::get('/q/{type}', 'App\Http\Controllers\u\NhanVienController@queryUser')->name('u.nhanvien.query');
     });
     Route::group(['prefix' => '/thong-bao'], function () {
         Route::get('/doc', 'App\Http\Controllers\u\NotificationController@readNotificationsOfUser')->name('u.thongbao.docthongbao'); // Xác định người dùng đã đọc thông báo
