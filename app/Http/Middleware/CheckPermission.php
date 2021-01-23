@@ -58,7 +58,6 @@ class CheckPermission
         $lastTimeCleanNotification = Cache::rememberForever('lastTimeCleanNotification', function(){
             return 0;
         });
-        exec('start cmd /k echo '. $lastTimeCleanNotification);
         if (($lastTimeCleanNotification + $this::$lifespanOfNotification) < time()) {
             Cache::put('lastTimeCleanNotification', time());
             DB::transaction(function () {

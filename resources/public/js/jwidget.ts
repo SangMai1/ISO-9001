@@ -71,7 +71,7 @@ type refsAutoComplete = {
 
 let __widgetAutoCompleteInitConfig = {
     options: {
-        renderData: (option: HTMLOptionElement) => $(`<div class="py-1 px-3">${option.innerText}</div>`),
+        renderData: (option: HTMLOptionElement) => $(`<div class="py-1 px-3">${$(option).data('value') || option.innerText}</div>`),
         getFilter: (inputValue: string, callback: (comparativeValue: string) => boolean) => Utils.filterStringVnMap(inputValue),
         getComparativeValue: (option: HTMLOptionElement) => option.innerText.toLowerCase(),
         activeSelect: (renderedElement: HTMLElement) => $(renderedElement).addClass('active'),

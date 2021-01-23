@@ -110,6 +110,16 @@ Route::group(['prefix' => '/nhom'], function () {
     Route::get('/search', 'App\Http\Controllers\NhomsController@search')->name('nhom.search'); // Tìm kiếm nhóm
 });
 
+Route::group(['prefix' => '/phong-ban'], function () {
+    Route::get('/danh-sach', 'App\Http\Controllers\PhongBanController@index')->name('phongBan.list'); // Hiển thị danh sách nhóm
+    Route::get('/them-moi', 'App\Http\Controllers\PhongBanController@create')->name('phongBan.create'); // Thêm mới nhóm
+    Route::post('/them-moi', 'App\Http\Controllers\PhongBanController@store')->name('phongBan.store'); // Xử lý thêm mới nhóm
+    Route::get('/chinh-sua', 'App\Http\Controllers\PhongBanController@edit')->name('phongBan.edit'); // Cập nhật nhóm
+    Route::post('/cap-nhat', 'App\Http\Controllers\PhongBanController@update')->name('phongBan.update'); // Xử lý cập nhật nhóm
+    Route::post('/xoa', 'App\Http\Controllers\PhongBanController@deleteAll')->name('phongBan.delete'); // Xóa nhóm
+    Route::get('/search', 'App\Http\Controllers\PhongBanController@search')->name('phongBan.search'); // Tìm kiếm nhóm
+});
+
 Route::group(['prefix' => '/nhan-vien'], function () {
     Route::get('/danh-sach', 'App\Http\Controllers\NhanviensController@index')->name('nhanvien.list'); // Hiển thị danh sách nhân viên
     Route::get('/them-moi', 'App\Http\Controllers\NhanviensController@create')->name('nhanvien.create'); // màn hình thêm mới nhân viên

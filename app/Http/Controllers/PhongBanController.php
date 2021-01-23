@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\phongban\RequestPhongBan;
+use App\Models\Nhanviens;
 use App\Models\PhongBan;
 use App\Util\CommonUtil;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class PhongBanController extends Controller
 {
@@ -18,7 +21,7 @@ class PhongBanController extends Controller
         $phongBans = CommonUtil::readViewConfig(PhongBan::class, $request)->get();
         return view(
             $request->has('no-layout') ? 'phong-ban.includes.table-danh-sach' : 'phong-ban.danh-sach',
-            compact(['return'])
+            compact(['phongBans'])
         );
     }
 
@@ -29,7 +32,8 @@ class PhongBanController extends Controller
      */
     public function create()
     {
-        //
+        $nhanViens = Nhanviens::all();
+        return view('/phong-ban/them-moi', compact(['nhanViens']));
     }
 
     /**
@@ -38,53 +42,59 @@ class PhongBanController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(RequestPhongBan $request)
     {
-        //
-    }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\PhongBan  $phongBan
-     * @return \Illuminate\Http\Response
-     */
-    public function show(PhongBan $phongBan)
-    {
-        //
+        $chucNang = new PhongBan($request->except('id'));
+        
+        Session::flash('message', $chucNang->save() ? 'addSuccess' : 'addFailed');
+        
+        return view('message');
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\PhongBan  $phongBan
+     * @param  \App\Models\chucnangs  $chucnangs
      * @return \Illuminate\Http\Response
      */
-    public function edit(PhongBan $phongBan)
+    public function edit(Request $request)
     {
-        //
+        $phongBan = PhongBan::find($request->id);
+        if (!$phongBan) return abort(404);
+        $nhanViens = Nhanviens::all();
+        return view('/phong-ban/cap-nhat', compact(['phongBan', 'nhanViens']));
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\PhongBan  $phongBan
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, PhongBan $phongBan)
+    public function update(RequestPhongBan $request)
     {
-        //
+        
+        $phongBan = $request->_data['id'];
+
+        Session::flash('message', $phongBan->update([$request->all()]) ? 'updateSuccess' : 'updateFailed');
+
+        return view('message');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\PhongBan  $phongBan
      * @return \Illuminate\Http\Response
      */
-    public function destroy(PhongBan $phongBan)
+
+    public function delete(Request $request)
     {
-        //
+
+        $id = $request->input('id');
+        $result = PhongBan::find($id)->delete();
+        Session::flash("message", $result ? "deleteSuccess" : "deleteFailed");
+        return view('message');
     }
+
 }

@@ -200,7 +200,9 @@ const showAlert = function (html: JQuery<HTMLElement>) {
                 return (map[cur] = true)
             })
             if (!userIds.length) return
-            const path = `${requestPath.u.nhanvien.query}/more.min.json?${Array.from(new Set(userIds)).reduce((acc, cur) => `${acc}&ids[]=${cur}`, '')}`
+            let usersString = Array.from(new Set(userIds)).reduce(
+                (acc, cur) => `${acc}&ids[]=${cur}`,"");
+            const path = `${requestPath.u.nhanvien.query}/more.min.json?${usersString}`
             $.getJSON(Utils.emptyAjaxSetting({ url: path }))
                 .done((users: any[]) => {
                     for (let id in users) {

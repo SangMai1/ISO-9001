@@ -1,6 +1,4 @@
 <div class="table-region">
-    @isset($message) <div class="alert">{{ $message }}</div> @endisset
-
     <x-table auto-index id="table-main" class="mobile" load-more="{{route('phongBan.list')}}"
         delete-href="{{ route('phongBan.delete') }}">
         @slot('head')
@@ -8,6 +6,8 @@
             <th>Mã phòng ban</th>
             <th>Tên phòng ban</th>
             <th>Trưởng phòng</th>
+            <th>Người tạo</th>
+            <th>Người sửa</th>
             <th class="th-action"><i class="fas fa-cogs"></i></th>
         @endslot
         @slot('body')
@@ -22,18 +22,21 @@
                             <div class="cell" index="2"></div>
                             <div class="cell" index="3"></div>
                             <div class="cell" index="4"></div>
+                            <div class="cell" index="5"></div>
                         </div>
                     </td>
 
-                    <td>{{ $cn->ma }}</td>
-                    <td>{{ $cn->ten }}</td>
-                    <td><a href="{{ route('u.nhanvien.query', ['type' => 'info', 'id' => $cn->truongphong_nvid])}}">{{ $cn->truongphong_nvid }}</a></td>
-                    <td><a href="{{ route('u.nhanvien.query', ['type' => 'info', 'id' => $cn->truongphong_nvid])}}">{{ $cn->truongphong_nvid }}</a></td>
-                    <td><a href="{{ route('u.nhanvien.query', ['type' => 'info', 'id' => $cn->truongphong_nvid])}}">{{ $cn->truongphong_nvid }}</a></td>
+                    <td>{{ $pb->ma }}</td>
+                    <td>{{ $pb->ten }}</td>
+                    <td><a href="{{ route('u.nhanvien.query', ['type' => 'info', 'id' => $pb->truongphong_nvid]) }}">{{ $pb->truongphong()->ten ?? '"?"' }}</a></td>
+                    <td><a href="{{ route('u.nhanvien.query', ['type' => 'info', 'id' => $pb->nguoitao]) }}">{{ $pb->nguoitao()->nhanvien()->ten ?? '"?"' }} 
+                        <span data-date="{{$pb->created_at}}"></span></a></td>
+                    <td><a href="{{ route('u.nhanvien.query', ['type' => 'info', 'id' => $pb->nguoisua]) }}">{{ $pb->nguoisua()->nhanvien()->ten ?? '"?"' }} 
+                        <span data-date="{{$pb->updated_at}}"></span></a></td>
                     <td class="td-action">
                         <button class="btn btn-sm btn-icon btn-danger rounded-circle delete-btn"><i class="fas fa-trash"></i></button>
                         <a class="btn btn-sm btn-info btn-icon rounded-circle" 
-                            href="{{ route('phongBan.edit') }}?id={{$cn->id}}"><i class="fas fa-pencil-alt"></i></a>
+                            href="{{ route('phongBan.edit') }}?id={{$pb->id}}"><i class="fas fa-pencil-alt"></i></a>
                     </td>
                 </tr>
             @endforeach

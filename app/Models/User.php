@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Util\CommonUtil;
 use FFI;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -69,12 +70,8 @@ class User extends Authenticatable
 
     public function nhanvien()
     {
-        return Cache::remember('nhanvien_id_' . $this->id, 3600, function () {
-            return $this->hasOne('App\Models\Nhanviens', 'id', 'nhanvienid')->first();
+        return CommonUtil::cache('nhanvien_id_' . $this->id, function () {
+            return $this->id ? $this->hasOne('App\Models\Nhanviens', 'id', 'nhanvienid')->first() : new Nhanviens();
         });
-    }
-
-    public function find($a, $b){
-        $this->find($a, $b);
     }
 }

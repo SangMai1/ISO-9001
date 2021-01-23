@@ -2,6 +2,7 @@
 
 namespace App\Util;
 
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 
@@ -21,17 +22,17 @@ trait UpdateUser
         });
     }
 
-    public function createdBy()
+    public function nguoitao()
     {
-        return Cache::remember('user_id_' . $this->nguoisua, 3600, function () {
-            return $this->hasOne('App\Models\User', 'id', 'nguoitao')->first();
+        return CommonUtil::cache('user_id_' . $this->nguoitao, function () {
+            return $this->nguoitao ? $this->hasOne('App\Models\User', 'id', 'nguoitao')->first() : new User();
         });
     }
 
-    public function updatedBy()
+    public function nguoisua()
     {
-        return Cache::remember('user_id_' . $this->nguoitao, 3600, function () {
-            return $this->hasOne('App\Models\User', 'id', 'nguoisua')->first();
+        return CommonUtil::cache('user_id_' . $this->nguoisua, function () {
+            return $this->nguoisua ? $this->hasOne('App\Models\User', 'id', 'nguoisua')->first() : new User();
         });
     }
 }
