@@ -132,8 +132,8 @@ class TaisansController extends Controller
     {
         $taisans = taisans::find($request->id);
         if(!$taisans) return abort(404);
-        $nhanViens = Nhanviens::all()->pluck(['ten', 'id']);
-        $phongBans = PhongBan::all()->pluck(['ten', 'id']);
+        $nhanViens = Nhanviens::pluck('ten', 'id');
+        $phongBans = PhongBan::pluck('ten', 'id');
         switch($taisans->sohuu_type){
             case null:
                 $taisans->sohuu = '"Không có người sở hữu"'; break;

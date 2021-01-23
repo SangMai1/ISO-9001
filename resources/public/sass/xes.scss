@@ -1,0 +1,23 @@
+@mixin flex($align: flex-start, $justify: flex-start, $wrap: nowrap, $dir: row) {
+  display: flex;
+  align-items: $align;
+  justify-content: $justify;
+  flex-wrap: $wrap;
+  flex-direction: $dir;
+}
+.xes {
+  
+    &__list {
+        padding: 0px;
+        list-style: none;
+        @include flex(stretch, space-between, wrap)
+    }
+
+    &__item {
+        width: calc(20% - 10px);
+        padding: 2.5rem;
+        margin-bottom: 1rem;
+        background-color: red;
+        border: 1px solid black;
+    }
+}

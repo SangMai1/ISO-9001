@@ -18,6 +18,7 @@
         <script src="/js/html/@yield('module').js"></script>
     @endif
     <link href="/css/layout.css" rel="stylesheet">
+    <link href="/css/xes.css" rel="stylesheet">
     <meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport' />
 </head>
 

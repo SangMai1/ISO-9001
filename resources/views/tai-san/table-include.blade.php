@@ -60,6 +60,8 @@
                             href="{{ route('taisan.edit') }}?id={{$ts->id}}"><i class="fas fa-pencil-alt"></i></a>
                         <a class="btn btn-sm btn-info btn-icon rounded-circle" 
                             href="{{ route('taisan.chuyen') }}?id={{$ts->id}}"><i class="fas fa-exchange-alt"></i></a>
+                        <a class="btn btn-sm btn-info btn-icon rounded-circle" 
+                            href="#"><i class="fas fa-exchange-alt"></i></a>
                     </td>
                 </tr>
             @endforeach
