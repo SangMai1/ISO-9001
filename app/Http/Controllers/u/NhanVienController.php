@@ -9,9 +9,9 @@ use Illuminate\Http\Request;
 
 class NhanVienController extends Controller
 {
-    public function getInfo(Request $req)
+    public function queryUser(Request $req, $type)
     {
-        switch ($req->type) {
+        switch ($type) {
             case 'more.min.json':
                 if (!(is_array($req->ids))) return abort(400);
                 $rs = [];
@@ -19,7 +19,7 @@ class NhanVienController extends Controller
                     $rs[$id] = Nhanviens::where('id', $id)->select(['id', 'ten'])->first();
                 }
                 return response()->json($rs);
-            default:
+            case 'json':
                 if (!$req->id) return abort(400);
                 return response()->json(User::find($req->id));
         }

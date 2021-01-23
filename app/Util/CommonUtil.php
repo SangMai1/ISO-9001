@@ -3,6 +3,7 @@
 namespace App\Util;
 
 use App\Models\Danhmucs;
+use Closure;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -97,5 +98,16 @@ class CommonUtil
                 $request->_data[$attr] = $data;
             }
         };
-    }    
+    }
+
+    static function cache($key, Closure $action)
+    {
+        static $map = [];
+        
+        if (!isset($map[$key])) {
+            $map[$key] = $action();
+        }
+        
+        return $map[$key];
+    }
 }

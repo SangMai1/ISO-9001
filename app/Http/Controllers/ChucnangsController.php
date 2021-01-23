@@ -46,7 +46,7 @@ class ChucnangsController extends Controller
     {
 
         $chucNang = new chucnangs($request->except('id'));
-
+        
         Session::flash('message', $chucNang->save() ? 'addSuccess' : 'addFailed');
 
         return view('message');

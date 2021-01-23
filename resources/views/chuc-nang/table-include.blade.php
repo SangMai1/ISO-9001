@@ -20,8 +20,6 @@
             <!-- field cho mobile:                                  - Không được tính index                                                             -->
             <th class="th-mobile">Chức năng</th>
 
-            <!-- field chính:                                       - Index mobile 1                                                                    -->
-            <th>ID</th>
             <!-- field chính:                                       - Index mobile 2                                                                    -->
             <th>Tên</th>
             <!-- field chính:                                       - Index mobile 3                                                                    -->
@@ -47,25 +45,22 @@
                                                                             -> dựa vào attribute[index]                                                 -->
                             <!-- class['.no-title']:                - Không kèm nội dụng title ở tag <th> head                                          -->
                             <!-- index:                             - Xác định cột nào sẽ được chọn để render                                           -->
-                            <span class="cell no-title" index="2"></span>
+                            <span class="cell no-title" index="1"></span>
                         </a>
                         <div class="collapse">
                             <!-- snippet:                           - @cellDivMobile                                                                    -->
                             <div class="cell" index="1"></div>
                             <div class="cell" index="2"></div>
                             <div class="cell" index="3"></div>
-                            <div class="cell" index="4"></div>
                         </div>
                     </td>
 
                     <!-- Column chính:                              - Index là 1                                                                        -->
-                    <td>{{ $cn->id }}</td>
-                    <!-- Column chính:                              - Index là 2                                                                        -->
                     <td>{{ $cn->ten }}</td>
-                    <!-- Column chính:                              - Index là 3                                                                        -->
+                    <!-- Column chính:                              - Index là 2                                                                        -->
                     <td>{{ $cn->url }}</td>
-                    <!-- Column chính:                              - Index là 4                                                                        -->
-                    <td>{{ $cn->nguoisua }}</td>
+                    <!-- Column chính:                              - Index là 3                                                                        -->
+                    <td>{{ $cn->createdBy()->nhanvien()->ten }}</td>
 
                     <!-- Column cho action:                         - Không được tính index                                                             -->
                     <td class="td-action">

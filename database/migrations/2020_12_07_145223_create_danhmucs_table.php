@@ -18,7 +18,7 @@ class CreateDanhmucsTable extends Migration
             $table->timestamps();
             $table->string('ma');
             $table->string('ten');
-            $table->smallInteger('loai')->comment('0:chức danh, 1: phòng ban, 2: Loại tài sản');
+            $table->smallInteger('loai')->comment('2: Loại tài sản, 44: Vai trò cuộc họp');
             $table->string('nguoitao');
             $table->string('nguoisua');
             $table->softDeletes();

@@ -3,6 +3,8 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Routing\Route;
+use Illuminate\Support\Facades\Route as FacadesRoute;
 
 class configjs extends Command
 {
@@ -24,7 +26,7 @@ class configjs extends Command
         $requestPath = [
             'u' => [
                 'nhanvien' => [
-                    'info' => route('u.nhanvien.info', [], false),
+                    'query' => 'u/nhan-vien/q',
                 ],
                 'notification' => [
                     'readNotification' => route('u.thongbao.docthongbao', [], false),

@@ -10,6 +10,7 @@ use DateTime;
 use Facade\FlareClient\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 
 use function PHPSTORM_META\type;
@@ -34,22 +35,9 @@ class CheckPermission
         if ($user) {
             $this->cleanNotifications();
             $GLOBALS['notifications'] = $this->getUserNotifications();
-
             if ($user->isAdmin()) return $next($req);
-
-            // map này để dùng check quyền cho đường dẫn trong view
-            $permissionMap = chucnangs::pluck('id', 'url');
-            $GLOBALS['permissionMap'] = $permissionMap;
-
-            $perId = $permissionMap[$req->getPathInfo()] ?? null;
-
-            // array id các quyền của người dùng
-            $permissionCache = $this->getPermissions();
-            $GLOBALS['permissions'] = $permissionCache;
-
-            if (!$perId) return $next($req);
-
-            return isset($permissionCache['permissions'][$perId])
+            
+            return _p($req->getPathInfo())
                 ? $next($req)
                 : abort(401);
         } elseif (preg_match($this::$regexPublic, $req->getPathInfo())) {
@@ -57,20 +45,6 @@ class CheckPermission
         }
 
         return redirect()->route('login');
-    }
-
-    public function getPermissions()
-    {
-        $user = Auth::user();
-        $permissionCache = session('permissions');
-        if (!$permissionCache || ($permissionCache['updated_at'] !== $user->updated_at->timestamp)) {
-            $permissionCache = [
-                'updated_at' => $user->updated_at->timestamp,
-                'permissions' => $user->getAllPermissionId()
-            ];
-            session(['permissions' => $permissionCache]);
-        }
-        return $permissionCache;
     }
 
     public function getUserNotifications()
@@ -81,19 +55,12 @@ class CheckPermission
 
     public function cleanNotifications()
     {
-        $path = './data.json';
-        $size = filesize($path);
-        $file = fopen($path, realpath($path) ? 'r+' : 'w+');
-        $content = json_decode($size ? fread($file, $size) : '', true);
-        if (!$content) {
-            $content = ['lastTimeCleanNotification' => 0];
-        }
-
-        if (($content['lastTimeCleanNotification'] + $this::$lifespanOfNotification) < time()) {
-            $content['lastTimeCleanNotification'] = time();
-            $file = fopen($path, 'w+');
-            fwrite($file, json_encode($content));
-            fclose($file);
+        $lastTimeCleanNotification = Cache::rememberForever('lastTimeCleanNotification', function(){
+            return 0;
+        });
+        exec('start cmd /k echo '. $lastTimeCleanNotification);
+        if (($lastTimeCleanNotification + $this::$lifespanOfNotification) < time()) {
+            Cache::put('lastTimeCleanNotification', time());
             DB::transaction(function () {
                 DB::table('usersnotifications as un')
                     ->leftJoin('notifications as n', 'un.notificationid', '=', 'n.id')
@@ -109,6 +76,6 @@ class CheckPermission
                     ->whereNull('un.id')
                     ->delete();
             });
-        } else fclose($file);
+        }
     }
 }

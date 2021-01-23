@@ -1,3 +1,4 @@
+var Toast: SwalInterface;
 interface HTMLElement {
     _eachSelected: (callback: (tr: HTMLTableCellElement) => void) => void
     _mapSelected: <K>(callback: (tr: HTMLTableCellElement) => K) => K[]

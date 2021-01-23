@@ -1,26 +1,9 @@
 // @ts-ignore
 //@ts-nocheck
 HTMLElement.prototype.on = HTMLElement.prototype.addEventListener
-moment.locale('vn')
+
 const global = {}
-
-$(() => { window.token = $('meta[name="csrf-token"]').attr("content") })
-
-$.fn.perfectScrollbar = function (this) { return this }
-$.fn.findAll = function (this: JQuery<HTMLElement>, query) {
-    arr = []
-    for (let e of this) {
-        e = $(e)
-        if (e.is(query))
-            arr = arr.concat([e[0], ...e.find(query)])
-        else
-            arr.push(e.find(query))
-    }
-    return $(arr)
-}
-
 const _swagConfig: { [key: string]: SweetAlertOptions } = {};
-var Toast: SwalInterface;
 const showLoading = function (message = "Chờ xí ...") {
     Toast.fire({
         title: message,
@@ -29,7 +12,6 @@ const showLoading = function (message = "Chờ xí ...") {
     });
 };
 const getMessage = (html) => (html = $(html)).hasClass("alert-message") ? html.text() : $(".alert-message", html).text()
-
 const showAlert = function (html: JQuery<HTMLElement>) {
     html = $(html);
     let message = getMessage(html);
@@ -51,6 +33,7 @@ const showAlert = function (html: JQuery<HTMLElement>) {
 };
 
 (function () {
+    settings()
     addJqueryValidationCustom()
     addJqueryTableAutoIndex()
     addSelectModeTable()
@@ -61,24 +44,48 @@ const showAlert = function (html: JQuery<HTMLElement>) {
     $(fixMaterial)
     $(renderNotification)
 
-    $.ajaxSetup({
-        headers: {
-            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content")
-        },
-        processData: false,
-        mimeType: "multipart/form-data",
-        contentType: false,
-        method: "POST",
-        beforeSend: () => showLoading(),
-        success: resp => showAlert(resp),
-        error: (resp) => {
-            if (resp.getResponseHeader("content-type").toLowerCase() === "application/json") {
-                const result = JSON.parse(resp.responseText);
-                return Swal.fire({ ..._swagConfig.toast, title: result.message, icon: 'error' });
+    function settings() {
+        moment.locale('vn')
+        doneSettings()
+
+        // jquery action
+        $.fn.perfectScrollbar = function (this) { return this }
+        $.fn.findAll = function (this: JQuery<HTMLElement>, query) {
+            arr = []
+            for (let e of this) {
+                e = $(e)
+                if (e.is(query))
+                    arr = arr.concat([e[0], ...e.find(query)])
+                else
+                    arr.push(e.find(query))
             }
-            Swal.fire(_swagConfig.errorAjax)
+            return $(arr)
         }
-    });
+
+        // ajax setting
+        $.ajaxSetup({
+            headers: {
+                "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content")
+            },
+            processData: false,
+            mimeType: "multipart/form-data",
+            contentType: false,
+            method: "POST",
+            beforeSend: () => showLoading(),
+            success: resp => showAlert(resp),
+            error: (resp) => {
+                if (resp.getResponseHeader("content-type").toLowerCase() === "application/json") {
+                    const result = JSON.parse(resp.responseText);
+                    return Swal.fire({ ..._swagConfig.toast, title: result.message, icon: 'error' });
+                }
+                Swal.fire(_swagConfig.errorAjax)
+            }
+        });
+
+        function doneSettings() {
+            window.token = $('meta[name="csrf-token"]').attr("content")
+        }
+    }
 
     function renderNotification() {
         addNotificationPusher()
@@ -170,7 +177,7 @@ const showAlert = function (html: JQuery<HTMLElement>) {
                 if (data.users && (data.users.indexOf(_user.id) === -1)) return
                 $.getJSON(Utils.emptyAjaxSetting({
                     url: `${requestPath.u.notification.getNotificationsUnread}?id=${data.notification || 0}`,
-                    
+
                 })).done((notification) => {
                     renderChild($('.unread'), notification, 'prepend')
                     $('.unread').prev().show()
@@ -193,7 +200,7 @@ const showAlert = function (html: JQuery<HTMLElement>) {
                 return (map[cur] = true)
             })
             if (!userIds.length) return
-            const path = `${requestPath.u.nhanvien.info}?type=more.min.json${Array.from(new Set(userIds)).reduce((acc, cur) => `${acc}&ids[]=${cur}`, '')}`
+            const path = `${requestPath.u.nhanvien.query}/more.min.json?${Array.from(new Set(userIds)).reduce((acc, cur) => `${acc}&ids[]=${cur}`, '')}`
             $.getJSON(Utils.emptyAjaxSetting({ url: path }))
                 .done((users: any[]) => {
                     for (let id in users) {

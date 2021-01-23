@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\PhongBan;
+use App\Util\CommonUtil;
 use Illuminate\Http\Request;
 
 class PhongBanController extends Controller
@@ -12,9 +13,13 @@ class PhongBanController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $phongBans = CommonUtil::readViewConfig(PhongBan::class, $request)->get();
+        return view(
+            $request->has('no-layout') ? 'phong-ban.includes.table-danh-sach' : 'phong-ban.danh-sach',
+            compact(['return'])
+        );
     }
 
     /**
