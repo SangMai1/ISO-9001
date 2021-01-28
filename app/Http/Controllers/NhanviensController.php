@@ -142,7 +142,7 @@ class NhanviensController extends Controller
         return view('message');
     }
 
-    public function getMaNhanVien(){
+    public function getMaNhanVien(){ 
         return 'NV' . DB::table('nhanviens')->max("id");
     }
 }

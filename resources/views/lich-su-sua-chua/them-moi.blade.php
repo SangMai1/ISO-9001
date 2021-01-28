@@ -7,7 +7,7 @@
       @csrf
       
       
-      <x-input title="Tài sản" type="text" name="taisanid" value="{{$idTaiSan[$xe->taisanid]}}" float/>
+      <x-input title="Tài sản" type="text" name="taisanid" value="{{$idTaiSan[$taisan->id]}}" float/>
 
       <x-input title="Ngày đi sửa" type="datetime-local" name="thoigiansua"/>
 

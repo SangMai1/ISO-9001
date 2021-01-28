@@ -23,10 +23,12 @@ class TaisansController extends Controller
     public function index(Request $request)
     {
         $taisans = CommonUtil::readViewConfig(taisans::class, $request)->orderBy('created_at', 'DESC')->get();
+        $nhanViens = Nhanviens::pluck('ten', 'id');
+        $phongBans = PhongBan::pluck('ten', 'id');
         if ($request->has('no-layout')) {
-            return view('tai-san.include', compact(['taisans']));
+            return view('tai-san.include', compact(['taisans', 'nhanViens', 'phongBans']));
         }
-        return view('tai-san.danh-sach', compact(['taisans']));
+        return view('tai-san.danh-sach', compact(['taisans', 'nhanViens', 'phongBans']));
     }
 
     /**
@@ -34,12 +36,12 @@ class TaisansController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
-        $nhanViens = DB::table('nhanviens')->select('id', 'ten');
-        $soHuus = DB::table('phongbans')->select('id', 'ten')->union($nhanViens)->get();
+    public function create(Request $request)
+    {    
+        $nhanViens = Nhanviens::pluck('ten', 'id');
+        $phongBans = PhongBan::pluck('ten', 'id');
         $danhMucs = Danhmucs::all()->where('loai', 2)->pluck('ten', 'id');
-        return view('/tai-san/them-moi', compact(['danhMucs', 'soHuus']));
+        return view('/tai-san/them-moi', compact(['danhMucs', 'nhanViens', 'phongBans']));
     }
 
     /**
@@ -51,13 +53,14 @@ class TaisansController extends Controller
     public function store(RequestTaisan $request)
     {
         $taisan = new taisans();
-        $taisan->mataisan = $request->mataisan;
+        $taisan->mataisan = $request->mataisan . DB::table('taisans')->max('id');
         $taisan->tentaisan = $request->tentaisan;
         $taisan->loaitaisanid = $request->loaitaisanid;
         $taisan->giatien = $request->giatien;
         $taisan->khauhao = $request->khauhao;
         $taisan->trangthai = $request->trangthai;
-        $taisan->sohuu = $request->sohuu;
+        $taisan->sohuu_type = $request->sohuu_type;
+        $taisan->sohuu_id = $request->sohuu_id;
         Session::flash('message', $taisan->save() ? 'addSuccess' : 'addFailed');
         return view('message');
     }
@@ -169,7 +172,10 @@ class TaisansController extends Controller
         }
         // không sở hữu
 
-
+        $taisan->sohuu_id = $req->sohuu_id;
+        $taisan->sohuu_type = $req->sohuu_type;
+        Session::flash('message', $taisan->update() ? 'updateSuccess' : 'updateFailed');
         return view('message');
     }
+
 }

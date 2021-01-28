@@ -50,7 +50,13 @@
                     
                     <td>{{ $ts->trangthai ? 'Đã qua sử dụng' : 'Hàng mới' }}</td>
 
-                    <td>{{ $ts->sohuu }}</td>
+                    @if($ts->sohuu_type == 1)
+                        <td>{{ 'Phòng ban: ' . $phongBans[$ts->sohuu_id] }}</td>
+                    @elseif($ts->sohuu_type == 2)
+                        <td>{{ 'Nhân viên: ' . $nhanViens[$ts->sohuu_id] }}</td>
+                    @else 
+                        <td>Không thuộc sở hữu của cá nhân / phòng ban nào</td>
+                    @endif
 
                     <td class="td-action">
                                                                                      
@@ -61,7 +67,7 @@
                         <a class="btn btn-sm btn-info btn-icon rounded-circle" 
                             href="{{ route('taisan.chuyen') }}?id={{$ts->id}}"><i class="fas fa-exchange-alt"></i></a>
                         <a class="btn btn-sm btn-info btn-icon rounded-circle" 
-                            href="#"><i class="fas fa-exchange-alt"></i></a>
+                            href="{{ route('lichsusuachua.create') }}?id={{$ts->id}}"><i class="fas fa-tools"></i></a>
                     </td>
                 </tr>
             @endforeach

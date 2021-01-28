@@ -15,10 +15,7 @@
           <a class="btn btn-sm btn-info btn-icon" 
               href="{{ route('xe.edit') }}?id={{$xl->id}}"><i class="fas fa-pencil-alt"></i></a>
         </div>
-        <div class="btn-group">
-          <a class="btn btn-sm btn-info btn-icon" 
-              href="{{ route('lichsusuachua.create') }}?id={{$xl->taisanid}}"><i class="fas fa-tools"></i></a>
-        </div>
+        
       </div>
     </div>
   </div>
